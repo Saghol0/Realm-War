@@ -1,0 +1,8 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="SwYamlMaybeSpecificationInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" />
+  </profile>
+</component>
