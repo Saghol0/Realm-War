@@ -1,4 +1,8 @@
-package Units;
+package units;
 
-public class Swordman   extends Unit {
+public class Swordman extends units.Unit {
+    public Swordman() {
+        super("Swordman",);
+    }
 }
+

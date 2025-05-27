@@ -1,5 +1,7 @@
-package Structures;
+package structure;
 
-public class Tower extends  Structure {
-
+public class Tower extends structure.Structure {
+    public Tower() {
+        super("Tower";
+    }
 }

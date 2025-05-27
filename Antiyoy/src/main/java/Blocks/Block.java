@@ -1,4 +1,5 @@
-package Blocks;
+package Block;
 
- abstract public class Block {
+public abstract class Block {
+
 }
