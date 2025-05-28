@@ -1,4 +1,4 @@
-package units;
+package Units;
 
 public abstract class Unit {
     protected String name;
@@ -19,6 +19,9 @@ public abstract class Unit {
         this.costGold = costGold;
         this.costFood = costFood;
         this.unitSpace = unitSpace;
+    }
+
+    public Unit(String swordman) {
     }
 
     public void attack(Unit target) {

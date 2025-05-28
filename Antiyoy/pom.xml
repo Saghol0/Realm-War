@@ -13,5 +13,19 @@
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+        <dependencies>
+            <dependency>
+                <groupId>com.formdev  </groupId>
+                <artifactId>flatlaf</artifactId>
+                <version>3.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20230618</version>
+            </dependency>
+
+        </dependencies>
 
 </project>

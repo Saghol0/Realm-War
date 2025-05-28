@@ -1,12 +1,17 @@
-package Block;
+package Blocks;
 
-public class ForestBlock extends Block.Block {
-    private static final int FOOD_GENERATION = 2;
-    public ForestBlock() {
-        super("Forest");
+import src.main.java.*;
+import java.awt.*;
+
+public class ForestBlock extends Block {
+    private static final int FOOD_GENERATION = 4;
+
+    public ForestBlock(int x,int y,Player player) {
+        super(x,y,"Forest Block", Color.GREEN,);
     }
-    @Override
+
     public int generateResources() {
-        return isOwned ? FOOD_GENERATION : 0 ;
+        return findPlayer ? FOOD_GENERATION : 0;
     }
+
 }
