@@ -3,12 +3,13 @@ package src.main.java;
 import Blocks.Block;
 import Blocks.EmptyBlock;
 import Blocks.ForestBlock;
+import Structure.TownHall;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel {
-    final int SIZE = 8;
+    final int SIZE = 10;
     private final Block[][] block;
     private final Player[] players;
     private int currentPlayer = 0;
@@ -21,14 +22,14 @@ public class GamePanel extends JPanel {
                 new Player("Player 2",Color.BLUE)
         };
 
-        setPreferredSize(new Dimension(700, 800));
+        setPreferredSize(new Dimension(800, 850));
         setLayout(new BorderLayout());
         initGrid();
-
+        initResults();
     }
 
     public void initResults() {
-        results = new JLabel();
+        results = new JLabel("",JLabel.CENTER);
         add(results, BorderLayout.SOUTH);
         updateUIData();
     }
@@ -39,14 +40,15 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Block b;
+
                 if ((i == 0 && j == 0) || (i == SIZE - 1 && j == SIZE - 1)) {
-                    b = new ForestBlock(i, j, null);//badan bardashte mishe
+                    b = new EmptyBlock(i,j,players[currentPlayer],new TownHall());
                 } else {
 
                     if (Math.random() < 0.4) {
-                        b = new ForestBlock(i, j, null);
+                        b = new ForestBlock(i, j, null,null);
                     } else {
-                        b = new EmptyBlock(i, j, null);
+                        b = new EmptyBlock(i, j, null,null);
                     }
 
                 }
@@ -68,17 +70,14 @@ public class GamePanel extends JPanel {
 
     public void updateUIData() {
         Player p = players[currentPlayer];
-        results.setText(p.getName() + " is turn |" + p.getGold() + "|" + p.getFood() + "|" + p.getUnitSpace());
+        results.setText(p.getName() + " is turn |" +"Gold" +p.getGold() + "|" + "Food:"+p.getFood() + "|" + p.getUnitSpace());
 
     }
 
     public void switchTurn() {
-//        setCurrentPlayer(currentPlayer);
         currentPlayer = 1-currentPlayer;
         updateUIData();
     }
 
-//    public void setCurrentPlayer(int currentPlayer) {
-//        this.currentPlayer = 1 - currentPlayer;
-//    }
+
 }

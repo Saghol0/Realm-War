@@ -1,25 +1,34 @@
 package Blocks;
 
+import Structure.Structures;
 import src.main.java.Player;
 
+import javax.swing.*;
 import java.awt.*;
 
-public abstract class Block extends Button {
+public abstract class Block extends JButton {
     protected int x;
     protected int y;
     protected String name;
     protected Color color;
     protected Player Owner;
+    protected Structures Structure;
 
 
     //     protected Boolean findPlayer;
-    public Block(int x, int y, String name, Color color) {
+    public Block(int x, int y, String name, Color color,Player Owner,Structures Structure ) {
         this.name = name;
         this.color = color;
 //        this.findPlayer =findPlayer;
         this.x = x;
         this.y = y;
         setBackground(color);
+        this.Structure = Structure;
+        this.Owner = Owner;
+        if (Structure!=null)
+        {
+            setIcon(Structure.get);
+        }
 
     }
 
