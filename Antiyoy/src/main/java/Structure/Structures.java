@@ -1,20 +1,25 @@
-package structure;
+package Structure;
 
-public abstract class Structure {
+import javax.swing.*;
+import java.awt.*;
+
+public abstract class Structures {
+
     protected String name;
     protected int durability;
     protected int maintenanceCost;
     protected int level;
     protected int maxLevel;
-    protected int buildCost;
 
-    public Structure(String name, int durability, int maintenanceCost, int level, int maxLevel, int buildCost) {
+
+    public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel ) {
         this.name = name;
         this.durability = durability;
         this.maintenanceCost = maintenanceCost;
         this.level = level;
         this.maxLevel = maxLevel;
-        this.buildCost = buildCost;
+
+
     }
 
     public void levelUp() {

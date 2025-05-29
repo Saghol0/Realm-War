@@ -17,8 +17,8 @@ public class GamePanel extends JPanel {
     public GamePanel() {
         block = new Block[SIZE][SIZE];
         players = new Player[]{
-                new Player("Player 1"),
-                new Player("Player 2")
+                new Player("Player 1",Color.RED),
+                new Player("Player 2",Color.BLUE)
         };
 
         setPreferredSize(new Dimension(700, 800));

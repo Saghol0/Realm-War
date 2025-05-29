@@ -4,8 +4,8 @@ public abstract class Unit {
     protected String name;
     protected int health;
     protected int attackPower;
-    protected int movementRange;
-    protected int attackRange;
+    protected int movementRange;//mahhdode harekat
+    protected int attackRange;//mahdode hamle
     protected int costGold;
     protected int costFood;
     protected int unitSpace;

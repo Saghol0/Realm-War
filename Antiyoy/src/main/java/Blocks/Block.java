@@ -11,6 +11,7 @@ public abstract class Block extends Button {
     protected Color color;
     protected Player Owner;
 
+
     //     protected Boolean findPlayer;
     public Block(int x, int y, String name, Color color) {
         this.name = name;
@@ -18,6 +19,7 @@ public abstract class Block extends Button {
 //        this.findPlayer =findPlayer;
         this.x = x;
         this.y = y;
+        setBackground(color);
 
     }
 

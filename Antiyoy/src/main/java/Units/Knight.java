@@ -1,7 +1,7 @@
 package Units;
 
-public class Knight extends units.Unit {
+public class Knight extends Unit {
     public Knight() {
-        super("Knight",,,,);
+        super("Knight",40,40,4,4,50,3,1);
     }
 }
