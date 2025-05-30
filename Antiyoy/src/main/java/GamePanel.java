@@ -1,0 +1,81 @@
+package src.main.java;
+
+import Blocks.Block;
+import Blocks.EmptyBlock;
+import Blocks.ForestBlock;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class GamePanel extends JPanel {
+    final int SIZE = 10;
+    private final Block[][] block;
+    private final Player[] players;
+    private int currentPlayer = 0;
+    private JLabel results;
+
+    public GamePanel() {
+        block = new Block[SIZE][SIZE];
+        players = new Player[]{
+                new Player("Player 1", Color.RED),
+                new Player("Player 2", Color.BLUE)
+        };
+
+        setPreferredSize(new Dimension(900, 850));
+        setLayout(new BorderLayout());
+        initGrid();
+        initResults();
+    }
+
+    public void initResults() {
+        results = new JLabel("", JLabel.CENTER);
+        add(results, BorderLayout.SOUTH);
+        updateUIData();
+    }
+
+    public void initGrid() {
+            JPanel gridPanel = new JPanel();
+            gridPanel.setLayout(new GridLayout(SIZE, SIZE)); // ساده و کاربردی
+
+            for (int i = 0; i < SIZE; i++) {
+                for (int j = 0; j < SIZE; j++) {
+                    Block b;
+                    if ((i == 0 && j == 0) || (i == SIZE - 1 && j == SIZE - 1)) {
+                        b = new EmptyBlock(i, j, null, null);
+                    } else {
+                        if (Math.random() < 0.4) {
+                            b = new ForestBlock(i, j, null, null);
+                        } else {
+                            b = new EmptyBlock(i, j, null, null);
+                        }
+                    }
+
+                    int fx = i, fy = j;
+                    b.addActionListener(e -> handleClick(fx, fy));
+                    block[i][j] = b;
+
+                    gridPanel.add(b);
+                }
+            }
+
+            add(gridPanel, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+        }
+
+
+
+    public void handleClick(int x, int y) {
+        // اینجا کلیک روی بلوک با مختصات (x,y مدیریت میشه
+    }
+
+    public void updateUIData() {
+        Player p = players[currentPlayer];
+        results.setText(p.getName() + " is turn |" + "Gold" + p.getGold() + "|" + "Food:" + p.getFood() + "|" + p.getUnitSpace());
+    }
+
+    public void switchTurn() {
+        currentPlayer = 1 - currentPlayer;
+        updateUIData();
+    }
+}

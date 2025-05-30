@@ -7,10 +7,10 @@ import java.awt.*;
 public class Barrack extends Structures {
     private int unitSpace;
     private int BuildCost;
-    private Image iconFrame = new ImageIcon(getClass().getResource("barracks.png")).getImage();
+//    private static Image iconFrame = new ImageIcon(getClass().getResource("Image/barracks.png")).getImage();
 
     public Barrack() {
-        super("Barrack",50,5,1,3);
+        super("Barrack",50,5,1,3,new   ImageIcon(Barrack.class.getResource("barrack.png")).getImage());
         this.unitSpace = 2 ;
         this.BuildCost = 5;
     }

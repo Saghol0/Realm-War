@@ -8,14 +8,14 @@ public class TownHall extends Structures {
     private int foodProduction;
     private int unitSpace;
 
-    public Image getIconFrame() {
-        return iconFrame;
-    }
+//    public Image getIconFrame() {
+//        return iconFrame;
+//    }
 
-    private Image iconFrame = new ImageIcon(getClass().getResource("town-hall.png")).getImage();
+//    private static Image iconFrame = new  ImageIcon(getClass().getResource("townhall.png")).getImage();
 
     public TownHall() {
-        super("Town Hall",120,15,1,1);
+        super("Town Hall",120,15,1,1 , new ImageIcon(TownHall.class.getResource("townhall.png")).getImage());
         this.goldProduction =25 ;
         this.foodProduction =10 ;
         this.unitSpace =1 ;

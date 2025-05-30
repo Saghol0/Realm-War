@@ -10,15 +10,15 @@ public abstract class Structures {
     protected int maintenanceCost;
     protected int level;
     protected int maxLevel;
+    protected Image imageIcon;
 
-
-    public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel ) {
+    public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel, Image imageIcon ) {
         this.name = name;
         this.durability = durability;
         this.maintenanceCost = maintenanceCost;
         this.level = level;
         this.maxLevel = maxLevel;
-
+        this.imageIcon = imageIcon;
 
     }
 

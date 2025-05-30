@@ -6,9 +6,9 @@ import java.awt.*;
 public class Market extends Structures {
     private int goldProduction;
     private int buildCost;
-    private Image iconFrame = new ImageIcon(getClass().getResource("market .png")).getImage();
+//    private static Image iconFrame = new ImageIcon(getClass().getResource("market .png")).getImage();
     public Market() {
-        super("Market",50,5,1,3);
+        super("Market",50,5,1,3,new  ImageIcon(Market.class.getResource("market.png")).getImage());
         this.goldProduction =10 ;
         this.buildCost =20 ;
     }
@@ -24,7 +24,7 @@ public class Market extends Structures {
         this.goldProduction = goldProduction;
     }
 
-    public Image getIconFrame() {
-        return iconFrame;
-    }
+//    public Image getIconFrame() {
+//        return iconFrame;
+//    }
 }

@@ -16,21 +16,18 @@ public abstract class Block extends JButton {
 
 
     //     protected Boolean findPlayer;
-    public Block(int x, int y, String name, Color color,Player Owner,Structures Structure ) {
+    public Block(int x, int y, String name, Color color, Player Owner, Structures Structure) {
         this.name = name;
         this.color = color;
-//        this.findPlayer =findPlayer;
         this.x = x;
         this.y = y;
-        setBackground(color);
         this.Structure = Structure;
         this.Owner = Owner;
-        if (Structure!=null)
-        {
-            setIcon(Structure.get);
-        }
 
+        setPreferredSize(new Dimension(70, 70)); // 👈 این مهمه
+        setBackground(color);
     }
+
 
     @Override
     public String getName() {
@@ -74,6 +71,10 @@ public abstract class Block extends JButton {
 
     public void setOwner(Player owner) {
         Owner = owner;
+    }
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(70, 70); // عدد دلخواه، ترجیحاً مربعی
     }
 
 //
