@@ -14,8 +14,6 @@ public abstract class Block extends JButton {
     protected Player Owner;
     protected Structures Structure;
 
-
-    //     protected Boolean findPlayer;
     public Block(int x, int y, String name, Color color, Player Owner, Structures Structure) {
         this.name = name;
         this.color = color;
@@ -24,45 +22,36 @@ public abstract class Block extends JButton {
         this.Structure = Structure;
         this.Owner = Owner;
 
-        setPreferredSize(new Dimension(70, 70)); // 👈 این مهمه
-        setBackground(color);
+        setBackGroundColor();
+        setOpaque(true);
+        setBorderPainted(true);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        updateIcon();
+
+    }
+    public void setBackGroundColor()
+    {
+        if (Owner != null && Owner.getColor() != null) {
+            setBackground(Owner.getColor());
+        } else {
+            setBackground(color);
+        }
+    }
+    public void updateIcon() {
+        if (Structure != null && Structure.getIcon() != null) {
+            setIcon(new ImageIcon(Structure.getIcon()));
+        } else {
+            setIcon(null); // اطمینان حاصل کن آیکون پاک میشه وقتی Structure حذف بشه
+        }
     }
 
-
-    @Override
-    public String getName() {
-        return name;
+    public void setStructure(Structures structure) {
+        this.Structure = structure;
+        updateIcon();
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public Structures getStructure() {
+        return Structure;
     }
 
     public Player getOwner() {
@@ -70,20 +59,7 @@ public abstract class Block extends JButton {
     }
 
     public void setOwner(Player owner) {
-        Owner = owner;
+        this.Owner = owner;
     }
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(70, 70); // عدد دلخواه، ترجیحاً مربعی
-    }
-
-//
-//    public Boolean getFindPlayer() {
-//        return findPlayer;
-//    }
-//
-//    public void setFindPlayer(Boolean findPlayer) {
-//        ..this.findPlayer = findPlayer;
-//    }
 
 }
