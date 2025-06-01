@@ -14,8 +14,10 @@ Image iconFrame = new ImageIcon(getClass().getResource("/Image/Icon.jpg")).getIm
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setIconImage(iconFrame);
-
+        setLayout(new  BorderLayout());
         add(new GamePanel());
+//        add(new HUDPanel(),BorderLayout.EAST);
+
         setSize(800, 800);
 //        pack();
         setVisible(true);

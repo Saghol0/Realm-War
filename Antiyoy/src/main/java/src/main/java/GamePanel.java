@@ -14,6 +14,7 @@ public class GamePanel extends JPanel {
     private final Player[] players;
     private int currentPlayer = 0;
     private JLabel results;
+    private HUDPanel  hudPanel;
 
     public GamePanel() {
         block = new Block[SIZE][SIZE];
@@ -25,13 +26,19 @@ public class GamePanel extends JPanel {
         setPreferredSize(new Dimension(900, 850));
         setLayout(new BorderLayout());
         initGrid();
-        initResults();
+        initHUD();
+//        initResults();
     }
 
-    public void initResults() {
-        results = new JLabel("", JLabel.CENTER);
-        add(results, BorderLayout.SOUTH);
-        updateUIData();
+//    public void initResults() {
+//        results = new JLabel("", JLabel.CENTER);
+//        add(results, BorderLayout.SOUTH);
+//        updateUIData();
+//    }
+
+    public void initHUD(){
+        hudPanel = new HUDPanel();
+        add(hudPanel, BorderLayout.EAST);
     }
 
     public void initGrid() {
@@ -73,16 +80,17 @@ public class GamePanel extends JPanel {
 
 
     public void handleClick(int x, int y) {
-        // اینجا کلیک روی بلوک با مختصات (x,y مدیریت میشه
+
+
     }
 
-    public void updateUIData() {
-        Player p = players[currentPlayer];
-        results.setText(p.getName() + " is turn |" + "Gold" + p.getGold() + "|" + "Food:" + p.getFood() + "|" + p.getUnitSpace());
-    }
+//    public void updateUIData() {
+//        Player p = players[currentPlayer];
+//        results.setText(p.getName() + " is turn |" + "Gold" + p.getGold() + "|" + "Food:" + p.getFood() + "|" + p.getUnitSpace());
+//    }
 
     public void switchTurn() {
         currentPlayer = 1 - currentPlayer;
-        updateUIData();
+//        updateUIData();
     }
 }
