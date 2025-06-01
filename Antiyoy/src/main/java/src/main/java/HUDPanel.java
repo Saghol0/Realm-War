@@ -16,9 +16,9 @@ public class HUDPanel extends JPanel {
     public HUDPanel() {
 //        this.gameController = gameController;
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(250, 640));
+        setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
-        JPanel infoPanel = new JPanel(new GridLayout(5, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(7, 1));
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");

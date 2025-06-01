@@ -43,7 +43,7 @@ public class GamePanel extends JPanel {
 
     public void initGrid() {
         JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(SIZE, SIZE)); // ساده و کاربردی
+        gridPanel.setLayout(new GridLayout(SIZE, SIZE));
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {

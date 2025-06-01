@@ -1,6 +1,6 @@
 package Units;
 
-public abstract class Unit {
+public  class Unit {
     protected String name;
     protected int health;
     protected int attackPower;

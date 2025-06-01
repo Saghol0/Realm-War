@@ -2,7 +2,7 @@ package Structure;
 
 import java.awt.*;
 
-public abstract class Structures {
+public class Structures {
 
     protected String name;
     protected int durability;

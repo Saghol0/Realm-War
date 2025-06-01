@@ -6,7 +6,7 @@ import src.main.java.Player;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Block extends JButton {
+public class Block extends JButton {
     protected int x;
     protected int y;
     protected String name;
