@@ -153,7 +153,7 @@ Your mission? **Domainate Your Opponent's Kingdom Before They Dominate Yours!**
 - Each game entity (Block, Structure, Unit, etc.) should be implemented as a separate class.
 
 ### **Graphics**
-- The game must use JavaFX to build an interactive graphical user interface.
+- The game must use Swing to build an interactive graphical user interface.
 - GUI should allow players to:
   - View the game board and its blocks, structures, and units
   - Click/select blocks to build, upgrade, or deploy units
