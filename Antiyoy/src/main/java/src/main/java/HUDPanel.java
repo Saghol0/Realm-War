@@ -11,10 +11,8 @@ public class HUDPanel extends JPanel {
     private final JComboBox<String> unitSelector;
     private final JComboBox<String> structureSelector;
     private final JButton endTurnButton;
-//    private final GameController gameController;
 
     public HUDPanel() {
-//        this.gameController = gameController;
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
@@ -30,14 +28,12 @@ public class HUDPanel extends JPanel {
         unitSelector.addActionListener(e -> {
             String selectedItem = (String) unitSelector.getSelectedItem();
             if (!selectedItem.equals("None")) {
-//                gameController.setSelectedUnitType(selected);
                 structureSelector.setSelectedItem("None");
             }
         });
         structureSelector.addActionListener(e -> {
             String selectedItem = (String) structureSelector.getSelectedItem();
             if (!selectedItem.equals("None")) {
-//                gameController.setSelectedUnitType(selected);
                 unitSelector.setSelectedItem("None");
             }
         });
@@ -46,9 +42,10 @@ public class HUDPanel extends JPanel {
         infoPanel.add(new JLabel("Select Structure:"));
         infoPanel.add(structureSelector);
         endTurnButton = new JButton("End Turn");
-//        endTurnButton.addActionListener((e) -> );
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
+        logArea.setLineWrap(true);
+        logArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(logArea);
         add(infoPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
