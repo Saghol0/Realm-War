@@ -3,7 +3,6 @@ package Structure;
 import java.awt.*;
 
 public class Structures {
-
     protected String name;
     protected int durability;
     protected int maintenanceCost;
@@ -22,7 +21,7 @@ public class Structures {
 
     public void levelUp() {
         if (level < maxLevel) {
-            level += 1;
+            level++;
             durability += 10;
             maintenanceCost += 5;
             System.out.println(name + " has been upgraded to level " + level);
@@ -31,28 +30,13 @@ public class Structures {
         }
     }
 
-    // --- Getter Methods ---
-    public String getName() {
-        return name;
-    }
+    // Getters
+    public String getName() { return name; }
+    public int getDurability() { return durability; }
+    public int getMaintenanceCost() { return maintenanceCost; }
+    public int getLevel() { return level; }
+    public int getMaxLevel() { return maxLevel; }
+    public Image getIcon() { return icon; }
 
-    public int getDurability() {
-        return durability;
-    }
-
-    public int getMaintenanceCost() {
-        return maintenanceCost;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public int getMaxLevel() {
-        return maxLevel;
-    }
-
-    public Image getIcon() {
-        return icon;
-    }
+    public int getBuildCost() { return 0; } // پیش‌فرض برای ساخت
 }

@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
     private final Player[] players;
     private int currentPlayer = 0;
     private JLabel results;
-    private HUDPanel  hudPanel;
+    private HUDPanel hudPanel;
 
     public GamePanel() {
         block = new Block[SIZE][SIZE];
@@ -27,16 +27,16 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
         initGrid();
         initHUD();
-//        initResults();
+        initResults();
     }
 
-//    public void initResults() {
-//        results = new JLabel("", JLabel.CENTER);
-//        add(results, BorderLayout.SOUTH);
-//        updateUIData();
-//    }
+    public void initResults() {
+        results = new JLabel("", JLabel.CENTER);
+        add(results, BorderLayout.SOUTH);
+        updateUIData();
+    }
 
-    public void initHUD(){
+    public void initHUD() {
         hudPanel = new HUDPanel();
         add(hudPanel, BorderLayout.EAST);
     }
@@ -48,11 +48,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Block b;
-//                    if ((i == 0 && j == 0) || (i == SIZE - 1 && j == SIZE - 1)) {
-////                        b = new EmptyBlock(i, j, null, null);
-//
-//                    }
-//
+
                 if (i == 0 && j == 0) {
                     b = new EmptyBlock(i, j, players[0], new TownHall());
                 } else if (i == SIZE - 1 && j == SIZE - 1) {
@@ -78,19 +74,16 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
-
     public void handleClick(int x, int y) {
-
-
     }
 
-//    public void updateUIData() {
-//        Player p = players[currentPlayer];
-//        results.setText(p.getName() + " is turn |" + "Gold" + p.getGold() + "|" + "Food:" + p.getFood() + "|" + p.getUnitSpace());
-//    }
+    public void updateUIData() {
+        Player p = players[currentPlayer];
+        results.setText(p.getName() + " is turn | Gold: " + p.getGold() + " | Food: " + p.getFood() + " | Unit Space: " + p.getUnitSpace());
+    }
 
     public void switchTurn() {
         currentPlayer = 1 - currentPlayer;
-//        updateUIData();
+        updateUIData();
     }
 }

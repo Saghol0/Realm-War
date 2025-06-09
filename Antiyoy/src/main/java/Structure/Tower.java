@@ -21,12 +21,8 @@ public class Tower extends Structures {
         return new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
     }
 
+    @Override
     public int getBuildCost() {
         return buildCost;
-    }
-
-    @Override
-    public void levelUp() {
-        super.levelUp();
     }
 }

@@ -20,13 +20,25 @@ public class TownHall extends Structures {
         URL url = TownHall.class.getResource("/Image/town-hall.png");
         if (url == null) {
             System.err.println("TownHall icon not found!");
-            return null;  // یا یک عکس پیش‌فرض
+            return null;
         }
-        ImageIcon icon = new ImageIcon(url);
-        return icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        return new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
     }
 
-    public int getGoldProduction() { return goldProduction; }
-    public int getFoodProduction() { return foodProduction; }
-    public int getUnitSpace() { return unitSpace; }
+    public int getGoldProduction() {
+        return goldProduction;
+    }
+
+    public int getFoodProduction() {
+        return foodProduction;
+    }
+
+    public int getUnitSpace() {
+        return unitSpace;
+    }
+
+    @Override
+    public int getBuildCost() {
+        return 0; // شاید ساخت‌پذیر نیست
+    }
 }

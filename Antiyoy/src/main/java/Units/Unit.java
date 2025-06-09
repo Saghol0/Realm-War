@@ -1,24 +1,29 @@
 package Units;
 
+import javax.swing.*;
+import java.awt.*;
+
 public  class Unit {
     protected String name;
     protected int health;
     protected int attackPower;
-    protected int movementRange;//mahhdode harekat
-    protected int attackRange;//mahdode hamle
+    //    protected int movementRange;//mahhdode harekat
+//    protected int attackRange;//mahdode hamle
     protected int costGold;
     protected int costFood;
     protected int unitSpace;
+    protected Image icon;
 
-    public Unit(String name, int health, int attackPower, int movementRange, int attackRange, int costGold, int costFood, int unitSpace) {
+    public Unit(String name, int health, int attackPower, int movementRange, int attackRange, int costGold, int costFood, int unitSpace, Image icon) {
         this.name = name;
         this.health = health;
         this.attackPower = attackPower;
-        this.movementRange = movementRange;
-        this.attackRange = attackRange;
+//        this.movementRange = movementRange;
+//        this.attackRange = attackRange;
         this.costGold = costGold;
         this.costFood = costFood;
         this.unitSpace = unitSpace;
+        this.icon = Unit.this.icon;
     }
 
     public Unit(String swordman) {
@@ -38,4 +43,5 @@ public  class Unit {
 
     public String getName() { return name; }
     public int getHealth() { return health; }
+    public Image getIcon() { return icon; }
 }

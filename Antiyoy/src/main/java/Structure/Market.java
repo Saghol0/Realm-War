@@ -15,7 +15,7 @@ public class Market extends Structures {
     }
 
     private static Image loadImage() {
-        URL url = Market.class.getResource("/Image/market.png");
+        URL url = Market.class.getResource("/Image/market .png");
         if (url == null) {
             System.err.println("Market icon not found!");
             return null;
@@ -33,7 +33,8 @@ public class Market extends Structures {
         return goldProduction;
     }
 
-    public void setGoldProduction(int goldProduction) {
-        this.goldProduction = goldProduction;
+    @Override
+    public int getBuildCost() {
+        return buildCost;
     }
 }

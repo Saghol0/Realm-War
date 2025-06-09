@@ -6,16 +6,16 @@ import java.net.URL;
 
 public class Barrack extends Structures {
     private int unitSpace;
-    private int BuildCost;
+    private int buildCost;
 
     public Barrack() {
         super("Barrack", 50, 5, 1, 3, loadImage());
         this.unitSpace = 2;
-        this.BuildCost = 5;
+        this.buildCost = 5;
     }
 
     private static Image loadImage() {
-        URL url = Barrack.class.getResource("/Image/barrack.png");
+        URL url = Barrack.class.getResource("/Image/barracks.png");
         if (url == null) {
             System.err.println("Barrack icon not found!");
             return null;
@@ -31,5 +31,10 @@ public class Barrack extends Structures {
 
     public int getUnitSpace() {
         return unitSpace;
+    }
+
+    @Override
+    public int getBuildCost() {
+        return buildCost;
     }
 }

@@ -29,7 +29,12 @@ public class Farm extends Structures {
         foodProduction += 5;
     }
 
-    public int getfoodProduction() {
+    public int getFoodProduction() {
         return foodProduction;
+    }
+
+    @Override
+    public int getBuildCost() {
+        return buildCost;
     }
 }
