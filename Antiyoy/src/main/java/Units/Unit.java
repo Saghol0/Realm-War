@@ -7,7 +7,11 @@ public  class Unit {
     protected String name;
     protected int health;
     protected int attackPower;
+<<<<<<< HEAD
     //    protected int movementRange;//mahhdode harekat
+=======
+//    protected int movementRange;//mahhdode harekat
+>>>>>>> 49ac476277f303d4c389cd827d0139467d0479ab
 //    protected int attackRange;//mahdode hamle
     protected int costGold;
     protected int costFood;
@@ -44,4 +48,8 @@ public  class Unit {
     public String getName() { return name; }
     public int getHealth() { return health; }
     public Image getIcon() { return icon; }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 49ac476277f303d4c389cd827d0139467d0479ab

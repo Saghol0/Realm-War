@@ -51,6 +51,8 @@ public class HUDPanel extends JPanel {
         endTurnButton = new JButton("End Turn");
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
+        logArea.setLineWrap(true);
+        logArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(logArea);
 
         add(infoPanel, BorderLayout.NORTH);
