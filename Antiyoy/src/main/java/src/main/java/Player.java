@@ -23,6 +23,7 @@ public class Player {
     public Color getColor() {
         return color;
     }
+
     public void addGold(int amount) { gold += amount; }
     public void addFood(int amount) { food += amount; }
     public void addUnitSpace(int amount) { unitSpace += amount; }
