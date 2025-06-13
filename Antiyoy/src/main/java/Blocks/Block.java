@@ -2,6 +2,7 @@ package Blocks;
 
 import Structure.Structures;
 import Units.Unit;
+import src.main.java.HUDPanel;
 import src.main.java.Player;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class Block extends JButton {
     protected Player Owner;
     protected Structures Structure;
     protected Unit unit ;
+//    protected HUDPanel hudPanel;
     public Block(int x, int y, String name, Color color, Player Owner, Structures Structure,  Unit unit) {
         this.name = name;
         this.color = color;
@@ -23,6 +25,7 @@ public class Block extends JButton {
         this.Structure = Structure;
         this.Owner = Owner;
         this.unit = unit;
+//        this.hudPanel = hudPanel;
 
         setBackGroundColor();
         setOpaque(true);

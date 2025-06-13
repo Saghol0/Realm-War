@@ -12,6 +12,7 @@ public class HUDPanel extends JPanel {
     private final JComboBox<String> structureSelector;
     private final JButton endTurnButton;
 
+
     public HUDPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(280, 640));

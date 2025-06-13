@@ -23,14 +23,15 @@ public  class Unit {
         this.costGold = costGold;
         this.costFood = costFood;
         this.unitSpace = unitSpace;
-        this.icon = Unit.this.icon;
+        this.icon = icon;
     }
 
     public Unit(String swordman) {
     }
 
     public void attack(Unit target) {
-        System.out.println(name + " attacks " + target.getName() + " for " + attackPower + " damage!");
+//        System.out.println(name + " attacks " + target.getName() + " for " + attackPower + " damage!");
+
         target.takeDamage(attackPower);
     }
 

@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
     private final Player[] players;
     private int currentPlayer = 0;
     private JLabel results;
-    private HUDPanel  hudPanel;
+    private static HUDPanel  hudPanel;
 
     public GamePanel() {
         block = new Block[SIZE][SIZE];
@@ -54,14 +54,14 @@ public class GamePanel extends JPanel {
 //                    }
 //
                 if (i == 0 && j == 0) {
-                    b = new EmptyBlock(i, j, players[0], new TownHall());
+                    b = new EmptyBlock(i, j, players[0], new TownHall(),null);
                 } else if (i == SIZE - 1 && j == SIZE - 1) {
-                    b = new EmptyBlock(i, j, players[1], new TownHall());
+                    b = new EmptyBlock(i, j, players[1], new TownHall(),null);
                 } else {
                     if (Math.random() < 0.4) {
-                        b = new ForestBlock(i, j, null, null);
+                        b = new ForestBlock(i, j, null, null,null);
                     } else {
-                        b = new EmptyBlock(i, j, null, null);
+                        b = new EmptyBlock(i, j, null, null,null);
                     }
                 }
 
