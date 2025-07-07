@@ -8,12 +8,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Block extends JButton {
+
     protected int x, y;
     protected String name;
     protected Color baseColor;
     protected Player owner;
     protected Structures structure;
     protected Unit unit;
+
+    public Block(int x, int y, String name, Color color) {
+        this(x, y, name, color, null, null);
+    }
 
     public Block(int x, int y, String name, Color color, Player owner, Structures structure) {
         this.x = x;

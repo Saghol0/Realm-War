@@ -6,10 +6,10 @@ public abstract class Unit {
     protected String name;
     protected int rank;
     protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
-    protected int costGold;
-    protected int costFood;
-    protected int unitSpace;
-    protected Image icon;
+    public int costGold;
+    public int costFood;
+    public int unitSpace;
+    public Image icon;
 
     public Unit(String name,int rank, int costGold, int costFood, int unitSpace, Image icon) {
         this.name = name;

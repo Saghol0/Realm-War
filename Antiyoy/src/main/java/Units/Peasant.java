@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public class Peasant extends Unit {
-    public Peasant() {
+    public Peasant(JLabel uLabel) {
         super(
             "peasant",
             4,
@@ -17,7 +17,7 @@ public class Peasant extends Unit {
     }
 
 private static Image loadImage() {
-    URL url = Peasant.class.getResource("/Image/peasant.png");
+    URL url = Peasant.class.getResource("/resources/Image/peasant.png");
     if (url == null) {
         System.err.println("peasant icon not found!");
         return null;

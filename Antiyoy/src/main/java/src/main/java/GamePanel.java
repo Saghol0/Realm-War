@@ -9,12 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel {
-    final int SIZE = 10;
+    public final int SIZE = 10;
     private final Block[][] block;
     private final Player[] players;
-    private int currentPlayer = 0;
-    private JLabel results;
     private HUDPanel hudPanel;
+    private GameController controller;
 
     public GamePanel() {
         block = new Block[SIZE][SIZE];
@@ -25,23 +24,12 @@ public class GamePanel extends JPanel {
 
         setPreferredSize(new Dimension(900, 850));
         setLayout(new BorderLayout());
+
         initGrid();
         initHUD();
-        initResults();
     }
 
-    public void initResults() {
-        results = new JLabel("", JLabel.CENTER);
-        add(results, BorderLayout.SOUTH);
-        updateUIData();
-    }
-
-    public void initHUD() {
-        hudPanel = new HUDPanel();
-        add(hudPanel, BorderLayout.EAST);
-    }
-
-    public void initGrid() {
+    private void initGrid() {
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
 
@@ -74,16 +62,29 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
-    public void handleClick(int x, int y) {
+    private void initHUD() {
+        hudPanel = new HUDPanel();
     }
 
-    public void updateUIData() {
-        Player p = players[currentPlayer];
-        results.setText(p.getName() + " is turn | Gold: " + p.getGold() + " | Food: " + p.getFood() + " | Unit Space: " + p.getUnitSpace());
+    public HUDPanel getHudPanel() {
+        return hudPanel;
     }
 
-    public void switchTurn() {
-        currentPlayer = 1 - currentPlayer;
-        updateUIData();
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
+    }
+
+    private void handleClick(int x, int y) {
+        if (controller != null) {
+            controller.handleBlockClick(block[x][y]);
+        }
+    }
+
+    public Block getBlock(int x, int y) {
+        return block[x][y];
     }
 }

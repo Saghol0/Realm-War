@@ -63,6 +63,7 @@ public class Player {
 
     // --- Utility method for debugging or HUD display ---
     public String getStatus() {
-        return String.format("%status | Gold: %d | Food: %d | Unit Space: %d", name, gold, food, unitSpace);
+        return String.format("%s | Gold: %d | Food: %d | Unit Space: %d", name, gold, food, unitSpace);
+
     }
 }

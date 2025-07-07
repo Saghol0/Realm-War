@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public class Knight extends Unit {
-    public Knight() {
+    public Knight(JLabel uLabel) {
         super(
                 "Knight",
                 4,
@@ -17,7 +17,7 @@ public class Knight extends Unit {
     }
 
     private static Image loadImage() {
-        URL url = Knight.class.getResource("/Image/knight.png");
+        URL url = Knight.class.getResource("/resources/Image/knight.png");
         if (url == null) {
             System.err.println("Knight icon not found!");
             return null;

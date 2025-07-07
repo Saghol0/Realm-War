@@ -15,7 +15,7 @@ public class Farm extends Structures {
     }
 
     private static Image loadImage() {
-        URL url = Farm.class.getResource("/Image/farm.png");
+        URL url = Farm.class.getResource("/resources/Image/farm.png");
         if (url == null) {
             System.err.println("Farm icon not found!");
             return null;

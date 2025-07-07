@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public class Spearman extends Unit {
-    public Spearman() {
+    public Spearman(JLabel uLabel) {
         super(
             "spearman",
             2,
@@ -17,7 +17,7 @@ public class Spearman extends Unit {
     }
 
     private static Image loadImage() {
-        URL url = Spearman.class.getResource("/Image/spearman.png");
+        URL url = Spearman.class.getResource("/resources/Image/spearman.png");
         if (url == null) {
             System.err.println("spearman icon not found!");
             return null;
