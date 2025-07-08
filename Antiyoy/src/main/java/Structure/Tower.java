@@ -13,7 +13,7 @@ public class Tower extends Structures {
     }
 
     private static Image loadImage() {
-        URL url = Tower.class.getResource("/Image/tower.png");
+        URL url = Tower.class.getResource("/resources/Image/tower.png");
         if (url == null) {
             System.err.println("Tower icon not found!");
             return null;
@@ -21,12 +21,8 @@ public class Tower extends Structures {
         return new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
     }
 
+    @Override
     public int getBuildCost() {
         return buildCost;
-    }
-
-    @Override
-    public void levelUp() {
-        super.levelUp();
     }
 }

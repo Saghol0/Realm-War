@@ -9,67 +9,89 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Block extends JButton {
-    protected int x;
-    protected int y;
+
+    protected int x, y;
     protected String name;
-    protected Color color;
-    protected Player Owner;
-    protected Structures Structure;
-    protected Unit unit ;
-//    protected HUDPanel hudPanel;
-    public Block(int x, int y, String name, Color color, Player Owner, Structures Structure,  Unit unit) {
-        this.name = name;
-        this.color = color;
+
+    protected Color baseColor;
+    protected Player owner;
+    protected Structures structure;
+    protected Unit unit;
+
+    public Block(int x, int y, String name, Color color) {
+        this(x, y, name, color, null, null);
+    }
+
+    public Block(int x, int y, String name, Color color, Player owner, Structures structure) {
         this.x = x;
         this.y = y;
-        this.Structure = Structure;
-        this.Owner = Owner;
-        this.unit = unit;
-//        this.hudPanel = hudPanel;
+        this.name = name;
+        this.baseColor = color;
+        this.owner = owner;
+        this.structure = structure;
 
         setBackGroundColor();
         setOpaque(true);
         setBorderPainted(true);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         updateIcon();
-
     }
-    public void setBackGroundColor()
-    {
-        if (Owner != null && Owner.getColor() != null) {
-            setBackground(Owner.getColor());
+
+    public void setBackGroundColor() {
+        if (structure != null && owner != null && owner.getColor() != null) {
+            setBackground(owner.getColor());
         } else {
-            setBackground(color);
-        }
-    }
-    public void updateIcon() {
-        if (Structure != null && Structure.getIcon() != null) {
-            setIcon(new ImageIcon(Structure.getIcon()));
-        }
-        else if (unit != null && unit.getIcon() != null) {
-            setIcon(new ImageIcon(unit.getIcon()));
-        }
-        else {
-            setIcon(null); // اطمینان حاصل کن آیکون پاک میشه وقتی Structure حذف بشه
+            setBackground(baseColor);
         }
     }
 
+    public void updateIcon() {
+        if (structure != null && structure.getIcon() != null) {
+            setIcon(new ImageIcon(structure.getIcon()));
+        } else if (unit != null && unit.getIcon() != null) {
+            setIcon(new ImageIcon(unit.getIcon()));
+        } else {
+            setIcon(null);
+        }
+    }
+
+    // Getters and setters
     public void setStructure(Structures structure) {
-        this.Structure = structure;
+        this.structure = structure;
         updateIcon();
     }
 
     public Structures getStructure() {
-        return Structure;
+        return structure;
     }
 
     public Player getOwner() {
-        return Owner;
+        return owner;
     }
 
     public void setOwner(Player owner) {
-        this.Owner = owner;
+        this.owner = owner;
+        setBackGroundColor();
     }
 
+    public Unit getUnit() {
+        return unit;
+    }
 
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+        updateIcon();
+    }
+
+    public int getXCoordinate() {
+        return x;
+    }
+
+    public int getYCoordinate() {
+        return y;
+    }
+
+    public String getBlockName() {
+        return name;
+    }
 }

@@ -1,48 +1,53 @@
 package Units;
 
-import javax.swing.*;
 import java.awt.*;
 
-public  class Unit {
+public abstract class Unit {
     protected String name;
-    protected int health;
-    protected int attackPower;
-//    protected int movementRange;//mahhdode harekat
-//    protected int attackRange;//mahdode hamle
-    protected int costGold;
-    protected int costFood;
-    protected int unitSpace;
-    protected Image icon;
+    protected int rank;
+    protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
+    public int costGold;
+    public int costFood;
+    public int unitSpace;
+    public Image icon;
 
-    public Unit(String name, int health, int attackPower, int movementRange, int attackRange, int costGold, int costFood, int unitSpace, Image icon) {
+    public Unit(String name,int rank, int costGold, int costFood, int unitSpace, Image icon) {
         this.name = name;
-        this.health = health;
-        this.attackPower = attackPower;
-//        this.movementRange = movementRange;
-//        this.attackRange = attackRange;
+        this.rank = rank;
         this.costGold = costGold;
         this.costFood = costFood;
         this.unitSpace = unitSpace;
         this.icon = icon;
     }
 
-    public Unit(String swordman) {
+    // --- قابلیت حرکت ---
+    public boolean canMove(int fromX, int fromY, int toX, int toY) {
+        int dx = Math.abs(toX - fromX);
+        int dy = Math.abs(toY - fromY);
+        return dx + dy <= movementRange;
     }
 
-    public void attack(Unit target) {
-//        System.out.println(name + " attacks " + target.getName() + " for " + attackPower + " damage!");
-
-        target.takeDamage(attackPower);
+    // --- Getters ---
+    public String getName() {
+        return name;
     }
 
-    public void takeDamage(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            System.out.println(name + " has been defeated!");
-        }
+    public int getMovementRange() {
+        return movementRange;
     }
 
-    public String getName() { return name; }
-    public int getHealth() { return health; }
-    public Image getIcon() { return icon; }
+    public int getCostGold() {
+        return costGold; }
+
+    public int getCostFood() {
+        return costFood;
+    }
+
+    public int getUnitSpace() {
+        return unitSpace;
+    }
+
+    public Image getIcon() {
+        return icon;
+    }
 }

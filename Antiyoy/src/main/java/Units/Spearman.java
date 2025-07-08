@@ -1,22 +1,27 @@
 package Units;
 
-import Structure.Farm;
-
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
 public class Spearman extends Unit {
-    public Spearman() {
-        super("Spearman",20,20,2,2,10,1,1,loadImage());
+    public Spearman(JLabel uLabel) {
+        super(
+            "spearman",
+            2,
+            2 * 10,   // هزینه طلا متناسب با رنک
+            2 + 2,         // هزینه غذا متناسب با رنک
+            2,                // فضای یونیت (یک واحد)
+            loadImage()
+        );
     }
+
     private static Image loadImage() {
-        URL url = Farm.class.getResource("Image/man.png");
+        URL url = Spearman.class.getResource("/resources/Image/spearman.png");
         if (url == null) {
-            System.err.println("Farm icon not found!");
+            System.err.println("spearman icon not found!");
             return null;
         }
         return new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
     }
 }
-

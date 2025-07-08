@@ -5,6 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public class TownHall extends Structures {
+    private static Image icon;  // آیکون استاتیک
     private int goldProduction;
     private int foodProduction;
     private int unitSpace;
@@ -17,16 +18,32 @@ public class TownHall extends Structures {
     }
 
     private static Image loadImage() {
-        URL url = TownHall.class.getResource("/Image/town-hall.png");
-        if (url == null) {
-            System.err.println("TownHall icon not found!");
-            return null;  // یا یک عکس پیش‌فرض
+        if (icon == null) {  // فقط اولین بار لود می‌کنه
+            URL url = TownHall.class.getResource("/Image/town-hall.png");
+            if (url == null) {
+                System.err.println("TownHall icon not found!");
+                icon = null;
+            } else {
+                icon = new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+            }
         }
-        ImageIcon icon = new ImageIcon(url);
-        return icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        return icon;
     }
 
-    public int getGoldProduction() { return goldProduction; }
-    public int getFoodProduction() { return foodProduction; }
-    public int getUnitSpace() { return unitSpace; }
+    public int getGoldProduction() {
+        return goldProduction;
+    }
+
+    public int getFoodProduction() {
+        return foodProduction;
+    }
+
+    public int getUnitSpace() {
+        return unitSpace;
+    }
+
+    @Override
+    public int getBuildCost() {
+        return 0; // ساخت‌پذیر نیست
+    }
 }
