@@ -1,16 +1,16 @@
-package src.main.java;
+package Game;
+
 
 import Blocks.Block;
 import Blocks.EmptyBlock;
 import Blocks.ForestBlock;
 import Structure.TownHall;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel {
     public final int SIZE = 10;
-    private final Block[][] block;
+    private Block[][] block;
     private final Player[] players;
     private HUDPanel hudPanel;
     private GameController controller;
@@ -38,14 +38,14 @@ public class GamePanel extends JPanel {
                 Block b;
 
                 if (i == 0 && j == 0) {
-                    b = new EmptyBlock(i, j, players[0], new TownHall(),null);
+                    b = new EmptyBlock(i, j, players[0], new TownHall());
                 } else if (i == SIZE - 1 && j == SIZE - 1) {
-                    b = new EmptyBlock(i, j, players[1], new TownHall(),null);
+                    b = new EmptyBlock(i, j, players[1], new TownHall());
                 } else {
                     if (Math.random() < 0.4) {
-                        b = new ForestBlock(i, j, null, null,null);
+                        b = new ForestBlock(i, j, null, null);
                     } else {
-                        b = new EmptyBlock(i, j, null, null,null);
+                        b = new EmptyBlock(i, j, null, null);
                     }
                 }
 

@@ -1,4 +1,4 @@
-package src.main.java;
+package Game;
 
 import Blocks.Block;
 import Structure.Structures;
@@ -12,7 +12,6 @@ public class GameController {
     private HUDPanel hudPanel;
     private Player[] players;
     private int currentPlayerIndex = 0;
-
     private Unit selectedUnit = null;
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {

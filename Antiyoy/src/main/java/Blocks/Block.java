@@ -1,9 +1,9 @@
 package Blocks;
 
+import Game.Player;
 import Structure.Structures;
 import Units.Unit;
-import src.main.java.HUDPanel;
-import src.main.java.Player;
+
 
 import javax.swing.*;
 import java.awt.*;

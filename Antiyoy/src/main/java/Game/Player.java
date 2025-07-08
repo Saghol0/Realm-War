@@ -1,5 +1,4 @@
-package src.main.java;
-
+package Game;
 import java.awt.*;
 
 public class Player {

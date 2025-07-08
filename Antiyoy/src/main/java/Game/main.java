@@ -1,10 +1,9 @@
-package src.main.java;
+package Game;
+
 
 import javax.swing.*;
-
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
+
 
 public class main {
     public static void main(String[] args) {
