@@ -30,8 +30,8 @@ public class HUDPanel extends JPanel {
         infoPanel.add(goldLabel);
         infoPanel.add(foodLabel);
 
-        unitSelector = new JComboBox<>(new String[]{"None", "Peasant", "Knight", "SpearMan", "SwordMan"});
-        structureSelector = new JComboBox<>(new String[]{"None", "Farm", "Market", "Tower", "Barrack"});
+        unitSelector = new JComboBox<>(new String[]{"None", "Peasant", "SpearMan", "SwordMan","Knight"});
+        structureSelector = new JComboBox<>(new String[]{"None", "Farm", "Market", "Barrack", "Tower"});
 
         endTurnButton = new JButton("End Turn");
         buildStructuresButton = new JButton("Build Structures");
