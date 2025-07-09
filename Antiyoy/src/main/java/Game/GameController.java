@@ -104,13 +104,13 @@ public class GameController {
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
         switch (unitName) {
-            case "Peasant":
+            case "Peasant          (Gold:10 + Food:3 + Space:1)":
                 return new Peasant(unitLabel);
-            case "Knight":
+            case "Knight            (Gold:40 + Food:6 + Space:4)":
                 return new Knight(unitLabel);
-            case "SpearMan":
+            case "SpearMan      (Gold:20 + Food:4 + Space:2)":
                 return new Spearman(unitLabel);
-            case "SwordMan":
+            case "SwordMan     (Gold:30 + Food:5 + Space:3)":
                 return new Swordman(unitLabel);
             default:
                 return null;
