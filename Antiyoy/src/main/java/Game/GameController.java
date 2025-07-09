@@ -52,7 +52,7 @@ public class GameController {
 
         String selectedStructureName = (String) hudPanel.getStructureSelector().getSelectedItem();
         if (!"None".equals(selectedStructureName)) {
-            if (block.getOwner() == currentPlayer && block.getStructure() == null) {
+            if ((block.getOwner() == currentPlayer || block.getOwner()== null) && block.getStructure() == null) {
                 Structures newStructure = createStructureByName(selectedStructureName);
                 if (canBuildStructure(currentPlayer, newStructure)) {
                     block.setStructure(newStructure);
@@ -71,7 +71,7 @@ public class GameController {
         }
 
         if (selectedUnit != null) {
-            if (block.getOwner() == currentPlayer && block.getStructure() instanceof Structure.Barrack) {
+            if ((block.getOwner() == currentPlayer||block.getOwner()==null) && block.getStructure() instanceof Structure.Barrack) {
                 if (canBuildUnit(currentPlayer, selectedUnit)) {
                     hudPanel.addLog(currentPlayer.getName() + " created unit: " + selectedUnit.getName());
                     payForUnit(currentPlayer, selectedUnit);
@@ -131,7 +131,7 @@ public class GameController {
         return player.getGold() >= unit.costGold && player.getFood() >= unit.costFood && player.getUnitSpace() + unit.unitSpace <= 100;
     }
 
-    private void payForStructure(Player player, Structures structure) {
+    private void payForStructure(Player player, Structures structure) {//هزینه ساخت ساختمون
         player.addGold(-structure.getMaintenanceCost());
     }
 

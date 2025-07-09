@@ -17,7 +17,7 @@ public class Knight extends Unit {
     }
 
     private static Image loadImage() {
-        URL url = Knight.class.getResource("/resources/Image/knight.png");
+        URL url = Knight.class.getResource("Image/knight.png");
         if (url == null) {
             System.err.println("Knight icon not found!");
             return null;

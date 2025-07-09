@@ -12,6 +12,8 @@ public class HUDPanel extends JPanel {
     private final JComboBox<String> unitSelector;
     private final JComboBox<String> structureSelector;
     private final JButton endTurnButton;
+    private final JButton buildStructuresButton;
+    private final JButton buildUnitButton;
 
 
     public HUDPanel() {
@@ -19,7 +21,7 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(7, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(9, 1));
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
@@ -31,12 +33,20 @@ public class HUDPanel extends JPanel {
         unitSelector = new JComboBox<>(new String[]{"None", "Peasant", "Knight", "SpearMan", "SwordMan"});
         structureSelector = new JComboBox<>(new String[]{"None", "Farm", "Market", "Tower", "Barrack"});
 
+        endTurnButton = new JButton("End Turn");
+        buildStructuresButton = new JButton("Build Structures");
+        buildUnitButton = new JButton("Build Units");
+
         infoPanel.add(new JLabel("Select Unit:"));
         infoPanel.add(unitSelector);
+        infoPanel.add(buildStructuresButton);
+
         infoPanel.add(new JLabel("Select Structure:"));
         infoPanel.add(structureSelector);
+        infoPanel.add(buildUnitButton);
 
-        endTurnButton = new JButton("End Turn");
+
+
 
         unitSelector.addActionListener(e -> {
             String selectedItem = (String) unitSelector.getSelectedItem();
