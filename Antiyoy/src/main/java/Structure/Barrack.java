@@ -15,7 +15,7 @@ public class Barrack extends Structures {
     }
 
     private static Image loadImage() {
-        URL url = Barrack.class.getResource("/resources/Image/barrack.png");
+        URL url = Barrack.class.getResource("/Image/barrack.png");
         if (url == null) {
             System.err.println("Barrack icon not found!");
             return null;

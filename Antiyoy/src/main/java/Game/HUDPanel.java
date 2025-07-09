@@ -39,14 +39,11 @@ public class HUDPanel extends JPanel {
 
         infoPanel.add(new JLabel("Select Unit:"));
         infoPanel.add(unitSelector);
-        infoPanel.add(buildStructuresButton);
+        infoPanel.add(buildUnitButton);
 
         infoPanel.add(new JLabel("Select Structure:"));
         infoPanel.add(structureSelector);
-        infoPanel.add(buildUnitButton);
-
-
-
+        infoPanel.add(buildStructuresButton);
 
         unitSelector.addActionListener(e -> {
             String selectedItem = (String) unitSelector.getSelectedItem();
