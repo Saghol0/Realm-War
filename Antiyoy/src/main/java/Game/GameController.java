@@ -5,9 +5,11 @@ import Structure.Structures;
 import Units.*;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 
 public class GameController {
-
+    private Block selectedBlock = null;
     private GamePanel gamePanel;
     private HUDPanel hudPanel;
     private Player[] players;
@@ -22,8 +24,9 @@ public class GameController {
         setupListeners();
         updateHUD();
     }
-
+//نصب اکشن لیسنر ها
     private void setupListeners() {
+        //دکمه end turn
         hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
 
         hudPanel.getUnitSelector().addActionListener(e -> {
@@ -36,7 +39,7 @@ public class GameController {
                 selectedUnit = null;
             }
         });
-
+        //لیست استراکچر
         hudPanel.getStructureSelector().addActionListener(e -> {
             String structureName = (String) hudPanel.getStructureSelector().getSelectedItem();
             if (!"None".equals(structureName)) {
@@ -48,9 +51,15 @@ public class GameController {
     }
 
     public void handleBlockClick(Block block) {
-        Player currentPlayer = players[currentPlayerIndex];
+        if (selectedBlock != null) {
+            selectedBlock.setBorder(null);
+        }
+        block.setBorder(new LineBorder(Color.BLACK,5));
+        selectedBlock = block;
 
+        Player currentPlayer = players[currentPlayerIndex];
         String selectedStructureName = (String) hudPanel.getStructureSelector().getSelectedItem();
+
         if (!"None".equals(selectedStructureName)) {
             if ((block.getOwner() == currentPlayer || block.getOwner()== null) && block.getStructure() == null) {
                 Structures newStructure = createStructureByName(selectedStructureName);
