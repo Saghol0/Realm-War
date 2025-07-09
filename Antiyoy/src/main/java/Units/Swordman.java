@@ -17,7 +17,7 @@ public class Swordman extends Unit {
     }
 
     private static Image loadImage() {
-        URL url = Swordman.class.getResource("Image/Swordman.png");
+        URL url = Swordman.class.getResource("/Image/Swordman.png");
         if (url == null) {
             System.err.println("Swordman icon not found!");
             return null;

@@ -2,6 +2,8 @@ package Blocks;
 
 import Game.Player;
 import Structure.Structures;
+import Units.Unit;
+
 import java.awt.*;
 
 public class ForestBlock extends Block {
@@ -10,7 +12,7 @@ public class ForestBlock extends Block {
         super(x, y, "Forest Block", Color.GREEN);
     }
 
-    public ForestBlock(int x, int y, Player player, Structures structure) {
-        super(x, y, "Forest Block", Color.GREEN, player, structure);
+    public ForestBlock(int x, int y, Player player, Structures structure, Unit unit) {
+        super(x, y, "Forest Block", Color.GREEN, player, structure, unit);
     }
 }

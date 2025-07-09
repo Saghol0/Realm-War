@@ -38,14 +38,21 @@ public class GamePanel extends JPanel {
                 Block b;
 
                 if (i == 0 && j == 0) {
-                    b = new EmptyBlock(i, j, players[0], new TownHall());
+                    b = new EmptyBlock(i, j, players[0], new TownHall(),null);
                 } else if (i == SIZE - 1 && j == SIZE - 1) {
-                    b = new EmptyBlock(i, j, players[1], new TownHall());
+                    b = new EmptyBlock(i, j, players[1], new TownHall(),null);
+                }
+                else if ((0<=i &&1>=i) && (0<=j && 1>=j) && (i!=0 && j!=0)) {
+                    b = new EmptyBlock(i, j, players[0], null,null);
+                } else if ((SIZE-2<=i && SIZE-1>=i)&& (SIZE-2<=j && SIZE-1>=j)&& (i!=SIZE-1 && j!=SIZE-1)) {
+                    {
+                        b = new EmptyBlock(i, j, players[1], null,null);
+                    }
                 } else {
                     if (Math.random() < 0.4) {
-                        b = new ForestBlock(i, j, null, null);
+                        b = new ForestBlock(i, j, null, null,null);
                     } else {
-                        b = new EmptyBlock(i, j, null, null);
+                        b = new EmptyBlock(i, j, null, null,null);
                     }
                 }
 

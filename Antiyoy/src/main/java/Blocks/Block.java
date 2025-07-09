@@ -12,23 +12,23 @@ public class Block extends JButton {
 
     protected int x, y;
     protected String name;
-
     protected Color baseColor;
     protected Player owner;
     protected Structures structure;
     protected Unit unit;
 
     public Block(int x, int y, String name, Color color) {
-        this(x, y, name, color, null, null);
+        this(x, y, name, color, null, null,null);
     }
 
-    public Block(int x, int y, String name, Color color, Player owner, Structures structure) {
+    public Block(int x, int y, String name, Color color, Player owner, Structures structure,Unit unit) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.baseColor = color;
         this.owner = owner;
         this.structure = structure;
+        this.unit = unit;
 
         setBackGroundColor();
         setOpaque(true);

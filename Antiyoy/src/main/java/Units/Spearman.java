@@ -17,7 +17,7 @@ public class Spearman extends Unit {
     }
 
     private static Image loadImage() {
-        URL url = Spearman.class.getResource("Image/spearman.png");
+        URL url = Spearman.class.getResource("/Image/spearman.png");
         if (url == null) {
             System.err.println("spearman icon not found!");
             return null;
