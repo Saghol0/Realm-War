@@ -38,7 +38,7 @@ public class Block extends JButton {
     }
 
     public void setBackGroundColor() {
-        if (structure != null && owner != null && owner.getColor() != null) {
+        if (  owner != null && owner.getColor() != null) {
             setBackground(owner.getColor());
         } else {
             setBackground(baseColor);

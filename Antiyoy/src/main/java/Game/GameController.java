@@ -52,7 +52,7 @@ public class GameController {
 
     public void handleBlockClick(Block block) {
         if (selectedBlock != null) {
-            selectedBlock.setBorder(null);
+            selectedBlock.setBorder(new  LineBorder(Color.BLACK,1));
         }
         block.setBorder(new LineBorder(Color.BLACK,5));
         selectedBlock = block;
