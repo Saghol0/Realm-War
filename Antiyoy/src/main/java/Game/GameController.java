@@ -28,25 +28,7 @@ public class GameController {
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
-//        hudPanel.getUnitSelector().addActionListener(e -> {
-//            String unitName = (String) hudPanel.getUnitSelector().getSelectedItem();
-//            if (!"None".equals(unitName)) {
-//                selectedUnit = createUnitByName(unitName);
-//                hudPanel.getStructureSelector().setSelectedItem("None");
-//                hudPanel.addLog("Selected Unit: " + unitName);
-//            } else {
-//                selectedUnit = null;
-//            }
-//        });
-//        //لیست استراکچر
-//        hudPanel.getStructureSelector().addActionListener(e -> {
-//            String structureName = (String) hudPanel.getStructureSelector().getSelectedItem();
-//            if (!"None".equals(structureName)) {
-//                selectedUnit = null;
-//                hudPanel.getUnitSelector().setSelectedItem("None");
-//                hudPanel.addLog("Selected Structure: " + structureName);
-//            }
-//        });
+
         hudPanel.getBuildUnitButton().addActionListener(e -> {
             String unitName = (String) hudPanel.getUnitSelector().getSelectedItem();
             if (!"None".equals(unitName)) {
@@ -98,49 +80,8 @@ public class GameController {
         }
         block.setBorder(new LineBorder(Color.BLACK, 5));
         selectedBlock = block;
-
-//        Player currentPlayer = players[currentPlayerIndex];
-//        String selectedStructureName = (String) hudPanel.getStructureSelector().getSelectedItem();
-
-//        if (!"None".equals(selectedStructureName)) {
-//            if ((block.getOwner() == currentPlayer || block.getOwner()== null) && block.getStructure() == null) {
-//                Structures newStructure = createStructureByName(selectedStructureName);
-//                if (canBuildStructure(currentPlayer, newStructure)) {
-//                    block.setStructure(newStructure);
-//                    block.setOwner(currentPlayer);
-//                    block.setBackGroundColor();
-//                    payForStructure(currentPlayer, newStructure);
-//                    hudPanel.addLog(currentPlayer.getName() + " built " + selectedStructureName);
-//                    updateHUD();
-//                } else {
-//                    hudPanel.addLog("Not enough resources to build " + selectedStructureName);
-//                }
-//            } else {
-//                hudPanel.addLog("Cannot build here!");
-//            }
-//            return;
-//        }
-//        if (selectedUnit != null) {
-//            if ((block.getOwner() == currentPlayer||block.getOwner()==null) && block.getStructure() instanceof Structure.Barrack) {
-//                if (canBuildUnit(currentPlayer, selectedUnit)) {
-//                    hudPanel.addLog(currentPlayer.getName() + " created unit: " + selectedUnit.getName());
-//                    payForUnit(currentPlayer, selectedUnit);
-//                    updateHUD();
-//                    selectedUnit = null;
-//                    hudPanel.getUnitSelector().setSelectedItem("None");
-//                } else {
-//                    hudPanel.addLog("Not enough resources to create unit: " + selectedUnit.getName());
-//                }
-//            } else {
-//                hudPanel.addLog("Units can only be created on your Barrack");
-//            }
-//            return;
-//        }
-
-        // TODO: حرکت واحد، حمله و غیره
-
-//        updateHUD();
     }
+
 
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
