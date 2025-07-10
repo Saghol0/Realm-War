@@ -133,7 +133,7 @@ public class GameController {
     }
 
     private boolean canBuildStructure(Player player, Structures structure) {
-        return player.getGold() >= structure.getMaintenanceCost();
+        return player.getGold() >= structure.getBuildCost();
     }
 
     private boolean canBuildUnit(Player player, Unit unit) {
