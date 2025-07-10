@@ -11,7 +11,7 @@ public class TownHall extends Structures {
     private int unitSpace;
 
     public TownHall() {
-        super("Town Hall", 120, 15, 1, 1, loadImage());
+        super("Town Hall", 120, 15, 1, 1, loadImage(),0);
         this.goldProduction = 25;
         this.foodProduction = 10;
         this.unitSpace = 1;

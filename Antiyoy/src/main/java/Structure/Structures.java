@@ -9,14 +9,15 @@ public class Structures {
     protected int level;
     protected int maxLevel;
     protected Image icon;
-
-    public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel, Image icon) {
+    protected int buildCost;
+    public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel, Image icon, int buildCost) {
         this.name = name;
         this.durability = durability;
         this.maintenanceCost = maintenanceCost;
         this.level = level;
         this.maxLevel = maxLevel;
         this.icon = icon;
+        this.buildCost = buildCost;
     }
 
     public void levelUp() {
@@ -37,6 +38,5 @@ public class Structures {
     public int getLevel() { return level; }
     public int getMaxLevel() { return maxLevel; }
     public Image getIcon() { return icon; }
-
-    public int getBuildCost() { return 0; } // پیش‌فرض برای ساخت
+    public int getBuildCost() { return buildCost ; } // پیش‌فرض برای ساخت
 }

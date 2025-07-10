@@ -11,8 +11,8 @@ public class Player {
     public Player(String name, Color color) {
         this.name = name;
         this.color = color;
-        this.gold = 10;
-        this.food = 0;
+        this.gold = 100;
+        this.food = 50;
         this.unitSpace = 0;
     }
 
@@ -24,9 +24,9 @@ public class Player {
     public Color getColor() { return color; }
 
     // --- Add resources ---
-    public void addGold(int amount) { this.gold += amount; }
-    public void addFood(int amount) { this.food += amount; }
-    public void addUnitSpace(int amount) { this.unitSpace += amount; }
+    public void addGold(int amount) { gold += amount; }
+    public void addFood(int amount) { food += amount; }
+    public void addUnitSpace(int amount) { unitSpace += amount; }
 
     // --- Spend / Consume resources ---
     public boolean spendGold(int amount) {

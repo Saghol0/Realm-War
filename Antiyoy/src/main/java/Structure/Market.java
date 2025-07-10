@@ -9,7 +9,7 @@ public class Market extends Structures {
     private int buildCost;
 
     public Market() {
-        super("Market", 50, 5, 1, 3, loadImage());
+        super("Market", 50, 5, 1, 3, loadImage(),15);
         this.goldProduction = 10;
         this.buildCost = 20;
     }

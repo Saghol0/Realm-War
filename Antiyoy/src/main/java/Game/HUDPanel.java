@@ -47,20 +47,6 @@ public class HUDPanel extends JPanel {
         infoPanel.add(structureSelector);
         infoPanel.add(buildStructuresButton);
 
-        unitSelector.addActionListener(e -> {
-            String selectedItem = (String) unitSelector.getSelectedItem();
-            if (!selectedItem.equals("None")) {
-                structureSelector.setSelectedItem("None");
-            }
-        });
-
-        structureSelector.addActionListener(e -> {
-            String selectedItem = (String) structureSelector.getSelectedItem();
-            if (!selectedItem.equals("None")) {
-                unitSelector.setSelectedItem("None");
-            }
-        });
-
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
         logArea.setLineWrap(true);
@@ -93,4 +79,11 @@ public class HUDPanel extends JPanel {
     public JComboBox<String> getStructureSelector() {
         return structureSelector;
     }
+    public JButton getBuildStructuresButton() {
+        return buildStructuresButton;
+    }
+    public JButton getBuildUnitButton() {
+        return buildUnitButton;
+    }
+
 }
