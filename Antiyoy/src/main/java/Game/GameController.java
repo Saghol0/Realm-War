@@ -9,6 +9,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GameController {
+    private static final int MAX_UNIT_SPACE = 100;
+
     private Block selectedBlock = null;
     private final GamePanel gamePanel;
     private final HUDPanel hudPanel;
@@ -30,35 +32,51 @@ public class GameController {
         hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
 
         hudPanel.getBuildUnitButton().addActionListener(e -> {
+            if (selectedBlock == null) {
+                hudPanel.addLog("⚠️ Please select a block first.");
+                return;
+            }
             String unitName = (String) hudPanel.getUnitSelector().getSelectedItem();
             if (!"None".equals(unitName)) {
                 selectedUnit = createUnitByName(unitName);
                 if (canBuildUnit(getCurrentPlayer(), selectedUnit)) {
                     payForUnit(getCurrentPlayer(), selectedUnit);
                     selectedBlock.setUnit(selectedUnit);
-                    hudPanel.addLog(unitName + " Added successfully.");
+                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
+                        selectedBlock.setOwner(getCurrentPlayer());
+                    }
+                    hudPanel.addLog("✅ Unit " + unitName + " has been successfully built.");
                 } else {
-                    hudPanel.addLog("you dont have enough money.");
+                    hudPanel.addLog("❌ Not enough resources or requirements not met to build this unit.");
                 }
             } else {
-                hudPanel.addLog("Please select your unit.");
+                hudPanel.addLog("⚠️ Please select a unit.");
             }
         });
+
         hudPanel.getBuildStructuresButton().addActionListener(e -> {
-            String StructureName = (String) hudPanel.getStructureSelector().getSelectedItem();
-            if (!"None".equals(StructureName)) {
-                selectedStructures = createStructureByName(StructureName);
+            if (selectedBlock == null) {
+                hudPanel.addLog("⚠️ Please select a block first.");
+                return;
+            }
+            String structureName = (String) hudPanel.getStructureSelector().getSelectedItem();
+            if (!"None".equals(structureName)) {
+                selectedStructures = createStructureByName(structureName);
                 if (canBuildStructure(getCurrentPlayer(), selectedStructures)) {
                     payForStructure(getCurrentPlayer(), selectedStructures);
                     selectedBlock.setStructure(selectedStructures);
-                    hudPanel.addLog(StructureName + " Added successfully.");
+                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
+                        selectedBlock.setOwner(getCurrentPlayer());
+                    }
+                    hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
                 } else {
-                    hudPanel.addLog("you dont have enough money.");
+                    hudPanel.addLog("❌ Not enough resources or the selected block is already occupied.");
                 }
             } else {
-                hudPanel.addLog("Please select your structure.");
+                hudPanel.addLog("⚠️ Please select a structure.");
             }
         });
+
         hudPanel.getUnitSelector().addActionListener(e -> {
             String selectedItem = (String) hudPanel.getUnitSelector().getSelectedItem();
             if (!selectedItem.equals("None")) {
@@ -82,17 +100,16 @@ public class GameController {
         selectedBlock = block;
     }
 
-
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
         switch (unitName) {
-            case "Peasant          (Gold:10 + Food:3 + Space:1)":
+            case "Peasant          (Gold:10 + Food:5 + Space:1)":
                 return new Peasant(unitLabel);
-            case "Knight            (Gold:40 + Food:6 + Space:4)":
+            case "Knight            (Gold:40 + Food:20 + Space:4)":
                 return new Knight(unitLabel);
-            case "SpearMan      (Gold:20 + Food:4 + Space:2)":
+            case "SpearMan      (Gold:20 + Food:10 + Space:2)":
                 return new Spearman(unitLabel);
-            case "SwordMan     (Gold:30 + Food:5 + Space:3)":
+            case "SwordMan     (Gold:30 + Food:15 + Space:3)":
                 return new Swordman(unitLabel);
             default:
                 return null;
@@ -115,14 +132,57 @@ public class GameController {
     }
 
     private boolean canBuildStructure(Player player, Structures structure) {
+        if (structure == null || selectedBlock == null) return false;
+        if (selectedBlock.getStructure() != null || selectedBlock.getUnit() != null) {
+            hudPanel.addLog("❌ The selected block is already occupied.");
+            return false;
+        }
+
         return player.getGold() >= structure.getBuildCost();
     }
 
     private boolean canBuildUnit(Player player, Unit unit) {
-        return player.getGold() >= unit.costGold && player.getFood() >= unit.costFood && player.getUnitSpace() + unit.unitSpace <= 100;
+        if (unit == null || selectedBlock == null) return false;
+        if (selectedBlock.getStructure() != null || selectedBlock.getUnit() != null) {
+            hudPanel.addLog("❌ The selected block is already occupied.");
+            return false;
+        }
+
+        // Check for barrack presence
+        boolean hasBarrack = false;
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                if (block.getOwner() == player && block.getStructure() instanceof Structure.Barrack) {
+                    hasBarrack = true;
+                    break;
+                }
+            }
+        }
+
+        if (!hasBarrack) {
+            hudPanel.addLog("❌ You must have at least one Barrack to build units.");
+            return false;
+        }
+
+        // Check resources and unit space
+        if (player.getGold() < unit.costGold) {
+            hudPanel.addLog("❌ Not enough gold to build this unit.");
+            return false;
+        }
+        if (player.getFood() < unit.costFood) {
+            hudPanel.addLog("❌ Not enough food to build this unit.");
+            return false;
+        }
+        if (player.getUnitSpace() + unit.unitSpace > MAX_UNIT_SPACE) {
+            hudPanel.addLog("❌ Not enough unit space available. Maximum allowed: " + MAX_UNIT_SPACE);
+            return false;
+        }
+
+        return true;
     }
 
-    private void payForStructure(Player player, Structures structure) {//هزینه ساخت ساختمون
+    private void payForStructure(Player player, Structures structure) {
         player.addGold(-structure.getBuildCost());
         updateHUD();
     }
@@ -158,13 +218,13 @@ public class GameController {
 
         currentPlayer.addGold(goldGain);
         currentPlayer.addFood(foodGain);
-        hudPanel.addLog(currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
+        hudPanel.addLog("💰 " + currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
     }
 
     public void endTurn() {
         collectResources();
         currentPlayerIndex = 1 - currentPlayerIndex;
-        hudPanel.addLog("Turn ended. Now it's " + players[currentPlayerIndex].getName() + "'s turn.");
+        hudPanel.addLog("🔄 Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
         updateHUD();
     }
 

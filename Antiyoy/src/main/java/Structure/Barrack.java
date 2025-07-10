@@ -11,7 +11,7 @@ public class Barrack extends Structures {
     public Barrack() {
         super("Barrack", 50, 5, 1, 3, loadImage(),15);
         this.unitSpace = 2;
-        this.buildCost = 5;
+        this.buildCost = 15;
     }
 
     private static Image loadImage() {
