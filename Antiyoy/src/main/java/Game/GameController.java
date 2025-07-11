@@ -18,6 +18,7 @@ public class GameController {
     private int currentPlayerIndex = 0;
     private Unit selectedUnit = null;
     private Structures selectedStructures = null;
+    private Block moveFromBlock = null;
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
         this.gamePanel = gamePanel;
@@ -98,6 +99,20 @@ public class GameController {
         }
         block.setBorder(new LineBorder(Color.BLACK, 5));
         selectedBlock = block;
+        if (moveFromBlock == null) {
+            if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+                moveFromBlock = block;
+                hudPanel.addLog("📦 Selected unit block for move.");
+            }
+        } else {
+            if (block != moveFromBlock) {
+                moveUnit(moveFromBlock, block);
+            } else if (block == moveFromBlock) {
+                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+            }
+            moveFromBlock = null; // Reset after move
+        }
+
     }
 
     private Unit createUnitByName(String unitName) {
@@ -235,5 +250,33 @@ public class GameController {
 
     public Player getCurrentPlayer() {
         return players[currentPlayerIndex];
+    }
+
+    public void moveUnit(Block fromBlock, Block toBlock) {
+        if (fromBlock == null || toBlock == null) {
+            hudPanel.addLog("⚠ Please select both source and target blocks.");
+            return;
+        }
+        if (fromBlock.getUnit() == null) {
+            hudPanel.addLog("⚠️ No unit in selected block to move.");
+            return;
+
+        }
+        Structures structure = toBlock.getStructure();
+        if (toBlock.getStructure() instanceof Structure.Tower) {
+            hudPanel.addLog("❌ You can only move to empty blocks or blocks with a Tower.");
+            return;
+        }
+        if (fromBlock.getOwner() != getCurrentPlayer()) {
+            hudPanel.addLog("❌ You can only move units from blocks you own.");
+            return;
+        }
+        Unit unit = fromBlock.getUnit();
+        toBlock.setUnit(unit);
+        fromBlock.setUnit(null);
+        if (toBlock.getOwner() != getCurrentPlayer()) {
+            toBlock.setOwner(getCurrentPlayer());
+        }
+        hudPanel.addLog("✅ Unit moved successfully.");
     }
 }
