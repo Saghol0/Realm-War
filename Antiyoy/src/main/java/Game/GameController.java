@@ -91,6 +91,13 @@ public class GameController {
                 hudPanel.getUnitSelector().setSelectedItem("None");
             }
         });
+
+        hudPanel.getButtonSELECTDataLest().addActionListener(e -> {
+            GameData gameData= new GameData(hudPanel);
+            gameData.SELECTable();
+        });
+
+
     }
 
     public void handleBlockClick(Block block) {

@@ -14,6 +14,7 @@ public class HUDPanel extends JPanel {
     private final JButton endTurnButton;
     private final JButton buildStructuresButton;
     private final JButton buildUnitButton;
+    private final JButton buttonSELECTDataLest;
 
 
     public HUDPanel() {
@@ -21,7 +22,7 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(9, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(10, 1));
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
@@ -39,6 +40,8 @@ public class HUDPanel extends JPanel {
         buildStructuresButton = new JButton("Build Structures");
         buildUnitButton = new JButton("Build Units");
 
+        buttonSELECTDataLest = new JButton("View All Machs");
+
         infoPanel.add(new JLabel("Select Unit:"));
         infoPanel.add(unitSelector);
         infoPanel.add(buildUnitButton);
@@ -46,6 +49,8 @@ public class HUDPanel extends JPanel {
         infoPanel.add(new JLabel("Select Structure:"));
         infoPanel.add(structureSelector);
         infoPanel.add(buildStructuresButton);
+
+        infoPanel.add(buttonSELECTDataLest);
 
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
@@ -86,4 +91,7 @@ public class HUDPanel extends JPanel {
         return buildUnitButton;
     }
 
+    public JButton getButtonSELECTDataLest() {
+        return buttonSELECTDataLest;
+    }
 }
