@@ -106,7 +106,11 @@ public class GameController {
             }
         } else {
             if (block != moveFromBlock) {
-                moveUnit(moveFromBlock, block);
+                Unit unit = moveFromBlock.getUnit();
+                if(unit.canMove(moveFromBlock.getX(),moveFromBlock.getY(),block.getX(),block.getY())){
+                    moveUnit(moveFromBlock, block,unit);
+                }
+                else { JOptionPane.showMessageDialog(gamePanel, "Sorry, the selected block is out of range."); }
             } else if (block == moveFromBlock) {
                 selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
             }
@@ -252,7 +256,7 @@ public class GameController {
         return players[currentPlayerIndex];
     }
 
-    public void moveUnit(Block fromBlock, Block toBlock) {
+    public void moveUnit(Block fromBlock, Block toBlock,Unit unit) {
         if (fromBlock == null || toBlock == null) {
             hudPanel.addLog("⚠ Please select both source and target blocks.");
             return;
@@ -271,7 +275,6 @@ public class GameController {
             hudPanel.addLog("❌ You can only move units from blocks you own.");
             return;
         }
-        Unit unit = fromBlock.getUnit();
         toBlock.setUnit(unit);
         fromBlock.setUnit(null);
         if (toBlock.getOwner() != getCurrentPlayer()) {

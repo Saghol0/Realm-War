@@ -36,7 +36,6 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Block b;
-
                 if (i == 0 && j == 0) {
                     b = new EmptyBlock(i, j, players[0], new TownHall(),null);
                 } else if (i == SIZE - 1 && j == SIZE - 1) {
