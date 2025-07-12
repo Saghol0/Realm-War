@@ -2,6 +2,7 @@ package Game;
 
 import Blocks.Block;
 import Structure.Structures;
+import Structure.Tower;
 import Units.*;
 
 import javax.swing.*;
@@ -193,6 +194,11 @@ public class GameController {
             return false;
         }
 
+        if (isNearEnemyTower(selectedBlock, player)) {
+            hudPanel.addLog("❌ Cannot build structures adjacent to enemy Tower.");
+            return false;
+        }
+
         return player.getGold() >= structure.getBuildCost();
     }
 
@@ -208,9 +214,11 @@ public class GameController {
             return false;
         }
 
-        // بقیه‌ی چک‌های قبلی ...
+        if (isNearEnemyTower(selectedBlock, player)) {
+            hudPanel.addLog("❌ Cannot build units adjacent to enemy Tower.");
+            return false;
+        }
 
-        // Check for barrack presence
         boolean hasBarrack = false;
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
@@ -310,6 +318,29 @@ public class GameController {
         return players[currentPlayerIndex];
     }
 
+    private boolean isNearEnemyTower(Block block, Player currentPlayer) {
+        int x = block.getGridX();
+        int y = block.getGridY();
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) continue;
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx >= 0 && nx < gamePanel.SIZE && ny >= 0 && ny < gamePanel.SIZE) {
+                    Block neighbor = gamePanel.getBlock(nx, ny);
+                    if (neighbor.getOwner() != currentPlayer &&
+                            neighbor.getStructure() instanceof Tower) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
     public void moveUnit(Block fromBlock, Block toBlock, Unit unit) {
         if (fromBlock == null || toBlock == null) {
             hudPanel.addLog("⚠ Please select both source and target blocks.");
@@ -325,6 +356,12 @@ public class GameController {
         }
         if (fromBlock.getOwner() != getCurrentPlayer()) {
             hudPanel.addLog("❌ You can only move units from blocks you own.");
+            return;
+        }
+
+        // اضافه کردن چک نزدیکی به تاور حریف برای یونیت های با رنک کمتر از 3
+        if (unit.rank < 3 && isNearEnemyTower(toBlock, getCurrentPlayer())) {
+            hudPanel.addLog("❌ Units with rank less than 3 cannot move adjacent to enemy Towers.");
             return;
         }
 

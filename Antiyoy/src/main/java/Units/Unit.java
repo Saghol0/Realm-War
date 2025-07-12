@@ -5,7 +5,7 @@ import java.awt.*;
 
 public abstract class Unit extends Component {
     protected String name;
-    protected int rank;
+    public int rank;
     protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
     public int costGold;
     public int costFood;
