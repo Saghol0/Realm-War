@@ -46,12 +46,14 @@ public class GameController {
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
                     }
-                    hudPanel.addLog("✅ Unit " + unitName + " has been successfully built.");
+                    hudPanel.addLog("✅ Unit " + unitName + " has been built.");
+                    updateHUD();
+                    gamePanel.repaint();
                 } else {
-                    hudPanel.addLog("❌ Not enough resources or requirements not met to build this unit.");
+                    hudPanel.addLog("❌ Not enough resources or conditions to build the unit.");
                 }
             } else {
-                hudPanel.addLog("⚠️ Please select a unit.");
+                hudPanel.addLog("⚠️ Please select a unit type.");
             }
         });
 
@@ -69,9 +71,11 @@ public class GameController {
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
                     }
-                    hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
+                    hudPanel.addLog("✅ Structure " + structureName + " has been built.");
+                    updateHUD();
+                    gamePanel.repaint();
                 } else {
-                    hudPanel.addLog("❌ Not enough resources or the selected block is already occupied.");
+                    hudPanel.addLog("❌ Not enough resources or the selected block is occupied.");
                 }
             } else {
                 hudPanel.addLog("⚠️ Please select a structure.");
@@ -93,11 +97,9 @@ public class GameController {
         });
 
         hudPanel.getButtonSELECTDataLest().addActionListener(e -> {
-            GameData gameData= new GameData(hudPanel);
+            GameData gameData = new GameData(hudPanel);
             gameData.SELECTable();
         });
-
-
     }
 
     public void handleBlockClick(Block block) {
@@ -106,24 +108,32 @@ public class GameController {
         }
         block.setBorder(new LineBorder(Color.BLACK, 5));
         selectedBlock = block;
+
         if (moveFromBlock == null) {
             if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-                moveFromBlock = block;
-                hudPanel.addLog("📦 Selected unit block for move.");
+                if (block.getUnit().hasMoved) {
+                    hudPanel.addLog("⚠️ This unit has already moved this turn.");
+                } else {
+                    moveFromBlock = block;
+                    hudPanel.addLog("📦 Unit block for movement selected.");
+                }
             }
         } else {
             if (block != moveFromBlock) {
                 Unit unit = moveFromBlock.getUnit();
-                if(unit.canMove(moveFromBlock.getX(),moveFromBlock.getY(),block.getX(),block.getY())){
-                    moveUnit(moveFromBlock, block,unit);
+                if (unit.canMove(moveFromBlock.getX(), moveFromBlock.getY(), block.getX(), block.getY())) {
+                    if (block.getUnit() == null && !(block.getStructure() instanceof Structure.Tower)) {
+                        moveUnit(moveFromBlock, block, unit);
+                    } else {
+                        hudPanel.addLog("❌ Destination block is occupied or not movable.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(gamePanel, "Destination block is out of movement range.");
                 }
-                else { JOptionPane.showMessageDialog(gamePanel, "Sorry, the selected block is out of range."); }
-            } else if (block == moveFromBlock) {
-                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
             }
-            moveFromBlock = null; // Reset after move
+            moveFromBlock.setBorder(new LineBorder(Color.BLACK, 1));
+            moveFromBlock = null;
         }
-
     }
 
     private Unit createUnitByName(String unitName) {
@@ -157,24 +167,58 @@ public class GameController {
         }
     }
 
+    private boolean isAdjacentToOwnedBlock(Player player, Block target) {
+        int x = target.getX();
+        int y = target.getY();
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) continue;
+
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx >= 0 && ny >= 0 && nx < gamePanel.SIZE && ny < gamePanel.SIZE) {
+                    Block neighbor = gamePanel.getBlock(nx, ny);
+                    if (neighbor.getOwner() == player) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean canBuildStructure(Player player, Structures structure) {
         if (structure == null || selectedBlock == null) return false;
         if (selectedBlock.getStructure() != null || selectedBlock.getUnit() != null) {
-            hudPanel.addLog("❌ The selected block is already occupied.");
+            hudPanel.addLog("❌ Selected block is occupied.");
             return false;
         }
 
-        return player.getGold() >= structure.getBuildCost();
+        if (selectedBlock.getOwner() != player && !isAdjacentToOwnedBlock(player, selectedBlock)) {
+            hudPanel.addLog("❌ You can only build next to blocks you own.");
+            return false;
+        }
+
+        if (player.getGold() < structure.getBuildCost()) {
+            hudPanel.addLog("❌ Not enough gold to build the structure.");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean canBuildUnit(Player player, Unit unit) {
         if (unit == null || selectedBlock == null) return false;
         if (selectedBlock.getStructure() != null || selectedBlock.getUnit() != null) {
-            hudPanel.addLog("❌ The selected block is already occupied.");
+            hudPanel.addLog("❌ Selected block is occupied.");
             return false;
         }
 
-        // Check for barrack presence
+        if (selectedBlock.getOwner() != player && !isAdjacentToOwnedBlock(player, selectedBlock)) {
+            hudPanel.addLog("❌ You can only build units next to blocks you own.");
+            return false;
+        }
+
         boolean hasBarrack = false;
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
@@ -191,17 +235,16 @@ public class GameController {
             return false;
         }
 
-        // Check resources and unit space
         if (player.getGold() < unit.costGold) {
-            hudPanel.addLog("❌ Not enough gold to build this unit.");
+            hudPanel.addLog("❌ Not enough gold to build the unit.");
             return false;
         }
         if (player.getFood() < unit.costFood) {
-            hudPanel.addLog("❌ Not enough food to build this unit.");
+            hudPanel.addLog("❌ Not enough food to build the unit.");
             return false;
         }
         if (player.getUnitSpace() + unit.unitSpace > MAX_UNIT_SPACE) {
-            hudPanel.addLog("❌ Not enough unit space available. Maximum allowed: " + MAX_UNIT_SPACE);
+            hudPanel.addLog("❌ Not enough space for the unit. Max space: " + MAX_UNIT_SPACE);
             return false;
         }
 
@@ -249,9 +292,23 @@ public class GameController {
 
     public void endTurn() {
         collectResources();
+
+        Player currentPlayer = players[currentPlayerIndex];
+        // Reset units' movement
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                Unit unit = block.getUnit();
+                if (block.getOwner() == currentPlayer && unit != null) {
+                    unit.resetMovement();
+                }
+            }
+        }
+
         currentPlayerIndex = 1 - currentPlayerIndex;
-        hudPanel.addLog("🔄 Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
+        hudPanel.addLog("🔄 Turn switched to " + players[currentPlayerIndex].getName() + ".");
         updateHUD();
+        gamePanel.repaint();
     }
 
     private void updateHUD() {
@@ -263,30 +320,42 @@ public class GameController {
         return players[currentPlayerIndex];
     }
 
-    public void moveUnit(Block fromBlock, Block toBlock,Unit unit) {
+    public void moveUnit(Block fromBlock, Block toBlock, Unit unit) {
         if (fromBlock == null || toBlock == null) {
-            hudPanel.addLog("⚠ Please select both source and target blocks.");
+            hudPanel.addLog("⚠️ Please select both source and destination blocks.");
             return;
         }
         if (fromBlock.getUnit() == null) {
-            hudPanel.addLog("⚠️ No unit in selected block to move.");
-            return;
-
-        }
-        Structures structure = toBlock.getStructure();
-        if (toBlock.getStructure() instanceof Structure.Tower) {
-            hudPanel.addLog("❌ You can only move to empty blocks or blocks with a Tower.");
+            hudPanel.addLog("⚠️ There is no unit in the source block.");
             return;
         }
         if (fromBlock.getOwner() != getCurrentPlayer()) {
             hudPanel.addLog("❌ You can only move units from blocks you own.");
             return;
         }
+        if (unit.hasMoved) {
+            hudPanel.addLog("❌ This unit has already moved this turn.");
+            return;
+        }
+        // Destination block must be empty or only have Tower structure (if desired behavior)
+        if (toBlock.getUnit() != null) {
+            hudPanel.addLog("❌ Destination block is occupied.");
+            return;
+        }
+        if (toBlock.getStructure() != null && !(toBlock.getStructure() instanceof Structure.Tower)) {
+            hudPanel.addLog("❌ You cannot move to blocks with structures other than Tower.");
+            return;
+        }
+
         toBlock.setUnit(unit);
         fromBlock.setUnit(null);
+        unit.hasMoved = true;
+
         if (toBlock.getOwner() != getCurrentPlayer()) {
             toBlock.setOwner(getCurrentPlayer());
         }
+
         hudPanel.addLog("✅ Unit moved successfully.");
+        gamePanel.repaint();
     }
 }

@@ -32,17 +32,19 @@ public class Block extends JButton {
 
         setBackGroundColor();
         setOpaque(true);
+        setContentAreaFilled(true);
         setBorderPainted(true);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         updateIcon();
     }
 
     public void setBackGroundColor() {
-        if (  owner != null && owner.getColor() != null) {
+        if (owner != null && owner.getColor() != null) {
             setBackground(owner.getColor());
         } else {
             setBackground(baseColor);
         }
+        repaint();
     }
 
     public void updateIcon() {

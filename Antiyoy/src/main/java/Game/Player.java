@@ -11,8 +11,8 @@ public class Player {
     public Player(String name, Color color) {
         this.name = name;
         this.color = color;
-        this.gold = 100;
-        this.food = 50;
+        this.gold = 50;
+        this.food = 25;
         this.unitSpace = 0;
     }
 
