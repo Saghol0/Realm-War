@@ -252,7 +252,7 @@ public class GameController {
             for (int j = 0; j < gamePanel.SIZE; j++) {
                 Block block = gamePanel.getBlock(i, j);
                 if (block.getOwner() == currentPlayer && block.getUnit() !=  null) {
-                    block.getUnit().setMoved(true);
+                    block.getUnit().setMoved(false);
                 }
             }
         }
