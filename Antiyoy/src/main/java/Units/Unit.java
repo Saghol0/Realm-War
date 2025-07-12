@@ -33,9 +33,6 @@ public abstract class Unit extends Component {
         return dx + dy <= movementRange; // Manhattan distance
     }
 
-
-
-
     // --- Getters ---
     public String getName() {
         return name;
