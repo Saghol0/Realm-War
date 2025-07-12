@@ -114,7 +114,7 @@ public class GameController {
         } else {
             if (block != moveFromBlock) {
                 Unit unit = moveFromBlock.getUnit();
-                if(unit.canMove(moveFromBlock.getX(),moveFromBlock.getY(),block.getX(),block.getY())){
+                if(unit.canMove(moveFromBlock.getGridX(),moveFromBlock.getGridY(),block.getGridX(),block.getGridY())){
                     moveUnit(moveFromBlock, block,unit);
                 }
                 else { JOptionPane.showMessageDialog(gamePanel, "Sorry, the selected block is out of range."); }

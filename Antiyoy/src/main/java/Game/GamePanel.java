@@ -27,6 +27,7 @@ public class GamePanel extends JPanel {
 
         initGrid();
         initHUD();
+
     }
 
     private void initGrid() {

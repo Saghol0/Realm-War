@@ -95,13 +95,12 @@ public class Block extends JButton {
         return name;
     }
 
-    @Override
-    public int getX() {
+
+    public int getGridX() {
         return x;
     }
 
-    @Override
-    public int getY() {
+    public int getGridY() {
         return y;
     }
 }
