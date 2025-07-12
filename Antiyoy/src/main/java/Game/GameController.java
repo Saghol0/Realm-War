@@ -246,9 +246,21 @@ public class GameController {
         currentPlayer.addFood(foodGain);
         hudPanel.addLog("💰 " + currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
     }
+    private void activeMoveUnit(){
+        Player currentPlayer = players[currentPlayerIndex];
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                if (block.getOwner() == currentPlayer && block.getUnit() !=  null) {
+                    block.getUnit().setMoved(true);
+                }
+            }
+        }
+    }
 
     public void endTurn() {
         collectResources();
+        activeMoveUnit();
         currentPlayerIndex = 1 - currentPlayerIndex;
         hudPanel.addLog("🔄 Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
         updateHUD();
@@ -288,5 +300,6 @@ public class GameController {
             toBlock.setOwner(getCurrentPlayer());
         }
         hudPanel.addLog("✅ Unit moved successfully.");
+        unit.setMoved(true);
     }
 }

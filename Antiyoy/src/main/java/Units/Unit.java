@@ -1,17 +1,19 @@
 package Units;
 
+import javax.swing.*;
 import java.awt.*;
 
-public abstract class Unit {
+public abstract class Unit extends Component {
     protected String name;
     protected int rank;
-    protected int movementRange = 6;  // محدوده حرکت به صورت پیش‌فرض ۳
+    protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
     public int costGold;
     public int costFood;
     public int unitSpace;
     public Image icon;
+    protected Boolean moved   = false;
 
-    public Unit(String name,int rank, int costGold, int costFood, int unitSpace, Image icon) {
+    public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon) {
         this.name = name;
         this.rank = rank;
         this.costGold = costGold;
@@ -22,10 +24,15 @@ public abstract class Unit {
 
     // --- قابلیت حرکت ---
     public boolean canMove(int fromX, int fromY, int toX, int toY) {
+            if (moved)
+            {
+                JOptionPane.showMessageDialog(null,"Your unit cannot move because it has already moved once.");
+                return false;}
             int dx = Math.abs(toX - fromX);
             int dy = Math.abs(toY - fromY);
             return dx + dy <= movementRange; // Manhattan distance
         }
+
 
 
 
@@ -51,5 +58,13 @@ public abstract class Unit {
 
     public Image getIcon() {
         return icon;
+    }
+
+    public Boolean getMoved() {
+        return moved;
+    }
+
+    public void setMoved(Boolean moved) {
+        this.moved = moved;
     }
 }
