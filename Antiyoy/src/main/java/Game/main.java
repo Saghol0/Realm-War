@@ -12,7 +12,7 @@ public class main {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+    }
         SwingUtilities.invokeLater(()-> new GameFrame() );
 
     }
