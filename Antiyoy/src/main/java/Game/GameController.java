@@ -115,7 +115,7 @@ public class GameController {
                     hudPanel.addLog("⚠️ This unit has already moved this turn.");
                 } else {
                     moveFromBlock = block;
-                    hudPanel.addLog("📦 Unit block for movement selected.");
+                    hudPanel.addLog("📦 Source block for movement selected.");
                 }
             }
         } else {
@@ -173,7 +173,7 @@ public class GameController {
 
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
-                if (dx == 0 && dy == 0) continue;
+                if (dx == 0 && dy == 0) continue;  // خود بلوک را نادیده بگیر
 
                 int nx = x + dx;
                 int ny = y + dy;
@@ -186,6 +186,7 @@ public class GameController {
         }
         return false;
     }
+
 
     private boolean canBuildStructure(Player player, Structures structure) {
         if (structure == null || selectedBlock == null) return false;
