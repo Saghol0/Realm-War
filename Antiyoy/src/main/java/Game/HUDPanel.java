@@ -84,9 +84,11 @@ public class HUDPanel extends JPanel {
     public JComboBox<String> getStructureSelector() {
         return structureSelector;
     }
+
     public JButton getBuildStructuresButton() {
         return buildStructuresButton;
     }
+
     public JButton getBuildUnitButton() {
         return buildUnitButton;
     }
