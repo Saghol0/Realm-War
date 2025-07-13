@@ -7,7 +7,7 @@ import java.net.URL;
 public class Peasant extends Unit {
     public Peasant(JLabel uLabel) {
         super(
-            "peasant",
+            "Peasant",
             1,
             1 * 10,   // هزینه طلا متناسب با رنک
             5 * 1,         // هزینه غذا متناسب با رنک

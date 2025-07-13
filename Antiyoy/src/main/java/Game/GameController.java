@@ -116,7 +116,17 @@ public class GameController {
             if (block != moveFromBlock) {
                 Unit unit = moveFromBlock.getUnit();
                 if(unit.canMove(moveFromBlock.getGridX(),moveFromBlock.getGridY(),block.getGridX(),block.getGridY())){
-                    moveUnit(moveFromBlock, block,unit);
+                    if (block.getUnit() != null) {
+                        if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
+                            unitMerge(moveFromBlock, block);
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null,"You can't put it on that block because it's a unit.");
+                        }
+                    }
+
+                    else {
+                    moveUnit(moveFromBlock, block,unit);}
                 }
                 else { JOptionPane.showMessageDialog(gamePanel, "Sorry, the selected block is out of range."); }
             } else if (block == moveFromBlock) {
@@ -406,4 +416,34 @@ public class GameController {
         }
         return false;
     }
+    public void unitMerge(Block fromBlock, Block toBlock) {
+        JLabel unitLabel = new JLabel();
+        switch (toBlock.getUnit().getName()) {
+            case "Peasant": {
+                toBlock.setUnit(new Spearman(unitLabel));
+                fromBlock.setUnit(null);
+                hudPanel.addLog("✅ Unit merge successfully.");
+                break;
+            }
+            case "Spearman": {
+                toBlock.setUnit(new Swordman(unitLabel));
+                fromBlock.setUnit(null);
+                hudPanel.addLog("✅ Unit merge successfully.");
+                break;
+            }
+            case "Swordman": {
+                toBlock.setUnit(new Knight(unitLabel));
+                fromBlock.setUnit(null);
+                hudPanel.addLog("✅ Unit merge successfully.");
+                break;
+            }
+            case "Knight": {
+                JOptionPane.showMessageDialog(null, "Cannot merge because knight is the last level");
+                break;
+            }
+            default:
+                JOptionPane.showMessageDialog(null, "There is a problem with your code.");
+        }
+    }
+
 }

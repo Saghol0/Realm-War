@@ -12,7 +12,6 @@ public abstract class Unit extends Component {
     public int unitSpace;
     public Image icon;
     protected Boolean moved   = false;
-
     public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon) {
         this.name = name;
         this.rank = rank;

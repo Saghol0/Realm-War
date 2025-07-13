@@ -7,7 +7,7 @@ import java.net.URL;
 public class Spearman extends Unit {
     public Spearman(JLabel uLabel) {
         super(
-            "spearman",
+            "Spearman",
             2,
             2 * 10,   // هزینه طلا متناسب با رنک
             5 * 2,         // هزینه غذا متناسب با رنک
