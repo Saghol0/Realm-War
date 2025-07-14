@@ -6,14 +6,7 @@ import java.net.URL;
 
 public class Swordman extends Unit {
     public Swordman(JLabel uLabel) {
-        super(
-            "Swordman",
-            3,
-            3 * 10,   // هزینه طلا متناسب با رنک
-            5 * 3,         // هزینه غذا متناسب با رنک
-            3,                // فضای یونیت (یک واحد)
-            loadImage()
-    );
+        super("Swordman", 3, 3 * 10, 5 * 3, 3, loadImage(),300,300);
     }
 
     private static Image loadImage() {

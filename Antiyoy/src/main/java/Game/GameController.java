@@ -128,7 +128,7 @@ public class GameController {
                     else {
                     moveUnit(moveFromBlock, block,unit);}
                 }
-                else { JOptionPane.showMessageDialog(gamePanel, "Sorry, the selected block is out of range."); }
+                else { JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range."); }
             } else if (block == moveFromBlock) {
                 selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
             }

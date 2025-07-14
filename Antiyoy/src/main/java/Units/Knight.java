@@ -6,14 +6,7 @@ import java.net.URL;
 
 public class Knight extends Unit {
     public Knight(JLabel uLabel) {
-        super(
-                "Knight",
-                4,
-                4 * 10,   // هزینه طلا متناسب با رنک
-                5 * 4,         // هزینه غذا متناسب با رنک
-                4,                // فضای یونیت (یک واحد)
-                loadImage()
-        );
+        super("Knight", 4, 4 * 10, 4*5, 4, loadImage(),300,300);
     }
 
     private static Image loadImage() {

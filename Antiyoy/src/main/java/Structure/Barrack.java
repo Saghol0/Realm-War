@@ -9,7 +9,7 @@ public class Barrack extends Structures {
     private int buildCost;
 
     public Barrack() {
-        super("Barrack", 50, 5, 1, 3, loadImage(),15);
+        super("Barrack", 200, 5, 1, 3, loadImage(),15);
         this.unitSpace = 2;
         this.buildCost = 15;
     }

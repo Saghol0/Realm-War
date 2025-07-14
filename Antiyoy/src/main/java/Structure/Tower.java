@@ -8,7 +8,7 @@ public class Tower extends Structures {
     private int buildCost;
 
     public Tower() {
-        super("Tower", 50, 5, 1, 3, loadImage(),15);
+        super("Tower", 200, 5, 1, 3, loadImage(),15);
         this.buildCost = 25;
     }
 

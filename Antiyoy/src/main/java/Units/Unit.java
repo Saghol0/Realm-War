@@ -12,13 +12,17 @@ public abstract class Unit extends Component {
     public int unitSpace;
     public Image icon;
     protected Boolean moved   = false;
-    public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon) {
+    protected int health;
+    protected int attackPower;
+    public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon,int attackPower,int health) {
         this.name = name;
         this.rank = rank;
         this.costGold = costGold;
         this.costFood = costFood;
         this.unitSpace = unitSpace;
         this.icon = icon;
+        this.health = health;
+        this.attackPower=attackPower;
     }
 
     // --- قابلیت حرکت ---

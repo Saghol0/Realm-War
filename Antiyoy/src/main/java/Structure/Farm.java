@@ -9,7 +9,7 @@ public class Farm extends Structures {
     private int buildCost;
 
     public Farm() {
-        super("Farm", 50, 5, 1, 3, loadImage(),15);
+        super("Farm", 100, 5, 1, 3, loadImage(),15);
         this.foodProduction = 5;
         this.buildCost = 15;
     }

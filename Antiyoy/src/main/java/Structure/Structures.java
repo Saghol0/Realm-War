@@ -10,6 +10,7 @@ public class Structures {
     protected int maxLevel;
     protected Image icon;
     protected int buildCost;
+    protected int health;
     public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel, Image icon, int buildCost) {
         this.name = name;
         this.durability = durability;
