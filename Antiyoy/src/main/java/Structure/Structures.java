@@ -10,7 +10,8 @@ public class Structures {
     protected int maxLevel;
     protected Image icon;
     protected int buildCost;
-    protected int health;
+
+
     public Structures(String name, int durability, int maintenanceCost, int level, int maxLevel, Image icon, int buildCost) {
         this.name = name;
         this.durability = durability;
@@ -33,11 +34,59 @@ public class Structures {
     }
 
     // Getters
-    public String getName() { return name; }
-    public int getDurability() { return durability; }
-    public int getMaintenanceCost() { return maintenanceCost; }
-    public int getLevel() { return level; }
-    public int getMaxLevel() { return maxLevel; }
-    public Image getIcon() { return icon; }
-    public int getBuildCost() { return buildCost ; } // پیش‌فرض برای ساخت
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
+    public int getMaintenanceCost() {
+        return maintenanceCost;
+    }
+
+    public void setMaintenanceCost(int maintenanceCost) {
+        this.maintenanceCost = maintenanceCost;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
+    public Image getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Image icon) {
+        this.icon = icon;
+    }
+
+    public int getBuildCost() {
+        return buildCost;
+    } // پیش‌فرض برای ساخت
+
+    public void setBuildCost(int buildCost) {
+        this.buildCost = buildCost;
+    }
 }

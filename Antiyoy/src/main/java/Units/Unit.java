@@ -67,4 +67,53 @@ public abstract class Unit extends Component {
     public void setMoved(Boolean moved) {
         this.moved = moved;
     }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void setMovementRange(int movementRange) {
+        this.movementRange = movementRange;
+    }
+
+    public void setCostGold(int costGold) {
+        this.costGold = costGold;
+    }
+
+    public void setCostFood(int costFood) {
+        this.costFood = costFood;
+    }
+
+    public void setUnitSpace(int unitSpace) {
+        this.unitSpace = unitSpace;
+    }
+
+    public void setIcon(Image icon) {
+        this.icon = icon;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
 }

@@ -126,7 +126,7 @@ public class GameController {
                     }
 
                     else {
-                    moveUnit(moveFromBlock, block,unit);}
+                    moveUnit(moveFromBlock,block,unit);}
                 }
                 else { JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range."); }
             } else if (block == moveFromBlock) {
@@ -443,6 +443,32 @@ public class GameController {
             }
             default:
                 JOptionPane.showMessageDialog(null, "There is a problem with your code.");
+        }
+    }
+    public void attackUnitToUnit(Block fromBlock, Block toBlock) {
+        toBlock.getUnit().setHealth(toBlock.getUnit().getHealth()-fromBlock.getUnit().getAttackPower());
+        if (toBlock.getUnit().getHealth() <= 0) {
+            hudPanel.addLog("Unit "+toBlock.getOwner().getName() +" was killed.");
+            toBlock.setUnit(null);
+            toBlock.setOwner(getCurrentPlayer());
+            toBlock.setUnit(fromBlock.getUnit());
+            fromBlock.setUnit(null);
+        }
+        else {
+            hudPanel.addLog("Unit "+toBlock.getOwner().getName() +" was attacked. \n"+"health:"+toBlock.getUnit().getHealth());
+        }
+    }
+    public void attackUnitToStructure(Block fromBlock, Block toBlock) {
+        toBlock.getStructure().setDurability(toBlock.getStructure().getDurability()-fromBlock.getUnit().getAttackPower());
+        if (toBlock.getStructure().getDurability() <= 0) {
+            hudPanel.addLog(toBlock.getStructure().getName()+" " + toBlock.getOwner().getName() +" destroyed.");
+            toBlock.setStructure(null);
+            toBlock.setOwner(getCurrentPlayer());
+            toBlock.setStructure(fromBlock.getStructure());
+            fromBlock.setStructure(null);
+        }
+        else {
+            hudPanel.addLog("Structure"+toBlock.getOwner().getName()+" was attacked. \n"+"Durability:"+toBlock.getStructure().getDurability());
         }
     }
 
