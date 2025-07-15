@@ -10,132 +10,17 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GameController {
-    private static final int MAX_UNIT_SPACE = 100;
 
-    private Block selectedBlock = null;
+    private static final int MAX_UNIT_SPACE = 100;
     private final GamePanel gamePanel;
     private final HUDPanel hudPanel;
     private final Player[] players;
+    private Block selectedBlock = null;
     private int currentPlayerIndex = 0;
     private Unit selectedUnit = null;
     private Structures selectedStructures = null;
     private Block moveFromBlock = null;
 
-    public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
-        this.gamePanel = gamePanel;
-        this.hudPanel = hudPanel;
-        this.players = players;
-
-        setupListeners();
-        updateHUD();
-    }
-
-    private void setupListeners() {
-        hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
-
-        hudPanel.getBuildUnitButton().addActionListener(e -> {
-            if (selectedBlock == null) {
-                hudPanel.addLog("⚠️ Please select a block first.");
-                return;
-            }
-            String unitName = (String) hudPanel.getUnitSelector().getSelectedItem();
-            if (!"None".equals(unitName)) {
-                selectedUnit = createUnitByName(unitName);
-                if (canBuildUnit(getCurrentPlayer(), selectedUnit)) {
-                    payForUnit(getCurrentPlayer(), selectedUnit);
-                    selectedBlock.setUnit(selectedUnit);
-                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
-                        selectedBlock.setOwner(getCurrentPlayer());
-                    }
-                    hudPanel.addLog("✅ Unit " + unitName + " has been successfully built.");
-                } else {
-                    hudPanel.addLog("❌ Not enough resources or requirements not met to build this unit.");
-                }
-            } else {
-                hudPanel.addLog("⚠️ Please select a unit.");
-            }
-        });
-
-        hudPanel.getBuildStructuresButton().addActionListener(e -> {
-            if (selectedBlock == null) {
-                hudPanel.addLog("⚠️ Please select a block first.");
-                return;
-            }
-            String structureName = (String) hudPanel.getStructureSelector().getSelectedItem();
-            if (!"None".equals(structureName)) {
-                selectedStructures = createStructureByName(structureName);
-                if (canBuildStructure(getCurrentPlayer(), selectedStructures)) {
-                    payForStructure(getCurrentPlayer(), selectedStructures);
-                    selectedBlock.setStructure(selectedStructures);
-                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
-                        selectedBlock.setOwner(getCurrentPlayer());
-                    }
-                    hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
-                } else {
-                    hudPanel.addLog("❌ Not enough resources or the selected block is already occupied.");
-                }
-            } else {
-                hudPanel.addLog("⚠️ Please select a structure.");
-            }
-        });
-
-        hudPanel.getUnitSelector().addActionListener(e -> {
-            String selectedItem = (String) hudPanel.getUnitSelector().getSelectedItem();
-            if (!selectedItem.equals("None")) {
-                hudPanel.getStructureSelector().setSelectedItem("None");
-            }
-        });
-
-        hudPanel.getStructureSelector().addActionListener(e -> {
-            String selectedItem = (String) hudPanel.getStructureSelector().getSelectedItem();
-            if (!selectedItem.equals("None")) {
-                hudPanel.getUnitSelector().setSelectedItem("None");
-            }
-        });
-
-        hudPanel.getButtonSELECTDataLest().addActionListener(e -> {
-            GameData gameData= new GameData(hudPanel);
-            gameData.SELECTable();
-        });
-
-
-    }
-
-    public void handleBlockClick(Block block) {
-        if (selectedBlock != null) {
-            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-        }
-        block.setBorder(new LineBorder(Color.BLACK, 5));
-        selectedBlock = block;
-        if (moveFromBlock == null) {
-            if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-                moveFromBlock = block;
-                hudPanel.addLog("📦 Selected unit block for move.");
-            }
-        } else {
-            if (block != moveFromBlock) {
-                Unit unit = moveFromBlock.getUnit();
-                if(unit.canMove(moveFromBlock.getGridX(),moveFromBlock.getGridY(),block.getGridX(),block.getGridY())){
-                    if (block.getUnit() != null) {
-                        if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
-                            unitMerge(moveFromBlock, block);
-                        }
-                        else {
-                            JOptionPane.showMessageDialog(null,"You can't put it on that block because it's a unit.");
-                        }
-                    }
-
-                    else {
-                    moveUnit(moveFromBlock,block,unit);}
-                }
-                else { JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range."); }
-            } else if (block == moveFromBlock) {
-                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-            }
-            moveFromBlock = null; // Reset after move
-        }
-
-    }
 
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
@@ -273,6 +158,14 @@ public class GameController {
         updateHUD();
     }
 
+    public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
+        this.gamePanel = gamePanel;
+        this.hudPanel = hudPanel;
+        this.players = players;
+        setupListeners();
+        updateHUD();
+    }
+
     private void collectResources() {
         Player currentPlayer = players[currentPlayerIndex];
         int goldGain = 0;
@@ -297,27 +190,32 @@ public class GameController {
 
         currentPlayer.addGold(goldGain);
         currentPlayer.addFood(foodGain);
-        hudPanel.addLog( currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
-    }
-    private void activeMoveUnit(){
-        Player currentPlayer = players[currentPlayerIndex];
-        for (int i = 0; i < gamePanel.SIZE; i++) {
-            for (int j = 0; j < gamePanel.SIZE; j++) {
-                Block block = gamePanel.getBlock(i, j);
-                if (block.getOwner() == currentPlayer && block.getUnit() !=  null) {
-                    block.getUnit().setMoved(false);
-                }
-            }
-        }
+        hudPanel.addLog(currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
     }
 
-    public void endTurn() {
-        collectResources();
-        activeMoveUnit();
-        currentPlayerIndex = 1 - currentPlayerIndex;
-        hudPanel.addLog(" Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
-        updateHUD();
-    }
+//    public void endTurn() {
+//        collectResources();
+//        activeMoveUnit();
+//        currentPlayerIndex = 1 - currentPlayerIndex;
+//        hudPanel.addLog(" Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
+//        updateHUD();
+        public void endTurn() {
+            collectResources();
+            activeMoveUnit(); // ریست فلگ moved یونیت‌ها
+
+            // ⬇️ این دو خط رو اضافه کن
+            moveFromBlock = null;
+            if (selectedBlock != null) {
+                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                selectedBlock = null;
+            }
+
+            currentPlayerIndex = 1 - currentPlayerIndex;
+            hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
+            updateHUD();
+        }
+
+
 
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
@@ -349,7 +247,6 @@ public class GameController {
         }
         return false;
     }
-
 
     public void moveUnit(Block fromBlock, Block toBlock, Unit unit) {
         if (fromBlock == null || toBlock == null) {
@@ -416,6 +313,7 @@ public class GameController {
         }
         return false;
     }
+
     public void unitMerge(Block fromBlock, Block toBlock) {
         JLabel unitLabel = new JLabel();
         switch (toBlock.getUnit().getName()) {
@@ -445,31 +343,217 @@ public class GameController {
                 JOptionPane.showMessageDialog(null, "There is a problem with your code.");
         }
     }
+
+    private void activeMoveUnit() {
+        Player currentPlayer = players[currentPlayerIndex];
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                if (block.getOwner() == currentPlayer && block.getUnit() != null) {
+                    block.getUnit().setMoved(false);
+                }
+            }
+        }
+    }
+
     public void attackUnitToUnit(Block fromBlock, Block toBlock) {
-        toBlock.getUnit().setHealth(toBlock.getUnit().getHealth()-fromBlock.getUnit().getAttackPower());
+        toBlock.getUnit().setHealth(toBlock.getUnit().getHealth() - fromBlock.getUnit().getAttackPower());
         if (toBlock.getUnit().getHealth() <= 0) {
-            hudPanel.addLog("Unit "+toBlock.getOwner().getName() +" was killed.");
+            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
             toBlock.setUnit(null);
             toBlock.setOwner(getCurrentPlayer());
             toBlock.setUnit(fromBlock.getUnit());
             fromBlock.setUnit(null);
-        }
-        else {
-            hudPanel.addLog("Unit "+toBlock.getOwner().getName() +" was attacked. \n"+"health:"+toBlock.getUnit().getHealth());
+            fromBlock.getUnit().setMoved(true);
+
+        } else {
+            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was attacked. \n" + "health:" + toBlock.getUnit().getHealth());
         }
     }
+
+//    public class GameController {
+
     public void attackUnitToStructure(Block fromBlock, Block toBlock) {
-        toBlock.getStructure().setDurability(toBlock.getStructure().getDurability()-fromBlock.getUnit().getAttackPower());
+        toBlock.getStructure().setDurability(toBlock.getStructure().getDurability() - fromBlock.getUnit().getAttackPower());
         if (toBlock.getStructure().getDurability() <= 0) {
-            hudPanel.addLog(toBlock.getStructure().getName()+" " + toBlock.getOwner().getName() +" destroyed.");
+            hudPanel.addLog(toBlock.getStructure().getName() + " " + toBlock.getOwner().getName() + " destroyed.");
             toBlock.setStructure(null);
             toBlock.setOwner(getCurrentPlayer());
             toBlock.setStructure(fromBlock.getStructure());
             fromBlock.setStructure(null);
-        }
-        else {
-            hudPanel.addLog("Structure"+toBlock.getOwner().getName()+" was attacked. \n"+"Durability:"+toBlock.getStructure().getDurability());
+            fromBlock.getUnit().setMoved(true);
+
+        } else {
+            hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + toBlock.getStructure().getDurability());
         }
     }
 
+    private void setupListeners() {
+        hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
+
+        hudPanel.getBuildUnitButton().addActionListener(e -> {
+            if (selectedBlock == null) {
+                hudPanel.addLog("⚠️ Please select a block first.");
+                return;
+            }
+            String unitName = (String) hudPanel.getUnitSelector().getSelectedItem();
+            if (!"None".equals(unitName)) {
+                selectedUnit = createUnitByName(unitName);
+                if (canBuildUnit(getCurrentPlayer(), selectedUnit)) {
+                    payForUnit(getCurrentPlayer(), selectedUnit);
+                    selectedBlock.setUnit(selectedUnit);
+                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
+                        selectedBlock.setOwner(getCurrentPlayer());
+                    }
+                    hudPanel.addLog("✅ Unit " + unitName + " has been successfully built.");
+                } else {
+                    hudPanel.addLog("❌ Not enough resources or requirements not met to build this unit.");
+                }
+            } else {
+                hudPanel.addLog("⚠️ Please select a unit.");
+            }
+        });
+
+        hudPanel.getBuildStructuresButton().addActionListener(e -> {
+            if (selectedBlock == null) {
+                hudPanel.addLog("⚠️ Please select a block first.");
+                return;
+            }
+            String structureName = (String) hudPanel.getStructureSelector().getSelectedItem();
+            if (!"None".equals(structureName)) {
+                selectedStructures = createStructureByName(structureName);
+                if (canBuildStructure(getCurrentPlayer(), selectedStructures)) {
+                    payForStructure(getCurrentPlayer(), selectedStructures);
+                    selectedBlock.setStructure(selectedStructures);
+                    if (selectedBlock.getOwner() != getCurrentPlayer()) {
+                        selectedBlock.setOwner(getCurrentPlayer());
+                    }
+                    hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
+                } else {
+                    hudPanel.addLog("❌ Not enough resources or the selected block is already occupied.");
+                }
+            } else {
+                hudPanel.addLog("⚠️ Please select a structure.");
+            }
+        });
+
+        hudPanel.getUnitSelector().addActionListener(e -> {
+            String selectedItem = (String) hudPanel.getUnitSelector().getSelectedItem();
+            if (!selectedItem.equals("None")) {
+                hudPanel.getStructureSelector().setSelectedItem("None");
+            }
+        });
+
+        hudPanel.getStructureSelector().addActionListener(e -> {
+            String selectedItem = (String) hudPanel.getStructureSelector().getSelectedItem();
+            if (!selectedItem.equals("None")) {
+                hudPanel.getUnitSelector().setSelectedItem("None");
+            }
+        });
+
+        hudPanel.getButtonSELECTDataLest().addActionListener(e -> {
+            GameData gameData = new GameData(hudPanel);
+            gameData.SELECTable();
+        });
+
+
+    }
+
+//    public void handleBlockClick(Block block) {
+//        if (selectedBlock != null) {
+//            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+//        }
+//        block.setBorder(new LineBorder(Color.BLACK, 5));
+//        selectedBlock = block;
+//        if (moveFromBlock == null) {
+//            if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+//                moveFromBlock = block;
+//                hudPanel.addLog("📦 Selected unit block for movement, merging, and attack");
+//            }
+//        } else {
+//            //کلیک  برای ادغام حرکت و حمله
+//            if (block != moveFromBlock) {
+//                Unit unit = moveFromBlock.getUnit();
+//                if (unit.canMove(moveFromBlock.getGridX(), moveFromBlock.getGridY(), block.getGridX(), block.getGridY())) {
+//                    if (block.getOwner() == getCurrentPlayer() || block.getOwner() == null) {
+//                        if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+//                            if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
+//                                unitMerge(moveFromBlock, block);
+//                            } else {
+//                                JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");//ارور برا اینکه اینجا یه سرباز خودی داری که مناسب ادغام نیست
+//                            }
+//                        } else if (block.getUnit() == null) {
+//                            moveUnit(moveFromBlock, block, unit);
+//                        }
+//                    } else {
+//                        if (block.getUnit() != null) attackUnitToUnit(moveFromBlock, block);
+//                        else if (block.getStructure() != null) {
+//                            attackUnitToStructure(moveFromBlock, block);
+//                        } else {
+//                            JOptionPane.showMessageDialog(null, "Error");
+//                        }
+//                    }
+//                } else {
+//                    JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
+//                }
+//            } else if (block == moveFromBlock) {
+//                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+//            }
+//        }
+//        moveFromBlock = null; // Reset after move
+//    }
+public void handleBlockClick(Block block) {
+    if (selectedBlock != null) {
+        selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+    }
+    block.setBorder(new LineBorder(Color.BLACK, 5));
+    selectedBlock = block;
+
+    if (moveFromBlock == null) {
+        if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+            moveFromBlock = block;
+            hudPanel.addLog("📦 Selected unit block for movement, merging, and attack");
+        }
+    } else {
+        if (block != moveFromBlock) {
+            Unit unit = moveFromBlock.getUnit();
+            if (unit != null && unit.canMove(moveFromBlock.getGridX(), moveFromBlock.getGridY(), block.getGridX(), block.getGridY())) {
+                if (block.getOwner() == getCurrentPlayer() || block.getOwner() == null) {
+                    if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+                        if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
+                            unitMerge(moveFromBlock, block);
+                            moveFromBlock = null;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");
+                            // moveFromBlock = null; // اختیاریه: بسته به UX
+                        }
+                    } else if (block.getUnit() == null) {
+                        moveUnit(moveFromBlock, block, unit);
+                        moveFromBlock = null;
+                    }
+                } else {
+                    if (block.getUnit() != null) {
+                        attackUnitToUnit(moveFromBlock, block);
+                        moveFromBlock = null;
+                    } else if (block.getStructure() != null) {
+                        attackUnitToStructure(moveFromBlock, block);
+                        moveFromBlock = null;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error");
+                        // moveFromBlock = null; // اختیاریه
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
+                // moveFromBlock = null; // اختیاریه
+            }
+        } else {
+            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+            moveFromBlock = null;
+        }
+    }
 }
+}
+
+//    }
+
