@@ -12,7 +12,7 @@ public class Tower extends Structures {
         this.buildCost = 25;
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Tower.class.getResource("/Image/tower.png");
         if (url == null) {
             System.err.println("Tower icon not found!");

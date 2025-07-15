@@ -9,7 +9,7 @@ public class Swordman extends Unit {
         super("Swordman", 3, 3 * 10, 5 * 3, 3, loadImage(),300,300);
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Swordman.class.getResource("/Image/Swordman.png");
         if (url == null) {
             System.err.println("Swordman icon not found!");

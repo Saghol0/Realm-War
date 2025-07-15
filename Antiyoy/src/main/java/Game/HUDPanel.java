@@ -15,6 +15,8 @@ public class HUDPanel extends JPanel {
     private final JButton buildStructuresButton;
     private final JButton buildUnitButton;
     private final JButton buttonSELECTDataLest;
+    private final JButton buttonSaveGame;
+    private final JButton buttonLoadGame;
 
 
     public HUDPanel() {
@@ -22,7 +24,7 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(10, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(11, 1));
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
@@ -42,6 +44,9 @@ public class HUDPanel extends JPanel {
 
         buttonSELECTDataLest = new JButton("View All Machs");
 
+        buttonSaveGame=new JButton("Save Game");
+        buttonLoadGame=new JButton("Load Game");
+
         infoPanel.add(new JLabel("Select Unit:"));
         infoPanel.add(unitSelector);
         infoPanel.add(buildUnitButton);
@@ -51,6 +56,14 @@ public class HUDPanel extends JPanel {
         infoPanel.add(buildStructuresButton);
 
         infoPanel.add(buttonSELECTDataLest);
+
+        JPanel panelSL=new JPanel();
+
+        panelSL.add(buttonSaveGame);
+        panelSL.add(buttonLoadGame);
+
+        infoPanel.add(panelSL);
+
 
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
@@ -96,4 +109,13 @@ public class HUDPanel extends JPanel {
     public JButton getButtonSELECTDataLest() {
         return buttonSELECTDataLest;
     }
+
+    public JButton getButtonSaveGame(){
+        return buttonSaveGame;
+    }
+
+    public JButton getButtonLoadGame(){
+        return buttonLoadGame;
+    }
+
 }

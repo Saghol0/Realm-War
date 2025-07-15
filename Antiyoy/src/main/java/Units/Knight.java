@@ -9,7 +9,7 @@ public class Knight extends Unit {
         super("Knight", 4, 4 * 10, 4*5, 4, loadImage(),300,300);
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Knight.class.getResource("/Image/knight.png");
         if (url == null) {
             System.err.println("Knight icon not found!");

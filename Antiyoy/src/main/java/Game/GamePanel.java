@@ -94,4 +94,37 @@ public class GamePanel extends JPanel {
     public Block getBlock(int x, int y) {
         return block[x][y];
     }
+
+    public Block[][] getBlocks(){
+        return block;
+    }
+    public int getSIZE(){
+        return SIZE;
+    }
+
+
+    public void loadGame(Block[][] blocks){
+        this.block = blocks;
+
+        removeAll();
+
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(SIZE, SIZE));
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                Block b = block[i][j];
+
+                int fx = i, fy = j;
+                b.addActionListener(e -> handleClick(fx, fy));
+
+                gridPanel.add(b);
+            }
+        }
+
+        add(gridPanel, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }
+
 }

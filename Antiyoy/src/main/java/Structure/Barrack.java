@@ -14,7 +14,7 @@ public class Barrack extends Structures {
         this.buildCost = 15;
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Barrack.class.getResource("/Image/barracks.png");
         if (url == null) {
             System.err.println("Barrack icon not found!");

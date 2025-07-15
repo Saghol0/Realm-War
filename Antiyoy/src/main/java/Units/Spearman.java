@@ -9,7 +9,7 @@ public class Spearman extends Unit {
         super("Spearman", 2, 2 * 10, 5 * 2, 2, loadImage(),200,200);
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Spearman.class.getResource("/Image/spearman.png");
         if (url == null) {
             System.err.println("spearman icon not found!");

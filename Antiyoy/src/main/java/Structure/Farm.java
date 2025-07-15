@@ -14,7 +14,7 @@ public class Farm extends Structures {
         this.buildCost = 15;
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Farm.class.getResource("/Image/farm.png");
         if (url == null) {
             System.err.println("Farm icon not found!");

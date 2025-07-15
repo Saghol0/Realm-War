@@ -17,7 +17,7 @@ public class TownHall extends Structures {
         this.unitSpace = 1;
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         if (icon == null) {  // فقط اولین بار لود می‌کنه
             URL url = TownHall.class.getResource("/Image/town-hall.png");
             if (url == null) {

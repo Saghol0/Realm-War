@@ -103,4 +103,13 @@ public class Block extends JButton {
     public int getGridY() {
         return y;
     }
+
+    public int getColor(){
+        return baseColor.getRGB();
+    }
+
+    public String getNAME(){
+        return name;
+    }
+
 }

@@ -8,7 +8,7 @@ public class Peasant extends Unit {
     public Peasant(JLabel uLabel) {
         super("Peasant", 1, 10, 5, 1, loadImage(), 100, 100);
     }
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Peasant.class.getResource("/Image/peasant.png");
         if (url == null) {
             System.err.println("peasant icon not found!");

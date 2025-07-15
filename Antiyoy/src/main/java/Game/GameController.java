@@ -505,6 +505,18 @@ public class GameController {
             gameData.SELECTable();
         });
 
+        hudPanel.getButtonSaveGame().addActionListener(e -> {
+            GameSandL gameSandL=new GameSandL(hudPanel);
+            gameSandL.DropTable();
+            gameSandL.SaveGame(gamePanel.getBlocks(),gamePanel.getSIZE());
+        });
+
+        hudPanel.getButtonLoadGame().addActionListener(e -> {
+            GameSandL gameSandL=new GameSandL(hudPanel);
+            Block[] [] blocks=gameSandL.LoadGame(gamePanel.getBlocks());
+            gamePanel.loadGame(blocks);
+        });
+
 
     }
 

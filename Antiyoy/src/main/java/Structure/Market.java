@@ -14,7 +14,7 @@ public class Market extends Structures {
         this.buildCost = 20;
     }
 
-    private static Image loadImage() {
+    public static Image loadImage() {
         URL url = Market.class.getResource("/Image/market .png");
         if (url == null) {
             System.err.println("Market icon not found!");

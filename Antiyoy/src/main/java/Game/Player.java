@@ -18,6 +18,15 @@ public class Player {
         this.unitSpace = 0;
     }
 
+    // for load MM
+    public Player(String name,Color Color,int Gold,int Food,int UnitSpace){
+        this.name=name;
+        this.color = Color;
+        this.gold=Gold;
+        this.food=Food;
+        this.unitSpace=UnitSpace;
+    }
+
     // --- Getters ---
     public String getName() { return name; }
     public int getGold() { return gold; }
@@ -67,4 +76,16 @@ public class Player {
         return String.format("%s | Gold: %d | Food: %d | Unit Space: %d", name, gold, food, unitSpace);
 
     }
+
+    public void setGold(int g){
+        this.gold=g;
+    }
+    public void setFood(int f){
+        this.food=f;
+    }
+    public void setUnitSpace(int u){
+        this.unitSpace=u;
+    }
+
+
 }
