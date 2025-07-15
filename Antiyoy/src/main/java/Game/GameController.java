@@ -192,18 +192,69 @@ public class GameController {
         currentPlayer.addFood(foodGain);
         hudPanel.addLog(currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
     }
+    private void payUnitMaintenanceCost(Player player) {
+        int totalGoldCost = 0;
+        int totalFoodCost = 0;
 
-//    public void endTurn() {
-//        collectResources();
-//        activeMoveUnit();
-//        currentPlayerIndex = 1 - currentPlayerIndex;
-//        hudPanel.addLog(" Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
-//        updateHUD();
-        public void endTurn() {
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                Unit unit = block.getUnit();
+                if (unit != null && block.getOwner() == player) {
+                    totalGoldCost += unit.costGold;
+                    totalFoodCost += unit.costFood;
+                }
+            }
+        }
+
+        player.addGold(-totalGoldCost);
+        player.addFood(-totalFoodCost);
+
+        hudPanel.addLog(player.getName() + " paid " + totalGoldCost + " gold and " + totalFoodCost + " food for unit maintenance.");
+    }
+
+    private void checkAndRemoveUnitsIfResourcesNegative(Player player) {
+        if (player.getGold() >= 0 && player.getFood() >= 0) {
+            return; // منابع منفی نیست، کاری انجام نده
+        }
+
+        int recoveredGold = 0;
+        int recoveredFood = 0;
+        int recoveredUnitSpace = 0;
+
+        // حذف تمام یونیت‌های متعلق به این بازیکن و جمع‌آوری منابع آنها
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                if (block.getOwner() == player) {
+                    Unit unit = block.getUnit();
+                    if (unit != null) {
+                        recoveredGold += unit.costGold;
+                        recoveredFood += unit.costFood;
+                        recoveredUnitSpace += unit.unitSpace;
+
+                        block.setUnit(null);
+                    }
+                }
+            }
+        }
+
+        // به بازیکن منابع مربوط به یونیت‌های حذف شده را بازگردان
+        player.addGold(recoveredGold);
+        player.addFood(recoveredFood);
+        player.addUnitSpace(-recoveredUnitSpace);  // چون قبلا unitSpace اضافه شده بود، حالا باید کم شود
+
+        hudPanel.addLog("❌ Resources went negative! All units were removed and their resources were refunded.");
+        updateHUD();
+    }
+
+
+    public void endTurn() {
             collectResources();
+            payUnitMaintenanceCost(getCurrentPlayer());
+            checkAndRemoveUnitsIfResourcesNegative(getCurrentPlayer());
             activeMoveUnit(); // ریست فلگ moved یونیت‌ها
 
-            // ⬇️ این دو خط رو اضافه کن
             moveFromBlock = null;
             if (selectedBlock != null) {
                 selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
@@ -371,8 +422,6 @@ public class GameController {
         }
     }
 
-//    public class GameController {
-
     public void attackUnitToStructure(Block fromBlock, Block toBlock) {
         toBlock.getStructure().setDurability(toBlock.getStructure().getDurability() - fromBlock.getUnit().getAttackPower());
         if (toBlock.getStructure().getDurability() <= 0) {
@@ -459,49 +508,6 @@ public class GameController {
 
     }
 
-//    public void handleBlockClick(Block block) {
-//        if (selectedBlock != null) {
-//            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-//        }
-//        block.setBorder(new LineBorder(Color.BLACK, 5));
-//        selectedBlock = block;
-//        if (moveFromBlock == null) {
-//            if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-//                moveFromBlock = block;
-//                hudPanel.addLog("📦 Selected unit block for movement, merging, and attack");
-//            }
-//        } else {
-//            //کلیک  برای ادغام حرکت و حمله
-//            if (block != moveFromBlock) {
-//                Unit unit = moveFromBlock.getUnit();
-//                if (unit.canMove(moveFromBlock.getGridX(), moveFromBlock.getGridY(), block.getGridX(), block.getGridY())) {
-//                    if (block.getOwner() == getCurrentPlayer() || block.getOwner() == null) {
-//                        if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-//                            if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
-//                                unitMerge(moveFromBlock, block);
-//                            } else {
-//                                JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");//ارور برا اینکه اینجا یه سرباز خودی داری که مناسب ادغام نیست
-//                            }
-//                        } else if (block.getUnit() == null) {
-//                            moveUnit(moveFromBlock, block, unit);
-//                        }
-//                    } else {
-//                        if (block.getUnit() != null) attackUnitToUnit(moveFromBlock, block);
-//                        else if (block.getStructure() != null) {
-//                            attackUnitToStructure(moveFromBlock, block);
-//                        } else {
-//                            JOptionPane.showMessageDialog(null, "Error");
-//                        }
-//                    }
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
-//                }
-//            } else if (block == moveFromBlock) {
-//                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-//            }
-//        }
-//        moveFromBlock = null; // Reset after move
-//    }
 public void handleBlockClick(Block block) {
     if (selectedBlock != null) {
         selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
