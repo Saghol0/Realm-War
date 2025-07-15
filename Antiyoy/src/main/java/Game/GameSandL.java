@@ -3,6 +3,8 @@ package Game;
 import Blocks.Block;
 import Structure.*;
 import Units.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -275,21 +277,38 @@ import java.util.Map;
 
             while (rsU.next()) {
                 int id = rsU.getInt("ID");
-                String name = rsU.getString("Image");
+                String name = rsU.getString("Name");
+                int rank = rsU.getInt("Rank");
+                int movementRange = rsU.getInt("movementRange");
+                int costGold = rsU.getInt("CostGold");
+                int costFood = rsU.getInt("CostFood");
+                int unitSpace = rsU.getInt("UnitSpace");
+                int health = rsU.getInt("health");
+                int attackPower = rsU.getInt("attackPower");
 
+                JLabel label = new JLabel();
                 Unit unit = null;
+
                 switch (name) {
                     case "Knight":
-                        unit = new Knight(null); break;
+                        unit = new Knight(label); break;
                     case "Peasant":
-                        unit = new Peasant(null); break;
+                        unit = new Peasant(label); break;
                     case "Swordman":
-                        unit = new Swordman(null); break;
+                        unit = new Swordman(label); break;
                     case "Spearman":
-                        unit = new Spearman(null); break;
+                        unit = new Spearman(label); break;
                 }
 
                 if (unit != null) {
+                    unit.setRank(rank);
+                    unit.setMovementRange(movementRange);
+                    unit.costGold = costGold;
+                    unit.costFood = costFood;
+                    unit.unitSpace = unitSpace;
+                    unit.setHealth(health);
+                    unit.setAttackPower(attackPower);
+                    unit.setMoved(false);
                     unitMap.put(id, unit);
                 }
             }
@@ -347,10 +366,7 @@ import java.util.Map;
         }catch (SQLException e){
             hudPanel.addLog("ERROR DROP:" + e.getMessage());
         }
-
-
-
-
+        CreateTableSaveGame();
     }
 
 
