@@ -12,7 +12,7 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         setIconImage(iconFrame);
         setLayout(new BorderLayout());
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         // ایجاد GamePanel و HUDPanel
         GamePanel gamePanel = new GamePanel();
         HUDPanel hudPanel = gamePanel.getHudPanel(); // فرض بر این است HUDPanel در GamePanel هست

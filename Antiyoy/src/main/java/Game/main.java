@@ -13,7 +13,7 @@ public class main {
         } catch (Exception e) {
             e.printStackTrace();
     }
-        SwingUtilities.invokeLater(()-> new GameFrame() );
+        SwingUtilities.invokeLater(()-> new Menu() );
 
     }
 }
