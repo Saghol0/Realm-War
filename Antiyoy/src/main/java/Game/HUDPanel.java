@@ -29,7 +29,7 @@ public class HUDPanel extends JPanel {
         JPanel infoPanel = new JPanel(new GridLayout(13, 1));
 
         TimerTurnEnd=new JLabel("Your Turn : 30");
-        TimerForget=new JLabel("Getting resources up : 3");
+        TimerForget=new JLabel("Getting resources up : 15");
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
