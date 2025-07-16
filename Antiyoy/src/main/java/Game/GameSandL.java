@@ -263,16 +263,30 @@ import java.util.Map;
 
             while (rsS.next()) {
                 int id = rsS.getInt("ID");
-                Structures structure = new Structures(
-                        rsS.getString("Name"),
-                        rsS.getInt("durability"),
-                        rsS.getInt("maintenanceCost"),
-                        rsS.getInt("level"),
-                        rsS.getInt("MaxLevel"),
-                        StringtoImage(rsS.getString("Image")),
-                        rsS.getInt("buildCost")
-                );
-                structureMap.put(id, structure);
+                String name = rsS.getString("Name");
+
+                Structures structure = null;
+                switch (name) {
+                    case "Farm":
+                        structure = new Structure.Farm(); break;
+                    case "Market":
+                        structure = new Structure.Market(); break;
+                    case "Tower":
+                        structure = new Structure.Tower(); break;
+                    case "Barrack":
+                        structure = new Structure.Barrack(); break;
+                    case "Town Hall":
+                        structure = new Structure.TownHall(); break;
+                }
+
+                if (structure != null) {
+                    structure.setDurability(rsS.getInt("durability"));
+                    structure.setLevel(rsS.getInt("level"));
+                    structure.setMaintenanceCost(rsS.getInt("maintenanceCost"));
+                    structure.setMaxLevel(rsS.getInt("MaxLevel"));
+                    structure.setBuildCost(rsS.getInt("buildCost"));
+                    structureMap.put(id, structure);
+                }
             }
 
             while (rsU.next()) {

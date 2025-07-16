@@ -11,7 +11,7 @@ import java.awt.*;
 public class GamePanel extends JPanel {
     public final int SIZE = 10;
     private Block[][] block;
-    private final Player[] players;
+    private  Player[] players;
     private HUDPanel hudPanel;
     private GameController controller;
 
@@ -102,10 +102,16 @@ public class GamePanel extends JPanel {
         return SIZE;
     }
 
+    public void setHudPanel(HUDPanel hudPanel){
+        this.hudPanel=hudPanel;
+    }
 
     public void loadGame(Block[][] blocks){
         this.block = blocks;
-
+        this.players= new Player[] {
+                blocks[0][0].getOwner(),
+                blocks[9][9].getOwner()
+        };
         removeAll();
 
         JPanel gridPanel = new JPanel();
@@ -114,6 +120,14 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Block b = block[i][j];
+                if(b.getOwner()!=null){
+                    if(b.getOwner().getName().equals( blocks[0][0].getOwner().getName())){
+                        b.setOwner(blocks[0][0].getOwner());
+                    }
+                    if(b.getOwner().getName().equals( blocks[9][9].getOwner().getName())){
+                        b.setOwner(blocks[9][9].getOwner());
+                    }
+                }
 
                 int fx = i, fy = j;
                 b.addActionListener(e -> handleClick(fx, fy));

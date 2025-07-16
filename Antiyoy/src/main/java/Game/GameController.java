@@ -14,7 +14,7 @@ public class GameController {
     private static final int MAX_UNIT_SPACE = 100;
     private final GamePanel gamePanel;
     private final HUDPanel hudPanel;
-    private final Player[] players;
+    private  Player[] players;
     private Block selectedBlock = null;
     private int currentPlayerIndex = 0;
     private Unit selectedUnit = null;
@@ -436,6 +436,16 @@ public class GameController {
             hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + toBlock.getStructure().getDurability());
         }
     }
+    public void refreshBlockListeners() {
+        for (int i = 0; i < gamePanel.getSIZE(); i++) {
+            for (int j = 0; j < gamePanel.getSIZE(); j++) {
+                Block b = gamePanel.getBlock(i, j);
+                int finalI = i, finalJ = j;
+                b.removeActionListener(b.getActionListeners()[0]);
+                b.addActionListener(e -> handleBlockClick(gamePanel.getBlock(finalI, finalJ)));
+            }
+        }
+    }
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
@@ -515,6 +525,13 @@ public class GameController {
             GameSandL gameSandL=new GameSandL(hudPanel);
             Block[] [] blocks=gameSandL.LoadGame(gamePanel.getBlocks());
             gamePanel.loadGame(blocks);
+            gamePanel.setHudPanel(hudPanel);
+            gamePanel.setController(this);
+             this.players= new Player[] {
+                    blocks[0][0].getOwner(),
+                    blocks[9][9].getOwner()
+            };
+            this.refreshBlockListeners();
         });
 
 
