@@ -97,6 +97,9 @@ import java.util.Map;
                 "health INT NOT NULL ,"+
                 "attackPower INT NOT NULL )";
 
+        String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(NoBat INT NOT NULL) ";
+
+
 
         try{
             Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
@@ -105,6 +108,7 @@ import java.util.Map;
             Stmt.execute(SQLPlayer);
             Stmt.execute(SQLStructures);
             Stmt.execute(SQLUnit);
+            Stmt.execute(SQLGameController);
             hudPanel.addLog("..CREATE save TABLE..");
             try{
                 BufferedWriter riter= new BufferedWriter(new FileWriter(file,true));
@@ -137,13 +141,14 @@ import java.util.Map;
     }
 
 
-    public void SaveGame(Block[][] b, int SIZE){
+    public void SaveGame(Block[][] b, int SIZE,int NoBat){
         String SQLBlack="INSERT INTO Block(X,Y,Name,Color) VALUES (?,?,?,?) RETURNING ID";
         String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UnitSpace,Color) VALUES (?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
         String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String SQLGameController= "INSERT INTO Controller(NoBat) VALUES (?)";
         int ID;
 
         try (
@@ -152,8 +157,11 @@ import java.util.Map;
                 PreparedStatement PstmtP = conn.prepareStatement(SQLPlayer);
                 PreparedStatement PstmtS = conn.prepareStatement(SQLStructures);
                 PreparedStatement PstmtU = conn.prepareStatement(SQLUnit);
+                PreparedStatement PstmtC = conn.prepareStatement(SQLGameController);
         ){
 
+            PstmtC.setInt(1,NoBat);
+            PstmtC.executeUpdate();
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
                     Block block=b[i][j];
@@ -358,9 +366,31 @@ import java.util.Map;
         return blocks;
     }
 
+    public int getNoBat(){
+
+        String SQL = "SELECT * FROM Controller";
+
+        try {
+
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement Pstmt=conn.prepareStatement(SQL);
+            ResultSet ru=Pstmt.executeQuery();
+
+            if(ru.next()){
+                return ru.getInt("NoBat");
+            }
+
+        }catch (SQLException e){
+            hudPanel.addLog("ERROR getNoBat :"+ e.getMessage());
+            return 0;
+        }
+        return 0;
+    }
+
+
 
     public void DropTable(){
-        String SQL="DROP TABLE block,player,unit,structures;";
+        String SQL="DROP TABLE block,player,unit,structures,Controller;";
         try {
             Connection conn =DriverManager.getConnection(URL,USER,PASSWORD);
             Statement Stmt=conn.createStatement();
