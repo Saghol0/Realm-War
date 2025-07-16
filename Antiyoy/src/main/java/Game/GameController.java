@@ -518,7 +518,7 @@ public class GameController {
         hudPanel.getButtonSaveGame().addActionListener(e -> {
             GameSandL gameSandL=new GameSandL(hudPanel);
             gameSandL.DropTable();
-            gameSandL.SaveGame(gamePanel.getBlocks(),gamePanel.getSIZE());
+            gameSandL.SaveGame(gamePanel.getBlocks(),gamePanel.getSIZE(),currentPlayerIndex);
         });
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
@@ -532,6 +532,10 @@ public class GameController {
                     blocks[9][9].getOwner()
             };
             this.refreshBlockListeners();
+            if(gameSandL.getNoBat()>0){
+                currentPlayerIndex=1;
+            }else currentPlayerIndex=0;
+            updateHUD();
         });
 
 
