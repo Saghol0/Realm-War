@@ -8,6 +8,7 @@ import Units.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Timer;
 
 public class GameController {
 
@@ -21,6 +22,10 @@ public class GameController {
     private Structures selectedStructures = null;
     private Block moveFromBlock = null;
     private boolean gameEnded = false;
+    private  javax.swing.Timer timer;
+    private int TimeForTurn=30;
+    private int TimeForGetGoldAndFoolPlayer=3;
+
 
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
@@ -248,7 +253,6 @@ public class GameController {
 
 
     public void endTurn() {
-            collectResources();
             payUnitMaintenanceCost(getCurrentPlayer());
             checkAndRemoveUnitsIfResourcesNegative(getCurrentPlayer());
             activeMoveUnit(); // ریست فلگ moved یونیت‌ها
@@ -490,7 +494,14 @@ public class GameController {
     }
 
     private void setupListeners() {
-        hudPanel.getEndTurnButton().addActionListener(e -> endTurn());
+        hudPanel.getEndTurnButton().addActionListener(e -> {
+            TimeForGetGoldAndFoolPlayer=3;
+            TimeForTurn=30;
+            hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
+            hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn);
+
+            endTurn();
+        });
 
         hudPanel.getBuildUnitButton().addActionListener(e -> {
             if (selectedBlock == null) {
@@ -578,7 +589,33 @@ public class GameController {
                 currentPlayerIndex=1;
             }else currentPlayerIndex=0;
             updateHUD();
+            TimeForGetGoldAndFoolPlayer=3;
+            TimeForTurn=30;
         });
+        timer = new javax.swing.Timer(1000,_ -> {
+            if(TimeForTurn<10){
+                hudPanel.getTimerTurnEnd().setForeground(Color.RED);
+            }
+            hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn--);
+
+            hudPanel.getTimerForget().setText("Getting resources up : "+ TimeForGetGoldAndFoolPlayer--);
+            if(TimeForGetGoldAndFoolPlayer<0){
+                collectResources();
+                TimeForGetGoldAndFoolPlayer=3;
+            }
+
+            if (TimeForTurn<0){
+                TimeForGetGoldAndFoolPlayer=3;
+                endTurn();
+                TimeForTurn=30;
+                hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn);
+                hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
+            }
+        });
+        timer.start();
+
+
+
 
 
     }

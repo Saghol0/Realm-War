@@ -8,6 +8,8 @@ public class HUDPanel extends JPanel {
     private final JLabel playerLabel;
     private final JLabel goldLabel;
     private final JLabel foodLabel;
+    private final JLabel TimerTurnEnd;
+    private final JLabel TimerForget;
     private final JTextArea logArea;
     private final JComboBox<String> unitSelector;
     private final JComboBox<String> structureSelector;
@@ -24,11 +26,18 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(11, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(13, 1));
+
+        TimerTurnEnd=new JLabel("Your Turn : 30");
+        TimerForget=new JLabel("Getting resources up : 3");
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
 
+        TimerTurnEnd.setFont(new Font("Arial", Font.PLAIN, 24));
+
+        infoPanel.add(TimerTurnEnd);
+        infoPanel.add(TimerForget);
         infoPanel.add(playerLabel);
         infoPanel.add(goldLabel);
         infoPanel.add(foodLabel);
@@ -125,6 +134,14 @@ public class HUDPanel extends JPanel {
 
     public JButton getButtonLoadGame(){
         return buttonLoadGame;
+    }
+
+    public JLabel getTimerTurnEnd(){
+        return TimerTurnEnd;
+    }
+
+    public JLabel getTimerForget(){
+        return TimerForget;
     }
 
 }
