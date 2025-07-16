@@ -20,7 +20,7 @@ public class GameController {
     private Unit selectedUnit = null;
     private Structures selectedStructures = null;
     private Block moveFromBlock = null;
-
+    private boolean gameEnded = false;
 
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
@@ -215,14 +215,13 @@ public class GameController {
 
     private void checkAndRemoveUnitsIfResourcesNegative(Player player) {
         if (player.getGold() >= 0 && player.getFood() >= 0) {
-            return; // منابع منفی نیست، کاری انجام نده
+            return;
         }
 
         int recoveredGold = 0;
         int recoveredFood = 0;
         int recoveredUnitSpace = 0;
 
-        // حذف تمام یونیت‌های متعلق به این بازیکن و جمع‌آوری منابع آنها
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
                 Block block = gamePanel.getBlock(i, j);
@@ -239,10 +238,9 @@ public class GameController {
             }
         }
 
-        // به بازیکن منابع مربوط به یونیت‌های حذف شده را بازگردان
         player.addGold(recoveredGold);
         player.addFood(recoveredFood);
-        player.addUnitSpace(-recoveredUnitSpace);  // چون قبلا unitSpace اضافه شده بود، حالا باید کم شود
+        player.addUnitSpace(-recoveredUnitSpace);
 
         hudPanel.addLog("❌ Resources went negative! All units were removed and their resources were refunded.");
         updateHUD();
@@ -300,6 +298,10 @@ public class GameController {
     }
 
     public void moveUnit(Block fromBlock, Block toBlock, Unit unit) {
+        if (gameEnded) {
+            hudPanel.addLog("⚠️ Game has ended. No more moves allowed.");
+            return;
+        }
         if (fromBlock == null || toBlock == null) {
             hudPanel.addLog("⚠ Please select both source and target blocks.");
             return;
@@ -366,6 +368,10 @@ public class GameController {
     }
 
     public void unitMerge(Block fromBlock, Block toBlock) {
+        if (gameEnded) {
+            hudPanel.addLog("⚠️ Game has ended. No more merges allowed.");
+            return;
+        }
         JLabel unitLabel = new JLabel();
         switch (toBlock.getUnit().getName()) {
             case "Peasant": {
@@ -408,21 +414,30 @@ public class GameController {
     }
 
     public void attackUnitToUnit(Block fromBlock, Block toBlock) {
-        toBlock.getUnit().setHealth(toBlock.getUnit().getHealth() - fromBlock.getUnit().getAttackPower());
-        if (toBlock.getUnit().getHealth() <= 0) {
-            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
-            toBlock.setUnit(null);
-            toBlock.setOwner(getCurrentPlayer());
-            toBlock.setUnit(fromBlock.getUnit());
-            fromBlock.setUnit(null);
-            fromBlock.getUnit().setMoved(true);
+        if (gameEnded) {
+            hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
+            return;
+        }
+        Unit attacker = fromBlock.getUnit();
+        Unit defender = toBlock.getUnit();
 
+        defender.setHealth(defender.getHealth() - attacker.getAttackPower());
+        if (defender.getHealth() <= 0) {
+            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
+            toBlock.setUnit(attacker);
+            toBlock.setOwner(getCurrentPlayer());
+            fromBlock.setUnit(null);
+            attacker.setMoved(true);
         } else {
-            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was attacked. \n" + "health:" + toBlock.getUnit().getHealth());
+            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was attacked. \n" + "Health: " + defender.getHealth());
         }
     }
 
     public void attackUnitToStructure(Block fromBlock, Block toBlock) {
+        if (gameEnded) {
+            hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
+            return;
+        }
         toBlock.getStructure().setDurability(toBlock.getStructure().getDurability() - fromBlock.getUnit().getAttackPower());
         if (toBlock.getStructure().getDurability() <= 0) {
             hudPanel.addLog(toBlock.getStructure().getName() + " " + toBlock.getOwner().getName() + " destroyed.");
@@ -431,11 +446,40 @@ public class GameController {
             toBlock.setStructure(fromBlock.getStructure());
             fromBlock.setStructure(null);
             fromBlock.getUnit().setMoved(true);
-
+            checkIfGameEnded();
         } else {
             hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + toBlock.getStructure().getDurability());
         }
     }
+
+    public boolean checkIfGameEnded() {
+        Player currentPlayer = getCurrentPlayer();
+        Player opponentPlayer = getOpponentPlayer();
+
+        for (int i = 0; i < gamePanel.SIZE; i++) {
+            for (int j = 0; j < gamePanel.SIZE; j++) {
+                Block block = gamePanel.getBlock(i, j);
+                Structures structure = block.getStructure();
+                if (structure != null && structure.getName().equals("Town Hall")) {
+                    if (block.getOwner() != opponentPlayer) {
+                        hudPanel.addLog("🎉 " + currentPlayer.getName() + " won the game! Enemy Town Hall has been captured.");
+                        JOptionPane.showMessageDialog(null, currentPlayer.getName() + " won the game!");
+                        gameEnded = true;
+                        hudPanel.disableInteractionAfterGameEnd();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    public Player getOpponentPlayer() {
+        return players[(currentPlayerIndex + 1) % players.length];
+    }
+
     public void refreshBlockListeners() {
         for (int i = 0; i < gamePanel.getSIZE(); i++) {
             for (int j = 0; j < gamePanel.getSIZE(); j++) {
@@ -589,6 +633,3 @@ public void handleBlockClick(Block block) {
     }
 }
 }
-
-//    }
-

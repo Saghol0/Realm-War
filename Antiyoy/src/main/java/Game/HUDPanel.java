@@ -82,6 +82,15 @@ public class HUDPanel extends JPanel {
         foodLabel.setText("Food: " + food);
     }
 
+    public void disableInteractionAfterGameEnd() {
+        endTurnButton.setEnabled(false);
+        buildUnitButton.setEnabled(false);
+        buildStructuresButton.setEnabled(false);
+        unitSelector.setEnabled(false);
+        structureSelector.setEnabled(false);
+    }
+
+
     public void addLog(String message) {
         logArea.append(message + "\n");
     }
