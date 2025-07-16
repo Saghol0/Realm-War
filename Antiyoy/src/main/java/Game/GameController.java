@@ -474,8 +474,6 @@ public class GameController {
         return false;
     }
 
-
-
     public Player getOpponentPlayer() {
         return players[(currentPlayerIndex + 1) % players.length];
     }
