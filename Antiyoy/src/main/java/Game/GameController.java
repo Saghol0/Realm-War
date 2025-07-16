@@ -588,9 +588,9 @@ public class GameController {
             if(gameSandL.getNoBat()>0){
                 currentPlayerIndex=1;
             }else currentPlayerIndex=0;
-            updateHUD();
             TimeForGetGoldAndFoolPlayer=3;
             TimeForTurn=30;
+            updateHUD();
         });
         timer = new javax.swing.Timer(1000,_ -> {
             if(TimeForTurn<10){
@@ -601,6 +601,7 @@ public class GameController {
             hudPanel.getTimerForget().setText("Getting resources up : "+ TimeForGetGoldAndFoolPlayer--);
             if(TimeForGetGoldAndFoolPlayer<0){
                 collectResources();
+                updateHUD();
                 TimeForGetGoldAndFoolPlayer=3;
             }
 
