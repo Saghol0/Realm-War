@@ -5,7 +5,6 @@ import java.awt.*;
 import java.net.URL;
 
 public class Tower extends Structures {
-    private int buildCost;
 
     public Tower() {
         super("Tower", 200, 5, 1, 3, loadImage(),15);

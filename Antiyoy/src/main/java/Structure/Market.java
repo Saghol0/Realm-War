@@ -6,12 +6,10 @@ import java.net.URL;
 
 public class Market extends Structures {
     private int goldProduction;
-    private int buildCost;
 
     public Market() {
         super("Market", 100, 5, 1, 3, loadImage(),15);
         this.goldProduction = 10;
-        this.buildCost = 20;
     }
 
     public static Image loadImage() {

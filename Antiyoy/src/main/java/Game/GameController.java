@@ -268,8 +268,6 @@ public class GameController {
             updateHUD();
         }
 
-
-
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
         hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood());
@@ -277,6 +275,10 @@ public class GameController {
 
     public Player getCurrentPlayer() {
         return players[currentPlayerIndex];
+    }
+
+    public Player getOpponentPlayer() {
+        return players[(currentPlayerIndex + 1) % players.length];
     }
 
     private boolean isNearEnemyTower(Block block, Player currentPlayer) {
@@ -476,10 +478,6 @@ public class GameController {
             }
         }
         return false;
-    }
-
-    public Player getOpponentPlayer() {
-        return players[(currentPlayerIndex + 1) % players.length];
     }
 
     public void refreshBlockListeners() {

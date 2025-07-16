@@ -6,12 +6,10 @@ import java.net.URL;
 
 public class Barrack extends Structures {
     private int unitSpace;
-    private int buildCost;
 
     public Barrack() {
-        super("Barrack", 200, 5, 1, 3, loadImage(),15);
+        super("Barrack", 100, 5, 1, 3, loadImage(),15);
         this.unitSpace = 2;
-        this.buildCost = 15;
     }
 
     public static Image loadImage() {

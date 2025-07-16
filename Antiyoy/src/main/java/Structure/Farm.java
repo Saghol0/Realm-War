@@ -6,12 +6,10 @@ import java.net.URL;
 
 public class Farm extends Structures {
     private int foodProduction;
-    private int buildCost;
 
     public Farm() {
         super("Farm", 100, 5, 1, 3, loadImage(),15);
         this.foodProduction = 5;
-        this.buildCost = 15;
     }
 
     public static Image loadImage() {
