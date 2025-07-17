@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class GameFrame extends JFrame {
     Image iconFrame = new ImageIcon(getClass().getResource("/Image/Icon.jpg")).getImage();
+    GamePanel gamePanel;
 
     public GameFrame() {
         setTitle("Antiyoy War");
@@ -14,7 +15,7 @@ public class GameFrame extends JFrame {
         setLayout(new BorderLayout());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         // ایجاد GamePanel و HUDPanel
-        GamePanel gamePanel = new GamePanel();
+        gamePanel = new GamePanel();
         HUDPanel hudPanel = gamePanel.getHudPanel(); // فرض بر این است HUDPanel در GamePanel هست
 
         add(gamePanel, BorderLayout.CENTER);
@@ -26,4 +27,9 @@ public class GameFrame extends JFrame {
 
         setVisible(true);
     }
+
+    public GamePanel getGamePanel(){
+        return gamePanel;
+    }
+
 }

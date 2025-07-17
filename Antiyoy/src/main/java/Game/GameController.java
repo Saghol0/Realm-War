@@ -8,6 +8,10 @@ import Units.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class GameController {
 
@@ -24,12 +28,17 @@ public class GameController {
     private javax.swing.Timer timer;
     private int TimeForTurn = 30;
     private int TimeForGetGoldAndFoolPlayer = 15;
+    private int TimeEndGame=0;
+    private GameSandL gameSandL;
+    private GameData gameData;
 
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
         this.gamePanel = gamePanel;
         this.hudPanel = hudPanel;
         this.players = players;
+        this.gameSandL=new GameSandL(hudPanel);
+        this.gameData=new GameData(hudPanel);
         setupListeners();
         updateHUD();
     }
@@ -481,8 +490,15 @@ public class GameController {
                 Structures structure = block.getStructure();
                 if (structure != null && structure.getName().equals("Town Hall")) {
                     if (block.getOwner() != opponentPlayer) {
+                        timer.stop();
+                        if(players.length==4) {
+                            gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName(), players[currentPlayerIndex].getName(), TimeEndGame);
+                        }else if(players.length==3){
+                            gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), "null", players[currentPlayerIndex].getName(), TimeEndGame);
+                        }else gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
                         hudPanel.addLog("🎉 " + currentPlayer.getName() + " won the game! Enemy Town Hall has been captured.");
                         JOptionPane.showMessageDialog(null, currentPlayer.getName() + " won the game!");
+                        gameSandL.EndGame();
                         gameEnded = true;
                         hudPanel.disableInteractionAfterGameEnd();
                         return true;
@@ -504,6 +520,24 @@ public class GameController {
             }
         }
     }
+
+    public void loadGameForMenu(){
+        Block[][] blocks = gameSandL.LoadGame(gamePanel.getBlocks());
+        gamePanel.loadGame(blocks);
+        gamePanel.setHudPanel(hudPanel);
+        gamePanel.setController(this);
+        this.players = new Player[]{
+                blocks[0][0].getOwner(),
+                blocks[9][9].getOwner()
+        };
+        this.refreshBlockListeners();
+        currentPlayerIndex = (gameSandL.getNoBat() > 0) ? 1 : 0;
+        TimeEndGame=gameSandL.TimeGame();
+        TimeForGetGoldAndFoolPlayer = 15;
+        TimeForTurn = 30;
+        updateHUD();
+    }
+
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> {
@@ -576,18 +610,15 @@ public class GameController {
         });
 
         hudPanel.getButtonSELECTDataLest().addActionListener(e -> {
-            GameData gameData = new GameData(hudPanel);
             gameData.SELECTable();
         });
 
         hudPanel.getButtonSaveGame().addActionListener(e -> {
-            GameSandL gameSandL = new GameSandL(hudPanel);
             gameSandL.DropTable();
-            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex);
+            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex,TimeEndGame);
         });
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
-            GameSandL gameSandL = new GameSandL(hudPanel);
             Block[][] blocks = gameSandL.LoadGame(gamePanel.getBlocks());
             gamePanel.loadGame(blocks);
             gamePanel.setHudPanel(hudPanel);
@@ -598,6 +629,7 @@ public class GameController {
             };
             this.refreshBlockListeners();
             currentPlayerIndex = (gameSandL.getNoBat() > 0) ? 1 : 0;
+            TimeEndGame=gameSandL.TimeGame();
             TimeForGetGoldAndFoolPlayer = 15;
             TimeForTurn = 30;
             updateHUD();
@@ -605,6 +637,7 @@ public class GameController {
 
         // تایمر نوبت و منابع
         timer = new javax.swing.Timer(1000, _ -> {
+            TimeEndGame++;
             if (TimeForTurn < 10) {
                 hudPanel.getTimerTurnEnd().setForeground(Color.RED);
             }

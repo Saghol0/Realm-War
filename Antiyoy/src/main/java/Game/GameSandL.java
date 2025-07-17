@@ -97,7 +97,9 @@ import java.util.Map;
                 "health INT NOT NULL ,"+
                 "attackPower INT NOT NULL )";
 
-        String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(NoBat INT NOT NULL) ";
+        String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(" +
+                "NoBat INT NOT NULL, "+
+                "TimeGame INT NOT NULL) ";
 
 
 
@@ -141,14 +143,14 @@ import java.util.Map;
     }
 
 
-    public void SaveGame(Block[][] b, int SIZE,int NoBat){
+    public void SaveGame(Block[][] b, int SIZE,int NoBat,int timeGame){
         String SQLBlack="INSERT INTO Block(X,Y,Name,Color) VALUES (?,?,?,?) RETURNING ID";
         String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UnitSpace,Color) VALUES (?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
         String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
-        String SQLGameController= "INSERT INTO Controller(NoBat) VALUES (?)";
+        String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame) VALUES (?,?)";
         int ID;
 
         try (
@@ -161,6 +163,7 @@ import java.util.Map;
         ){
 
             PstmtC.setInt(1,NoBat);
+            PstmtC.setInt(2,timeGame);
             PstmtC.executeUpdate();
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
@@ -386,6 +389,26 @@ import java.util.Map;
         }
         return 0;
     }
+     public int TimeGame(){
+
+         String SQL = "SELECT * FROM Controller";
+
+         try {
+
+             Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement Pstmt=conn.prepareStatement(SQL);
+             ResultSet ru=Pstmt.executeQuery();
+
+             if(ru.next()){
+                 return ru.getInt("TimeGame");
+             }
+
+         }catch (SQLException e){
+             hudPanel.addLog("ERROR getTimeGame :"+ e.getMessage());
+             return 0;
+         }
+         return 0;
+     }
 
 
 
@@ -413,6 +436,15 @@ import java.util.Map;
         CreateTableSaveGame();
     }
 
+  public void EndGame(){
+      try (BufferedWriter riter = new BufferedWriter(new FileWriter(file, true))) {
+          riter.write("..End Game verified..");
+          riter.newLine();
+          hudPanel.addLog("..End Game verified to File..");
+      } catch (IOException e) {
+          hudPanel.addLog("ERROR End Game FILE:" + e.getMessage());
+      }
 
+  }
 
 }

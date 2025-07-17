@@ -6,9 +6,9 @@ import java.awt.*;
 import java.sql.*;
 
 public class GameData {
-    private final String URL="jdbc:postgresql://localhost:5432/realm War";
+    private final String URL="jdbc:postgresql://localhost:5432/realm war";
     private final String USER="postgres";
-    private final String PASSWORD="73752";
+    private final String PASSWORD="1383";
     private HUDPanel hudPanel;
 
 
@@ -22,10 +22,12 @@ public class GameData {
               "IDGame SERIAL PRIMARY KEY ,"+
               "Player1 VARCHAR(55) NOT NULL ,"+
               "Player2 VARCHAR(55) NOT NULL ,"+
+              "Player3 VARCHAR(55),"+
+              "Player4 VARCHAR(55),"+
               "Winner VARCHAR(20) ,"+
-              "ScorePlayer1 DECIMAL(5,2) ,"+
-              "ScorePlayer2 DECIMAL(5,2) ,"+
-              "turns INT ) ";
+              "Playtime INT  ,"+
+              "play_date DATE DEFAULT CURRENT_DATE)" ;
+
 
       try{
           Connection connection = DriverManager.getConnection(URL,USER,PASSWORD);
@@ -38,17 +40,17 @@ public class GameData {
 
     }
 
-    public boolean INSERTable(String Player1,String Player2,String winner,Double ScorePlayer1,Double ScorePlayer2,int turns){
-        String SQL="INSERT INTO ListData (Player1,Player2,Winner,ScorePlayer1,ScorePlayer2,turns) VALUES (?,?,?,?,?,?)";
+    public boolean INSERTable(String Player1,String Player2,String Player3,String Player4,String Winner,int Playtime){
+        String SQL="INSERT INTO ListData (Player1,Player2,Player3,Player4,Winner,Playtime) VALUES (?,?,?,?,?,?)";
         try{
             Connection connection=DriverManager.getConnection(URL,USER,PASSWORD);
             PreparedStatement Pstmt=connection.prepareStatement(SQL);
             Pstmt.setString(1,Player1);
             Pstmt.setString(2,Player2);
-            Pstmt.setString(3,winner);
-            Pstmt.setDouble(4,ScorePlayer1);
-            Pstmt.setDouble(5,ScorePlayer2);
-            Pstmt.setInt(6,turns);
+            Pstmt.setString(3,Player3);
+            Pstmt.setString(4,Player4);
+            Pstmt.setString(5,Winner);
+            Pstmt.setInt(6,Playtime);
             if(0<Pstmt.executeUpdate()){
                 hudPanel.addLog("..INSERT verified..");
                 return true;
@@ -93,16 +95,19 @@ public class GameData {
             panel.add(new JLabel("Player2"),gbc);
 
             gbc.gridx=3;
-            panel.add(new JLabel("Winner"),gbc);
+            panel.add(new JLabel("Player3"),gbc);
 
             gbc.gridx=4;
-            panel.add(new JLabel("ScorePlayer1"),gbc);
+            panel.add(new JLabel("Player4"),gbc);
 
             gbc.gridx=5;
-            panel.add(new JLabel("ScorePlayer2"),gbc);
+            panel.add(new JLabel("Winner"),gbc);
 
             gbc.gridx=6;
-            panel.add(new JLabel("turns"),gbc);
+            panel.add(new JLabel("Playtime"),gbc);
+
+            gbc.gridx=7;
+            panel.add(new JLabel("Playdate"));
 
              int RadiF=1;
             while (ru.next()){
@@ -118,16 +123,19 @@ public class GameData {
              panel.add(new JLabel ( ru.getString("Player2")  ),gbc);
 
              gbc.gridx=3;
-             panel.add(new JLabel ( ru.getString("Winner")  ),gbc);
+             panel.add(new JLabel ( ru.getString("Player3")  ),gbc);
 
              gbc.gridx=4;
-             panel.add(new JLabel (String.valueOf( ru.getDouble("ScorePlayer1") ) ),gbc);
+             panel.add(new JLabel (String.valueOf( ru.getString("Player4") ) ),gbc);
 
              gbc.gridx=5;
-             panel.add(new JLabel (String.valueOf( ru.getDouble("ScorePlayer2") ) ),gbc);
+             panel.add(new JLabel (String.valueOf( ru.getString("Winner") ) ),gbc);
 
              gbc.gridx=6;
-             panel.add(new JLabel (String.valueOf( ru.getInt("turns") ) ),gbc);
+             panel.add(new JLabel (String.valueOf( ru.getInt("Playtime") ) ),gbc);
+
+             gbc.gridx=7;
+             panel.add(new JLabel(String.valueOf( ru.getString("play_date") ) ),gbc);
 
              RadiF++;
             }

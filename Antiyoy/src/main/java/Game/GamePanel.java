@@ -141,4 +141,9 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
+    public GameController getController(){
+        return controller;
+    }
+
+
 }

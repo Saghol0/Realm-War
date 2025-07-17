@@ -29,20 +29,32 @@ public class Menu extends JFrame {
 
         JButton newGameBtn = createFancyButton("New Game");
         JButton loadGameBtn = createFancyButton("Load Game");
+        JButton MatchHistory = createFancyButton("Match History");
         JButton exitBtn = createFancyButton("Exit");
         newGameBtn.addActionListener(e -> {
             new GameFrame();
             dispose();
         });
+
         loadGameBtn.addActionListener(e -> {
+            GameFrame gameFrame=new GameFrame();
+            gameFrame.getGamePanel().getController().loadGameForMenu();
+            dispose();
             JOptionPane.showMessageDialog(null, "Load Game Clicked");
         });
+
+        MatchHistory.addActionListener(e -> {
+            new GameData(new HUDPanel()).SELECTable();
+        });
+
         exitBtn.addActionListener(e -> {
             System.exit(0);
         });
         menuPanel.add(newGameBtn);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         menuPanel.add(loadGameBtn);
+        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        menuPanel.add(MatchHistory);
         menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         menuPanel.add(exitBtn);
 
