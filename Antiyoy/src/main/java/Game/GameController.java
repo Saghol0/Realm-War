@@ -428,7 +428,7 @@ public class GameController {
         Unit defender = toBlock.getUnit();
 
         defender.setHealth(defender.getHealth() - attacker.getAttackPower());
-        if (defender.getHealth() <= 0) {
+        if (defender.getHealth() <= 0&&!attacker.getMoved()) {
             hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
             toBlock.setUnit(attacker);
             toBlock.setOwner(getCurrentPlayer());
@@ -444,17 +444,21 @@ public class GameController {
             hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
             return;
         }
-        toBlock.getStructure().setDurability(toBlock.getStructure().getDurability() - fromBlock.getUnit().getAttackPower());
-        if (toBlock.getStructure().getDurability() <= 0) {
-            hudPanel.addLog(toBlock.getStructure().getName() + " " + toBlock.getOwner().getName() + " destroyed.");
+        Unit attacker = fromBlock.getUnit();
+        Structures structure = toBlock.getStructure();
+
+        structure.setDurability(structure.getDurability() - attacker.getAttackPower());
+        if (structure.getDurability() <= 0) {
+            hudPanel.addLog(structure.getName() + " " + toBlock.getOwner().getName() + " destroyed.");
             toBlock.setStructure(null);
             toBlock.setOwner(getCurrentPlayer());
             toBlock.setStructure(fromBlock.getStructure());
-            fromBlock.setStructure(null);
-            fromBlock.getUnit().setMoved(true);
-            checkIfGameEnded();
+            if (!checkIfGameEnded())
+            {fromBlock.setStructure(null);
+            attacker.setMoved(true);}
+//            checkIfGameEnded();
         } else {
-            hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + toBlock.getStructure().getDurability());
+            hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
         }
     }
 
@@ -478,6 +482,7 @@ public class GameController {
             }
         }
         return false;
+
     }
 
     public void refreshBlockListeners() {
@@ -686,6 +691,8 @@ public class GameController {
                     } else if (block.getStructure() != null) {
                         attackUnitToStructure(moveFromBlock, block);
                         moveFromBlock = null;
+                    } else if (block.getOwner()==getOpponentPlayer()) {
+                        moveUnit(moveFromBlock, block, unit);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error");
                         // moveFromBlock = null; // اختیاریه
