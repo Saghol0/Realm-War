@@ -24,7 +24,7 @@ public class GameController {
     private boolean gameEnded = false;
     private  javax.swing.Timer timer;
     private int TimeForTurn=30;
-    private int TimeForGetGoldAndFoolPlayer=3;
+    private int TimeForGetGoldAndFoolPlayer=15;
 
 
     private Unit createUnitByName(String unitName) {
@@ -586,7 +586,7 @@ public class GameController {
             if(gameSandL.getNoBat()>0){
                 currentPlayerIndex=1;
             }else currentPlayerIndex=0;
-            TimeForGetGoldAndFoolPlayer=3;
+            TimeForGetGoldAndFoolPlayer=15;
             TimeForTurn=30;
             updateHUD();
         });
@@ -597,14 +597,14 @@ public class GameController {
             hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn--);
 
             hudPanel.getTimerForget().setText("Getting resources up : "+ TimeForGetGoldAndFoolPlayer--);
-            if(TimeForGetGoldAndFoolPlayer<0){
+            if(TimeForGetGoldAndFoolPlayer==0){
                 collectResources();
                 updateHUD();
-                TimeForGetGoldAndFoolPlayer=3;
+                TimeForGetGoldAndFoolPlayer=15;
             }
 
             if (TimeForTurn<0){
-                TimeForGetGoldAndFoolPlayer=3;
+                TimeForGetGoldAndFoolPlayer=15;
                 endTurn();
                 TimeForTurn=30;
                 hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn);
@@ -660,6 +660,7 @@ public void handleBlockClick(Block block) {
                         // moveFromBlock = null; // اختیاریه
                     }
                 }
+
             } else {
                 JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
                 // moveFromBlock = null; // اختیاریه
