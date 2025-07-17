@@ -11,6 +11,16 @@ public class Tower extends Structures {
         this.buildCost = 25;
     }
 
+    public void levelUp() {
+        if (level < maxLevel) {
+            level++;
+            durability += 100;
+            System.out.println(name + " has been upgraded to level " + level);
+        } else {
+            System.out.println(name + " has already reached max level.");
+        }
+    }
+
     public static Image loadImage() {
         URL url = Tower.class.getResource("/Image/tower.png");
         if (url == null) {

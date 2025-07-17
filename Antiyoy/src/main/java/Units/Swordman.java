@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Swordman extends Unit {
     public Swordman(JLabel uLabel) {
-        super("Swordman", 3, 3 * 10, 5 * 3, 3, loadImage(),300,300);
+        super("Swordman", 3, 3 * 10, 5 * 3, 3, loadImage(),200,300);
     }
 
     public static Image loadImage() {

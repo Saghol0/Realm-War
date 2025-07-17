@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Knight extends Unit {
     public Knight(JLabel uLabel) {
-        super("Knight", 4, 4 * 10, 4*5, 4, loadImage(),300,300);
+        super("Knight", 4, 4 * 10, 4*5, 4, loadImage(),250,300);
     }
 
     public static Image loadImage() {

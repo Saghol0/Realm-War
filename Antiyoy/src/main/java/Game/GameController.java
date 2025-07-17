@@ -493,11 +493,10 @@ public class GameController {
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> {
-            TimeForGetGoldAndFoolPlayer=3;
-            TimeForTurn=30;
+            TimeForGetGoldAndFoolPlayer = 3;
+            TimeForTurn = 30;
             hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
-            hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn);
-
+            hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn);
             endTurn();
         });
 
@@ -547,6 +546,7 @@ public class GameController {
             }
         });
 
+        // هماهنگ کردن ComboBox ها
         hudPanel.getUnitSelector().addActionListener(e -> {
             String selectedItem = (String) hudPanel.getUnitSelector().getSelectedItem();
             if (!selectedItem.equals("None")) {
@@ -567,59 +567,90 @@ public class GameController {
         });
 
         hudPanel.getButtonSaveGame().addActionListener(e -> {
-            GameSandL gameSandL=new GameSandL(hudPanel);
+            GameSandL gameSandL = new GameSandL(hudPanel);
             gameSandL.DropTable();
-            gameSandL.SaveGame(gamePanel.getBlocks(),gamePanel.getSIZE(),currentPlayerIndex);
+            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex);
         });
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
-            GameSandL gameSandL=new GameSandL(hudPanel);
-            Block[] [] blocks=gameSandL.LoadGame(gamePanel.getBlocks());
+            GameSandL gameSandL = new GameSandL(hudPanel);
+            Block[][] blocks = gameSandL.LoadGame(gamePanel.getBlocks());
             gamePanel.loadGame(blocks);
             gamePanel.setHudPanel(hudPanel);
             gamePanel.setController(this);
-             this.players= new Player[] {
+            this.players = new Player[]{
                     blocks[0][0].getOwner(),
                     blocks[9][9].getOwner()
             };
             this.refreshBlockListeners();
-            if(gameSandL.getNoBat()>0){
-                currentPlayerIndex=1;
-            }else currentPlayerIndex=0;
-            TimeForGetGoldAndFoolPlayer=15;
-            TimeForTurn=30;
+            currentPlayerIndex = (gameSandL.getNoBat() > 0) ? 1 : 0;
+            TimeForGetGoldAndFoolPlayer = 15;
+            TimeForTurn = 30;
             updateHUD();
         });
-        timer = new javax.swing.Timer(1000,_ -> {
-            if(TimeForTurn<10){
+
+        // تایمر نوبت و منابع
+        timer = new javax.swing.Timer(1000, _ -> {
+            if (TimeForTurn < 10) {
                 hudPanel.getTimerTurnEnd().setForeground(Color.RED);
             }
-            hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn--);
+            hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn--);
+            hudPanel.getTimerForget().setText("Getting resources up : " + TimeForGetGoldAndFoolPlayer--);
 
-            hudPanel.getTimerForget().setText("Getting resources up : "+ TimeForGetGoldAndFoolPlayer--);
-            if(TimeForGetGoldAndFoolPlayer==0){
+            if (TimeForGetGoldAndFoolPlayer == 0) {
                 collectResources();
                 updateHUD();
-                TimeForGetGoldAndFoolPlayer=15;
+                TimeForGetGoldAndFoolPlayer = 15;
             }
 
-            if (TimeForTurn<0){
-                TimeForGetGoldAndFoolPlayer=15;
+            if (TimeForTurn < 0) {
+                TimeForGetGoldAndFoolPlayer = 15;
                 endTurn();
-                TimeForTurn=30;
-                hudPanel.getTimerTurnEnd().setText("Your Turn : "+ TimeForTurn);
+                TimeForTurn = 30;
+                hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn);
                 hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
             }
         });
         timer.start();
 
+        // دکمه Level Up برای ارتقاء سازه
+        hudPanel.getLevelUpButton().addActionListener(e -> {
+            if (selectedBlock == null) {
+                hudPanel.addLog("⚠️ Please select a block first.");
+                return;
+            }
 
+            Structures structure = selectedBlock.getStructure();
 
+            if (structure == null) {
+                hudPanel.addLog("❌ No structure on selected block to level up.");
+                return;
+            }
 
+            if (!selectedBlock.getOwner().equals(getCurrentPlayer())) {
+                hudPanel.addLog("❌ You can only level up structures you own.");
+                return;
+            }
 
+            if (structure.getLevel() >= structure.getMaxLevel()) {
+                hudPanel.addLog("❌ " + structure.getName() + " is already at max level.");
+                return;
+            }
+
+            int upgradeCost = 10 + structure.getLevel() * 5;
+
+            if (!getCurrentPlayer().spendGold(upgradeCost)) {
+                hudPanel.addLog("💰 Not enough gold. You need " + upgradeCost + " gold to upgrade.");
+                return;
+            }
+
+            structure.levelUp();
+            hudPanel.updatePlayerInfo(getCurrentPlayer().getName(), getCurrentPlayer().getGold(), getCurrentPlayer().getFood());
+            hudPanel.addLog("🔺 Structure " + structure.getName() + " upgraded to level " + structure.getLevel() + ".");
+        });
     }
 
-public void handleBlockClick(Block block) {
+    public void handleBlockClick(Block block) {
     if (selectedBlock != null) {
         selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
     }

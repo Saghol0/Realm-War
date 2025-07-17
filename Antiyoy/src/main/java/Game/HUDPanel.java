@@ -1,6 +1,5 @@
 package Game;
 
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,17 +18,17 @@ public class HUDPanel extends JPanel {
     private final JButton buttonSELECTDataLest;
     private final JButton buttonSaveGame;
     private final JButton buttonLoadGame;
-
+    private final JButton levelUpButton;  // دکمه جدید لول آپ
 
     public HUDPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(13, 1));
+        JPanel infoPanel = new JPanel(new GridLayout(15, 1));  // افزایش تعداد ردیف‌ها
 
-        TimerTurnEnd=new JLabel("Your Turn : 30");
-        TimerForget=new JLabel("Getting resources up : 15");
+        TimerTurnEnd = new JLabel("Your Turn : 30");
+        TimerForget = new JLabel("Getting resources up : 15");
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
@@ -42,37 +41,48 @@ public class HUDPanel extends JPanel {
         infoPanel.add(goldLabel);
         infoPanel.add(foodLabel);
 
-        unitSelector = new JComboBox<>(new String[]{"None", "Peasant          (Gold:10 + Food:5 + Space:1)"
-        , "SpearMan      (Gold:20 + Food:10 + Space:2)", "SwordMan     (Gold:30 + Food:15 + Space:3)"
-        ,"Knight            (Gold:40 + Food:20 + Space:4)"});
-        structureSelector = new JComboBox<>(new String[]{"None", "Farm", "Market", "Barrack", "Tower"});
+        unitSelector = new JComboBox<>(new String[]{
+                "None",
+                "Peasant          (Gold:10 + Food:5 + Space:1)",
+                "SpearMan      (Gold:20 + Food:10 + Space:2)",
+                "SwordMan     (Gold:30 + Food:15 + Space:3)",
+                "Knight            (Gold:40 + Food:20 + Space:4)"
+        });
+
+        structureSelector = new JComboBox<>(new String[]{
+                "None", "Farm", "Market", "Barrack", "Tower"
+        });
 
         endTurnButton = new JButton("End Turn");
         buildStructuresButton = new JButton("Build Structures");
         buildUnitButton = new JButton("Build Units");
+        levelUpButton = new JButton("Level Up");  // مقداردهی دکمه لول آپ
 
         buttonSELECTDataLest = new JButton("View All Machs");
+        buttonSaveGame = new JButton("Save Game");
+        buttonLoadGame = new JButton("Load Game");
 
-        buttonSaveGame=new JButton("Save Game");
-        buttonLoadGame=new JButton("Load Game");
-
+        // افزودن بخش انتخاب یونیت
         infoPanel.add(new JLabel("Select Unit:"));
         infoPanel.add(unitSelector);
         infoPanel.add(buildUnitButton);
 
+        // افزودن بخش انتخاب ساختار
         infoPanel.add(new JLabel("Select Structure:"));
         infoPanel.add(structureSelector);
         infoPanel.add(buildStructuresButton);
 
+        // افزودن دکمه لول آپ
+        infoPanel.add(levelUpButton);
+
+        // سایر دکمه‌ها
         infoPanel.add(buttonSELECTDataLest);
 
-        JPanel panelSL=new JPanel();
-
+        JPanel panelSL = new JPanel();
         panelSL.add(buttonSaveGame);
         panelSL.add(buttonLoadGame);
 
         infoPanel.add(panelSL);
-
 
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
@@ -97,8 +107,8 @@ public class HUDPanel extends JPanel {
         buildStructuresButton.setEnabled(false);
         unitSelector.setEnabled(false);
         structureSelector.setEnabled(false);
+        levelUpButton.setEnabled(false); // غیرفعال کردن لول آپ هنگام پایان بازی
     }
-
 
     public void addLog(String message) {
         logArea.append(message + "\n");
@@ -128,20 +138,23 @@ public class HUDPanel extends JPanel {
         return buttonSELECTDataLest;
     }
 
-    public JButton getButtonSaveGame(){
+    public JButton getButtonSaveGame() {
         return buttonSaveGame;
     }
 
-    public JButton getButtonLoadGame(){
+    public JButton getButtonLoadGame() {
         return buttonLoadGame;
     }
 
-    public JLabel getTimerTurnEnd(){
+    public JLabel getTimerTurnEnd() {
         return TimerTurnEnd;
     }
 
-    public JLabel getTimerForget(){
+    public JLabel getTimerForget() {
         return TimerForget;
     }
 
+    public JButton getLevelUpButton() {
+        return levelUpButton;
+    }
 }
