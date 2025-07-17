@@ -19,13 +19,14 @@ public class HUDPanel extends JPanel {
     private final JButton buttonSaveGame;
     private final JButton buttonLoadGame;
     private final JButton levelUpButton;  // دکمه جدید لول آپ
+    private final JButton exitButton;
 
     public HUDPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(15, 1));  // افزایش تعداد ردیف‌ها
+        JPanel infoPanel = new JPanel(new GridLayout(16, 1));  // افزایش تعداد ردیف‌ها
 
         TimerTurnEnd = new JLabel("Your Turn : 30");
         TimerForget = new JLabel("Getting resources up : 15");
@@ -61,6 +62,8 @@ public class HUDPanel extends JPanel {
         buttonSELECTDataLest = new JButton("View All Machs");
         buttonSaveGame = new JButton("Save Game");
         buttonLoadGame = new JButton("Load Game");
+        exitButton = new JButton("Exit");
+
 
         // افزودن بخش انتخاب یونیت
         infoPanel.add(new JLabel("Select Unit:"));
@@ -83,7 +86,7 @@ public class HUDPanel extends JPanel {
         panelSL.add(buttonLoadGame);
 
         infoPanel.add(panelSL);
-
+        infoPanel.add(exitButton);
         logArea = new JTextArea(10, 20);
         logArea.setEditable(false);
         logArea.setLineWrap(true);

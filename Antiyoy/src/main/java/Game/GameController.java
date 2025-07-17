@@ -8,24 +8,31 @@ import Units.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Timer;
 
 public class GameController {
 
     private static final int MAX_UNIT_SPACE = 100;
     private final GamePanel gamePanel;
     private final HUDPanel hudPanel;
-    private  Player[] players;
+    private Player[] players;
     private Block selectedBlock = null;
     private int currentPlayerIndex = 0;
     private Unit selectedUnit = null;
     private Structures selectedStructures = null;
     private Block moveFromBlock = null;
     private boolean gameEnded = false;
-    private  javax.swing.Timer timer;
-    private int TimeForTurn=30;
-    private int TimeForGetGoldAndFoolPlayer=15;
+    private javax.swing.Timer timer;
+    private int TimeForTurn = 30;
+    private int TimeForGetGoldAndFoolPlayer = 15;
 
+
+    public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
+        this.gamePanel = gamePanel;
+        this.hudPanel = hudPanel;
+        this.players = players;
+        setupListeners();
+        updateHUD();
+    }
 
     private Unit createUnitByName(String unitName) {
         JLabel unitLabel = new JLabel();
@@ -163,14 +170,6 @@ public class GameController {
         updateHUD();
     }
 
-    public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
-        this.gamePanel = gamePanel;
-        this.hudPanel = hudPanel;
-        this.players = players;
-        setupListeners();
-        updateHUD();
-    }
-
     private void collectResources() {
         Player currentPlayer = players[currentPlayerIndex];
         int goldGain = 0;
@@ -197,6 +196,7 @@ public class GameController {
         currentPlayer.addFood(foodGain);
         hudPanel.addLog(currentPlayer.getName() + " collected " + goldGain + " gold and " + foodGain + " food.");
     }
+
     private void payUnitMaintenanceCost(Player player) {
         int totalGoldCost = 0;
         int totalFoodCost = 0;
@@ -253,20 +253,20 @@ public class GameController {
 
 
     public void endTurn() {
-            payUnitMaintenanceCost(getCurrentPlayer());
-            checkAndRemoveUnitsIfResourcesNegative(getCurrentPlayer());
-            activeMoveUnit(); // ریست فلگ moved یونیت‌ها
+        payUnitMaintenanceCost(getCurrentPlayer());
+        checkAndRemoveUnitsIfResourcesNegative(getCurrentPlayer());
+        activeMoveUnit(); // ریست فلگ moved یونیت‌ها
 
-            moveFromBlock = null;
-            if (selectedBlock != null) {
-                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-                selectedBlock = null;
-            }
-
-            currentPlayerIndex = 1 - currentPlayerIndex;
-            hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
-            updateHUD();
+        moveFromBlock = null;
+        if (selectedBlock != null) {
+            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+            selectedBlock = null;
         }
+
+        currentPlayerIndex = 1 - currentPlayerIndex;
+        hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
+        updateHUD();
+    }
 
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
@@ -425,17 +425,21 @@ public class GameController {
             return;
         }
         Unit attacker = fromBlock.getUnit();
-        Unit defender = toBlock.getUnit();
-
-        defender.setHealth(defender.getHealth() - attacker.getAttackPower());
-        if (defender.getHealth() <= 0&&!attacker.getMoved()) {
-            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
-            toBlock.setUnit(attacker);
-            toBlock.setOwner(getCurrentPlayer());
-            fromBlock.setUnit(null);
+        if (!attacker.getMoved()) {
+            Unit defender = toBlock.getUnit();
+            defender.setHealth(defender.getHealth() - attacker.getAttackPower());
             attacker.setMoved(true);
+            if (defender.getHealth() <= 0 && !attacker.getMoved()) {
+                hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
+                toBlock.setUnit(attacker);
+                toBlock.setOwner(getCurrentPlayer());
+                fromBlock.setUnit(null);
+                attacker.setMoved(true);
+            } else {
+                hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was attacked. \n" + "Health: " + defender.getHealth());
+            }
         } else {
-            hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was attacked. \n" + "Health: " + defender.getHealth());
+            JOptionPane.showMessageDialog(null, "Your unit has already made its move.");
         }
     }
 
@@ -445,21 +449,26 @@ public class GameController {
             return;
         }
         Unit attacker = fromBlock.getUnit();
-        Structures structure = toBlock.getStructure();
-
-        structure.setDurability(structure.getDurability() - attacker.getAttackPower());
-        if (structure.getDurability() <= 0) {
-            hudPanel.addLog(structure.getName() + " " + toBlock.getOwner().getName() + " destroyed.");
-            toBlock.setStructure(null);
-            toBlock.setOwner(getCurrentPlayer());
-            toBlock.setStructure(fromBlock.getStructure());
-            if (!checkIfGameEnded())
-            {fromBlock.setStructure(null);
-            attacker.setMoved(true);}
-//            checkIfGameEnded();
+        if (!attacker.getMoved()) {
+            Structures structure = toBlock.getStructure();
+            structure.setDurability(structure.getDurability() - attacker.getAttackPower());
+            attacker.setMoved(true);
+            if (structure.getDurability() <= 0) {
+                hudPanel.addLog(structure.getName() + " " + toBlock.getOwner().getName() + " destroyed.");
+                toBlock.setStructure(null);
+                toBlock.setOwner(getCurrentPlayer());
+                toBlock.setStructure(fromBlock.getStructure());
+                if (!checkIfGameEnded()) {
+                    fromBlock.setStructure(null);
+                    attacker.setMoved(true);
+                }
+            } else {
+                hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
+            }
         } else {
-            hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
+            JOptionPane.showMessageDialog(null, "Your unit has already made its move.");
         }
+
     }
 
     public boolean checkIfGameEnded() {
@@ -656,57 +665,57 @@ public class GameController {
     }
 
     public void handleBlockClick(Block block) {
-    if (selectedBlock != null) {
-        selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-    }
-    block.setBorder(new LineBorder(Color.BLACK, 5));
-    selectedBlock = block;
-
-    if (moveFromBlock == null) {
-        if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-            moveFromBlock = block;
-            hudPanel.addLog("📦 Selected unit block for movement, merging, and attack");
+        if (selectedBlock != null) {
+            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
         }
-    } else {
-        if (block != moveFromBlock) {
-            Unit unit = moveFromBlock.getUnit();
-            if (unit != null && unit.canMove(moveFromBlock.getGridX(), moveFromBlock.getGridY(), block.getGridX(), block.getGridY())) {
-                if (block.getOwner() == getCurrentPlayer() || block.getOwner() == null) {
-                    if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
-                        if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
-                            unitMerge(moveFromBlock, block);
-                            moveFromBlock = null;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");
-                            // moveFromBlock = null; // اختیاریه: بسته به UX
-                        }
-                    } else if (block.getUnit() == null) {
-                        moveUnit(moveFromBlock, block, unit);
-                        moveFromBlock = null;
-                    }
-                } else {
-                    if (block.getUnit() != null) {
-                        attackUnitToUnit(moveFromBlock, block);
-                        moveFromBlock = null;
-                    } else if (block.getStructure() != null) {
-                        attackUnitToStructure(moveFromBlock, block);
-                        moveFromBlock = null;
-                    } else if (block.getOwner()==getOpponentPlayer()) {
-                        moveUnit(moveFromBlock, block, unit);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Error");
-                        // moveFromBlock = null; // اختیاریه
-                    }
-                }
+        block.setBorder(new LineBorder(Color.BLACK, 5));
+        selectedBlock = block;
 
-            } else {
-                JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
-                // moveFromBlock = null; // اختیاریه
+        if (moveFromBlock == null) {
+            if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+                moveFromBlock = block;
+                hudPanel.addLog("📦 Selected unit block for movement, merging, and attack");
             }
         } else {
-            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
-            moveFromBlock = null;
+            if (block != moveFromBlock) {
+                Unit unit = moveFromBlock.getUnit();
+                if (unit != null && unit.canMove(moveFromBlock.getGridX(), moveFromBlock.getGridY(), block.getGridX(), block.getGridY())) {
+                    if (block.getOwner() == getCurrentPlayer() || block.getOwner() == null) {
+                        if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
+                            if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
+                                unitMerge(moveFromBlock, block);
+                                moveFromBlock = null;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");
+                                // moveFromBlock = null; // اختیاریه: بسته به UX
+                            }
+                        } else if (block.getUnit() == null) {
+                            moveUnit(moveFromBlock, block, unit);
+                            moveFromBlock = null;
+                        }
+                    } else {
+                        if (block.getUnit() != null) {
+                            attackUnitToUnit(moveFromBlock, block);
+                            moveFromBlock = null;
+                        } else if (block.getStructure() != null) {
+                            attackUnitToStructure(moveFromBlock, block);
+                            moveFromBlock = null;
+                        } else if (block.getOwner() == getOpponentPlayer()) {
+                            moveUnit(moveFromBlock, block, unit);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error");
+                            // moveFromBlock = null; // اختیاریه
+                        }
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
+                    // moveFromBlock = null; // اختیاریه
+                }
+            } else {
+                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                moveFromBlock = null;
+            }
         }
     }
-}
 }
