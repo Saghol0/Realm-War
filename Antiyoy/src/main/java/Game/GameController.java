@@ -28,7 +28,7 @@ public class GameController {
     private boolean gameEnded = false;
     private javax.swing.Timer timer;
     private int TimeForTurn = 30;
-    private int TimeForGetGoldAndFoolPlayer = 15;
+    private int TimeForGetGoldAndFoolPlayer = 10;
     private int TimeEndGame=0;
     private GameSandL gameSandL;
     private GameData gameData;
@@ -573,7 +573,7 @@ public class GameController {
         this.refreshBlockListeners();
         currentPlayerIndex = gameSandL.getNoBat();
         TimeEndGame=gameSandL.TimeGame();
-        TimeForGetGoldAndFoolPlayer = 15;
+        TimeForGetGoldAndFoolPlayer = 10;
         TimeForTurn = 30;
         updateHUD();
     }
@@ -581,7 +581,7 @@ public class GameController {
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> {
-            TimeForGetGoldAndFoolPlayer = 15;
+            TimeForGetGoldAndFoolPlayer = 10;
             TimeForTurn = 30;
             hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
             hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn);
@@ -696,7 +696,7 @@ public class GameController {
             this.refreshBlockListeners();
             currentPlayerIndex = gameSandL.getNoBat();
             TimeEndGame=gameSandL.TimeGame();
-            TimeForGetGoldAndFoolPlayer = 15;
+            TimeForGetGoldAndFoolPlayer = 10;
             TimeForTurn = 30;
             updateHUD();
         });
@@ -714,11 +714,11 @@ public class GameController {
             if (TimeForGetGoldAndFoolPlayer == 0) {
                 collectResources();
                 updateHUD();
-                TimeForGetGoldAndFoolPlayer = 15;
+                TimeForGetGoldAndFoolPlayer = 10;
             }
 
             if (TimeForTurn < 0) {
-                TimeForGetGoldAndFoolPlayer = 15;
+                TimeForGetGoldAndFoolPlayer = 10;
                 endTurn();
                 TimeForTurn = 30;
                 hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn);
