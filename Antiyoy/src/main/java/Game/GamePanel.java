@@ -8,6 +8,7 @@ import Structure.TownHall;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GamePanel extends JPanel {
     public final int SIZE = 10;
@@ -67,12 +68,9 @@ public class GamePanel extends JPanel {
         return SIZE;
     }
 
-    public void loadGame(Block[][] blocks) {
+    public void loadGame(Block[][] blocks, List<Player> playerList) {
         this.block = blocks;
-        this.players = new Player[]{
-                blocks[0][0].getOwner(),
-                blocks[9][9].getOwner()
-        };
+        this.players = playerList.toArray(new Player[0]);
         removeAll();
 
         JPanel gridPanel = new JPanel();
@@ -84,9 +82,13 @@ public class GamePanel extends JPanel {
                 if (b.getOwner() != null) {
                     if (b.getOwner().getName().equals(blocks[0][0].getOwner().getName())) {
                         b.setOwner(blocks[0][0].getOwner());
-                    }
+                    }else
                     if (b.getOwner().getName().equals(blocks[9][9].getOwner().getName())) {
                         b.setOwner(blocks[9][9].getOwner());
+                    }else if (b.getOwner().getName().equals(blocks[0][9].getOwner().getName())) {
+                        b.setOwner(blocks[0][9].getOwner());
+                    }else if (b.getOwner().getName().equals(blocks[9][0].getOwner().getName())) {
+                        b.setOwner(blocks[9][0].getOwner());
                     }
                 }
 

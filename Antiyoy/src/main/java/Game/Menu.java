@@ -83,7 +83,7 @@ public class Menu extends JFrame {
 
         newGameBtn.addActionListener(e -> cardLayout.show(mainPanel, "gameSelectorPanel"));
         loadGameBtn.addActionListener(e -> {
-//            GameFrame gameFrame = new GameFrame();
+        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)});
             gameFrame.getGamePanel().getController().loadGameForMenu();
             dispose();
         });
