@@ -73,19 +73,16 @@ public class GameController {
         }
     }
 
-    // بررسی می‌کند که آیا بلوک انتخاب شده در فاصله 1 بلوک از بلوک‌های متعلق به بازیکن است یا نه
     private boolean isAdjacentToOwnedBlock(Player player, Block block) {
         int x = block.getGridX();
         int y = block.getGridY();
 
-        // پیمایش همسایه‌ها (8 جهت اطراف)
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 if (dx == 0 && dy == 0) continue;
                 int nx = x + dx;
                 int ny = y + dy;
 
-                // بررسی محدوده گرید
                 if (nx >= 0 && nx < gamePanel.SIZE && ny >= 0 && ny < gamePanel.SIZE) {
                     Block neighbor = gamePanel.getBlock(nx, ny);
                     if (neighbor.getOwner() == player) {
@@ -263,7 +260,7 @@ public class GameController {
     public void endTurn() {
         payUnitMaintenanceCost(getCurrentPlayer());
         checkAndRemoveUnitsIfResourcesNegative(getCurrentPlayer());
-        activeMoveUnit(); // ریست فلگ moved یونیت‌ها
+        activeMoveUnit();
 
         moveFromBlock = null;
         if (selectedBlock != null) {
@@ -333,7 +330,6 @@ public class GameController {
             return;
         }
 
-        // اضافه کردن چک نزدیکی به تاور حریف برای یونیت های با رنک کمتر از 3
         if (unit.rank < 3 && isNearEnemyTower(toBlock, getCurrentPlayer())) {
             hudPanel.addLog("❌ Units with rank less than 3 cannot move adjacent to enemy Towers.");
             return;
