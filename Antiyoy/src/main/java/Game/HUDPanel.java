@@ -62,7 +62,7 @@ public class HUDPanel extends JPanel {
         endTurnButton = new JButton("End Turn");
         buildStructuresButton = new JButton("Build Structures");
         buildUnitButton = new JButton("Build Units");
-        levelUpButton = new JButton("Level Up");  // مقداردهی دکمه لول آپ
+        levelUpButton = new JButton("Level Up");
 
         buttonSELECTDataLest = new JButton("View All Machs");
         buttonSaveGame = new JButton("Save Game");

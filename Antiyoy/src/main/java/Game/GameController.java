@@ -765,9 +765,26 @@ public class GameController {
                 return;
             }
 
-            structure.levelUp();
-            hudPanel.updatePlayerInfo(getCurrentPlayer().getName(), getCurrentPlayer().getGold(), getCurrentPlayer().getFood(), getCurrentPlayer().getUsedUnitSpace(), getCurrentPlayer().getMaxUnitSpace());
+            if (structure instanceof Barrack) {
+                Barrack barrack = (Barrack) structure;
+                int before = barrack.getUnitSpace();
+                barrack.levelUp();
+                int after = barrack.getUnitSpace();
+                int diff = after - before;
+                getCurrentPlayer().addMaxUnitSpace(diff);
+            } else {
+                structure.levelUp();
+            }
+
+            hudPanel.updatePlayerInfo(
+                    getCurrentPlayer().getName(),
+                    getCurrentPlayer().getGold(),
+                    getCurrentPlayer().getFood(),
+                    getCurrentPlayer().getUsedUnitSpace(),
+                    getCurrentPlayer().getMaxUnitSpace()
+            );
             hudPanel.addLog("🔺 Structure " + structure.getName() + " upgraded to level " + structure.getLevel() + ".");
+            updateHUD();
         });
     }
 
