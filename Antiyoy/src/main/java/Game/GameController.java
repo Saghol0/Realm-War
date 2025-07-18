@@ -32,6 +32,7 @@ public class GameController {
     private int TimeEndGame=0;
     private GameSandL gameSandL;
     private GameData gameData;
+    private int end;
 
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
@@ -454,10 +455,10 @@ public class GameController {
     }
 
     public void attackUnitToStructure(Block fromBlock, Block toBlock) {
-        if (gameEnded) {
-            hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
-            return;
-        }
+        //if (gameEnded) {
+       //     hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
+        //    return;
+       // }
         Unit attacker = fromBlock.getUnit();
         if (!attacker.getMoved()) {
             Structures structure = toBlock.getStructure();
@@ -468,9 +469,24 @@ public class GameController {
                 toBlock.setStructure(null);
                 toBlock.setOwner(getCurrentPlayer());
                 toBlock.setStructure(fromBlock.getStructure());
-                if (!checkIfGameEnded()) {
-                    fromBlock.setStructure(null);
-                    attacker.setMoved(true);
+             //   if (!checkIfGameEnded()) {
+             //       fromBlock.setStructure(null);
+              //      attacker.setMoved(true);
+             //   }
+                if(EndGmae()){
+                    timer.stop();
+                    if(players.length==4) {
+                        gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName(), players[currentPlayerIndex].getName(), TimeEndGame);
+                    }else if(players.length==3){
+                        gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), "null", players[currentPlayerIndex].getName(), TimeEndGame);
+                    }else gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
+                    hudPanel.addLog("🎉 " + players[currentPlayerIndex].getName() + " won the game! Enemy Town Hall has been captured.");
+                    JOptionPane.showMessageDialog(null, players[currentPlayerIndex].getName() + " won the game!");
+                    gameSandL.EndGame();
+                    gameEnded = true;
+                    hudPanel.disableInteractionAfterGameEnd();
+                    hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
+                    return;
                 }
             } else {
                 hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
@@ -510,6 +526,35 @@ public class GameController {
         return false;
 
     }
+
+
+    public boolean EndGmae() {
+        end = 0;
+        if(gamePanel.getBlock(0,0).getStructure()!=null) {
+            if (gamePanel.getBlock(0, 0).getStructure().getName().equals("Town Hall")) {
+                end++;
+            }
+        }
+        if(gamePanel.getBlock(9,9).getStructure()!=null) {
+            if (gamePanel.getBlock(9, 9).getStructure().getName().equals("Town Hall")) {
+                end++;
+            }
+        }
+        if(gamePanel.getBlock(9,0).getStructure()!=null) {
+            if (gamePanel.getBlock(9, 0).getStructure().getName().equals("Town Hall")) {
+                end++;
+            }
+        }
+        if(gamePanel.getBlock(0,9).getStructure()!=null) {
+            if (gamePanel.getBlock(0, 9).getStructure().getName().equals("Town Hall")) {
+                end++;
+            }
+        }
+        System.out.println(end);
+        return end==1;
+    }
+
+
 
     public void refreshBlockListeners() {
         for (int i = 0; i < gamePanel.getSIZE(); i++) {
