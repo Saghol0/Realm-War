@@ -463,11 +463,8 @@ public class GameController {
     }
 
     public void attackUnitToStructure(Block fromBlock, Block toBlock) {
-        //if (gameEnded) {
-       //     hudPanel.addLog("⚠️ Game has ended. No more attacks allowed.");
-        //    return;
-       // }
         Unit attacker = fromBlock.getUnit();
+
         if (!attacker.getMoved()) {
             Structures structure = toBlock.getStructure();
             structure.setDurability(structure.getDurability() - attacker.getAttackPower());
@@ -477,11 +474,7 @@ public class GameController {
                 toBlock.setStructure(null);
                 toBlock.setOwner(getCurrentPlayer());
                 toBlock.setUnit(fromBlock.getUnit());
-
-             //   if (!checkIfGameEnded()) {
-             //       fromBlock.setStructure(null);
-              //      attacker.setMoved(true);
-             //   }
+                fromBlock.setUnit(null);
 
                 if(EndGmae()){
                     timer.stop();
@@ -503,7 +496,7 @@ public class GameController {
 
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Your unit has already made its move.");
+            hudPanel.addLog("⚠️ Your unit has already made its move.");
         }
 
     }
