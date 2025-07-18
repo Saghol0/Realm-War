@@ -468,11 +468,13 @@ public class GameController {
                 hudPanel.addLog(structure.getName() + " " + toBlock.getOwner().getName() + " destroyed.");
                 toBlock.setStructure(null);
                 toBlock.setOwner(getCurrentPlayer());
-                toBlock.setStructure(fromBlock.getStructure());
+                toBlock.setUnit(fromBlock.getUnit());
+
              //   if (!checkIfGameEnded()) {
              //       fromBlock.setStructure(null);
               //      attacker.setMoved(true);
              //   }
+
                 if(EndGmae()){
                     timer.stop();
                     if(players.length==4) {
@@ -490,6 +492,7 @@ public class GameController {
                 }
             } else {
                 hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
+
             }
         } else {
             JOptionPane.showMessageDialog(null, "Your unit has already made its move.");
