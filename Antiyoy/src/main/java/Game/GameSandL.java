@@ -70,7 +70,8 @@ import java.util.Map;
                  "Name VARCHAR(85) NOT NULL ,"+
                  "Gold INT NOT NULL ,"+
                  "Food INT NOT NULL ,"+
-                 "UnitSpace INT NOT NULL ,"+
+                 "UsedUnitSpace INT NOT NULL ,"+
+                 "MaxUnitSpace INT NOT NULL ,"+
                  "Color INT NOT NULL )";
 
          String SQLStructures = "CREATE TABLE IF NOT EXISTS Structures ("+
@@ -91,9 +92,8 @@ import java.util.Map;
                  "movementRange INT NOT NULL ,"+
                  "CostGold INT NOT NULL ,"+
                  "CostFood INT NOT NULL ,"+
-                 "UsedUnitSpace INT NOT NULL ," +
-                 "MaxUnitSpace INT NOT NULL ," +
-         "Image VARCHAR(150) NOT NULL ,"+
+                 "UnitSpace INT NOT NULL ," +
+                 "Image VARCHAR(150) NOT NULL ,"+
                  "Moved BOOLEAN  ,"+
                  "health INT NOT NULL ,"+
                  "attackPower INT NOT NULL )";
