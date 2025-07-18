@@ -785,8 +785,8 @@ public class GameController {
         if (selectedBlock != null) {
             selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
         }
-        block.setBorder(new LineBorder(Color.BLACK, 5));
         selectedBlock = block;
+        block.setBorder(new LineBorder(Color.BLACK, 5));
 
         if (moveFromBlock == null) {
             if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
@@ -802,23 +802,35 @@ public class GameController {
                             if (moveFromBlock.getUnit().getName().equals(block.getUnit().getName())) {
                                 unitMerge(moveFromBlock, block);
                                 moveFromBlock = null;
+                                selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                                selectedBlock = null;
                             } else {
-                                JOptionPane.showMessageDialog(null, "You can't put it on that block because it's a unit.");
+                                hudPanel.addLog("❌ You can't place different units on the same block.");
+                                SwingUtilities.invokeLater(() -> handleBlockClick(moveFromBlock));
                                 // moveFromBlock = null; // اختیاریه: بسته به UX
                             }
                         } else if (block.getUnit() == null) {
                             moveUnit(moveFromBlock, block, unit);
                             moveFromBlock = null;
+                            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                            selectedBlock = null;
                         }
                     } else {
                         if (block.getUnit() != null) {
                             attackUnitToUnit(moveFromBlock, block);
                             moveFromBlock = null;
+                            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                            selectedBlock = null;
                         } else if (block.getStructure() != null) {
                             attackUnitToStructure(moveFromBlock, block);
                             moveFromBlock = null;
+                            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                            selectedBlock = null;
                         } else if (block.getOwner() == getOpponentPlayer()) {
                             moveUnit(moveFromBlock, block, unit);
+                            moveFromBlock = null;
+                            selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                            selectedBlock = null;
                         } else {
                             JOptionPane.showMessageDialog(null, "Error");
                             // moveFromBlock = null; // اختیاریه
@@ -826,11 +838,12 @@ public class GameController {
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Sorry, the selected block is out of range.");
-                    // moveFromBlock = null; // اختیاریه
+                    hudPanel.addLog("❌ Sorry, the selected block is out of range.");
+                    SwingUtilities.invokeLater(() -> handleBlockClick(moveFromBlock));
                 }
             } else {
                 selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
+                selectedBlock = null;
                 moveFromBlock = null;
             }
         }

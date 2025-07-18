@@ -1,9 +1,12 @@
 package Units;
 
+import Game.HUDPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public abstract class Unit extends Component {
+    private HUDPanel hudPanel;
     protected String name;
     public int rank;
     protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
@@ -27,10 +30,14 @@ public abstract class Unit extends Component {
 
     // --- قابلیت حرکت ---
     public boolean canMove(int fromX, int fromY, int toX, int toY) {
-        if (moved)
-        {
-            JOptionPane.showMessageDialog(null,"Your unit cannot move because it has already moved once.");
-            return false;}
+        if (moved) {
+            if (hudPanel != null) {
+                hudPanel.addLog("⚠️ Your unit cannot move because it has already moved.");
+            } else {
+                System.out.println("⚠️ Your unit cannot move because it has already moved.");
+            }
+            return false;
+        }
         int dx = Math.abs(toX - fromX);
         int dy = Math.abs(toY - fromY);
         return dx + dy <= movementRange; // Manhattan distance
@@ -115,5 +122,9 @@ public abstract class Unit extends Component {
 
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
+    }
+
+    public void setHudPanel(HUDPanel hudPanel) {
+        this.hudPanel = hudPanel;
     }
 }
