@@ -440,7 +440,7 @@ public class GameController {
             Unit defender = toBlock.getUnit();
             defender.setHealth(defender.getHealth() - attacker.getAttackPower());
             attacker.setMoved(true);
-            if (defender.getHealth() <= 0 && !attacker.getMoved()) {
+            if (defender.getHealth() <= 0 ) {
                 hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
                 toBlock.setUnit(attacker);
                 toBlock.setOwner(getCurrentPlayer());
