@@ -268,7 +268,7 @@ import java.util.Map;
                         new Color(rsP.getInt("Color"), true),
                         rsP.getInt("Gold"),
                         rsP.getInt("Food"),
-                        rsP.getInt("UnitSpace"),
+                        rsP.getInt("UsedUnitSpace"),
                         rsP.getInt("MaxUnitSpace")
                 );
                 playerMap.put(id, player);
