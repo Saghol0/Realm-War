@@ -110,7 +110,7 @@ public class HUDPanel extends JPanel {
         buildStructuresButton.setEnabled(false);
         unitSelector.setEnabled(false);
         structureSelector.setEnabled(false);
-        levelUpButton.setEnabled(false); // غیرفعال کردن لول آپ هنگام پایان بازی
+        levelUpButton.setEnabled(false); 
     }
 
     public void addLog(String message) {

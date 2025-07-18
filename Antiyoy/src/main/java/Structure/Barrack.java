@@ -9,7 +9,7 @@ public class Barrack extends Structures {
 
     public Barrack() {
         super("Barrack", 100, 5, 1, 3, loadImage(),15);
-        this.unitSpace = 2;
+        this.unitSpace = 5;
     }
 
     public static Image loadImage() {
