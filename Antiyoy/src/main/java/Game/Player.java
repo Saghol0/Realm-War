@@ -4,11 +4,11 @@ import Units.Unit;
 import java.awt.*;
 
 public class Player {
-    private final String name;
+    private String name;
     private int gold;
     private int food;
     private int unitSpace;
-    private final Color color;
+    private Color color;
     //    private List <Unit> units;
     public Player(String name, Color color) {
         this.name = name;
@@ -85,6 +85,11 @@ public class Player {
     public void setUnitSpace(int u){
         this.unitSpace=u;
     }
-
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    public void setName(String name){
+        this.name=name;
+    }
 
 }

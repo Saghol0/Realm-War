@@ -1,8 +1,7 @@
 package Game;
 
 import Blocks.Block;
-import Structure.Structures;
-import Structure.Tower;
+import Structure.*;
 import Units.*;
 
 import javax.swing.*;
@@ -62,13 +61,13 @@ public class GameController {
     private Structures createStructureByName(String structureName) {
         switch (structureName) {
             case "Farm":
-                return new Structure.Farm();
+                return new Farm();
             case "Market":
-                return new Structure.Market();
+                return new Market();
             case "Tower":
-                return new Structure.Tower();
+                return new Tower();
             case "Barrack":
-                return new Structure.Barrack();
+                return new Barrack();
             default:
                 return null;
         }
@@ -272,7 +271,7 @@ public class GameController {
             selectedBlock = null;
         }
 
-        currentPlayerIndex = 1 - currentPlayerIndex;
+        currentPlayerIndex=(currentPlayerIndex+1)%players.length;
         hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
         updateHUD();
     }
@@ -634,6 +633,7 @@ public class GameController {
             TimeForTurn = 30;
             updateHUD();
         });
+
 
         // تایمر نوبت و منابع
         timer = new javax.swing.Timer(1000, _ -> {

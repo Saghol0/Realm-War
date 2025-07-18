@@ -21,6 +21,8 @@ public class HUDPanel extends JPanel {
     private final JButton levelUpButton;  // دکمه جدید لول آپ
     private final JButton exitButton;
 
+
+
     public HUDPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(280, 640));
@@ -63,7 +65,6 @@ public class HUDPanel extends JPanel {
         buttonSaveGame = new JButton("Save Game");
         buttonLoadGame = new JButton("Load Game");
         exitButton = new JButton("Exit");
-
 
         // افزودن بخش انتخاب یونیت
         infoPanel.add(new JLabel("Select Unit:"));
@@ -117,6 +118,7 @@ public class HUDPanel extends JPanel {
         logArea.append(message + "\n");
     }
 
+
     public JButton getEndTurnButton() {
         return endTurnButton;
     }
@@ -159,5 +161,8 @@ public class HUDPanel extends JPanel {
 
     public JButton getLevelUpButton() {
         return levelUpButton;
+    }
+    public JButton getExitButton() {
+        return exitButton;
     }
 }
