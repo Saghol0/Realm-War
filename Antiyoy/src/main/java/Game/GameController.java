@@ -11,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
 
@@ -522,15 +524,36 @@ public class GameController {
 
     public void loadGameForMenu(){
         Block[][] blocks = gameSandL.LoadGame(gamePanel.getBlocks());
-        gamePanel.loadGame(blocks);
+
+        List<Player> playerList=new ArrayList<>();
+        if (blocks[0][0].getStructure()!=null) {
+            if (blocks[0][0].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[0][0].getOwner());
+            }
+        }
+        if (blocks[9][9].getStructure()!=null) {
+            if (blocks[9][9].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[9][9].getOwner());
+            }
+        }
+        if (blocks[0][9].getStructure()!=null) {
+            if (blocks[0][9].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[0][9].getOwner());
+            }
+        }
+        if (blocks[9][0].getStructure()!=null) {
+            if (blocks[9][0].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[9][0].getOwner());
+            }
+        }
+        this.players = playerList.toArray(new Player[0]);
+
+        gamePanel.loadGame(blocks,playerList);
         gamePanel.setHudPanel(hudPanel);
         gamePanel.setController(this);
-        this.players = new Player[]{
-                blocks[0][0].getOwner(),
-                blocks[9][9].getOwner()
-        };
+
         this.refreshBlockListeners();
-        currentPlayerIndex = (gameSandL.getNoBat() > 0) ? 1 : 0;
+        currentPlayerIndex = gameSandL.getNoBat();
         TimeEndGame=gameSandL.TimeGame();
         TimeForGetGoldAndFoolPlayer = 15;
         TimeForTurn = 30;
@@ -540,7 +563,7 @@ public class GameController {
 
     private void setupListeners() {
         hudPanel.getEndTurnButton().addActionListener(e -> {
-            TimeForGetGoldAndFoolPlayer = 3;
+            TimeForGetGoldAndFoolPlayer = 15;
             TimeForTurn = 30;
             hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
             hudPanel.getTimerTurnEnd().setText("Your Turn : " + TimeForTurn);
@@ -619,15 +642,36 @@ public class GameController {
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
             Block[][] blocks = gameSandL.LoadGame(gamePanel.getBlocks());
-            gamePanel.loadGame(blocks);
+
+            List<Player> playerList=new ArrayList<>();
+            if (blocks[0][0].getStructure()!=null) {
+                if (blocks[0][0].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[0][0].getOwner());
+                }
+            }
+            if (blocks[9][9].getStructure()!=null) {
+                if (blocks[9][9].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[9][9].getOwner());
+                }
+            }
+            if (blocks[0][9].getStructure()!=null) {
+                if (blocks[0][9].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[0][9].getOwner());
+                }
+            }
+            if (blocks[9][0].getStructure()!=null) {
+                if (blocks[9][0].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[9][0].getOwner());
+                }
+            }
+            this.players = playerList.toArray(new Player[0]);
+
+            gamePanel.loadGame(blocks,playerList);
             gamePanel.setHudPanel(hudPanel);
             gamePanel.setController(this);
-            this.players = new Player[]{
-                    blocks[0][0].getOwner(),
-                    blocks[9][9].getOwner()
-            };
+
             this.refreshBlockListeners();
-            currentPlayerIndex = (gameSandL.getNoBat() > 0) ? 1 : 0;
+            currentPlayerIndex = gameSandL.getNoBat();
             TimeEndGame=gameSandL.TimeGame();
             TimeForGetGoldAndFoolPlayer = 15;
             TimeForTurn = 30;
