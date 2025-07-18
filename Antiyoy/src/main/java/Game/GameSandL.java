@@ -57,77 +57,78 @@ import java.util.Map;
 
     }
 
-    public void CreateTableSaveGame(){
-        String SQLBlock = "CREATE TABLE IF NOT EXISTS Block(" +
-                "ID SERIAL PRIMARY KEY ,"+
-                "X INT NOT NULL ,"+
-                "Y INT NOT NULL ,"+
-                "Name VARCHAR(85) NOT NULL,"+
-                "Color INT NOT NULL )";
+     public void CreateTableSaveGame(){
+         String SQLBlock = "CREATE TABLE IF NOT EXISTS Block(" +
+                 "ID SERIAL PRIMARY KEY ,"+
+                 "X INT NOT NULL ,"+
+                 "Y INT NOT NULL ,"+
+                 "Name VARCHAR(85) NOT NULL,"+
+                 "Color INT NOT NULL )";
 
-        String SQLPlayer=  "CREATE TABLE IF NOT EXISTS Player ("+
-                "ID INT NOT NULL ,"+
-                "Name VARCHAR(85) NOT NULL ,"+
-                "Gold INT NOT NULL ,"+
-                "Food INT NOT NULL ,"+
-                "UnitSpace INT NOT NULL ,"+
-                "Color INT NOT NULL )";
+         String SQLPlayer=  "CREATE TABLE IF NOT EXISTS Player ("+
+                 "ID INT NOT NULL ,"+
+                 "Name VARCHAR(85) NOT NULL ,"+
+                 "Gold INT NOT NULL ,"+
+                 "Food INT NOT NULL ,"+
+                 "UnitSpace INT NOT NULL ,"+
+                 "Color INT NOT NULL )";
 
-        String SQLStructures = "CREATE TABLE IF NOT EXISTS Structures ("+
-                "ID INT NOT NULL ,"+
-                "Name VARCHAR(85) NOT NULL ,"+
-                "durability INT NOT NULL ,"+
-                "maintenanceCost INT NOT NULL ,"+
-                "level INT NOT NULL ,"+
-                "maxLevel INT NOT NULL ,"+
-                "Image VARCHAR(150) NOT NULL ,"+
-                "buildCost INT NOT NULL ,"+
-                "health INT  )  ";
+         String SQLStructures = "CREATE TABLE IF NOT EXISTS Structures ("+
+                 "ID INT NOT NULL ,"+
+                 "Name VARCHAR(85) NOT NULL ,"+
+                 "durability INT NOT NULL ,"+
+                 "maintenanceCost INT NOT NULL ,"+
+                 "level INT NOT NULL ,"+
+                 "maxLevel INT NOT NULL ,"+
+                 "Image VARCHAR(150) NOT NULL ,"+
+                 "buildCost INT NOT NULL ,"+
+                 "health INT  )  ";
 
-        String SQLUnit ="CREATE TABLE IF NOT  EXISTS Unit (" +
-                "ID INT NOT NULL ,"+
-                "Name VARCHAR(85) NOT NULL ,"+
-                "Rank INT NOT NULL ,"+
-                "movementRange INT NOT NULL ,"+
-                "CostGold INT NOT NULL ,"+
-                "CostFood INT NOT NULL ,"+
-                "UnitSpace INT NOT NULL ," +
-                "Image VARCHAR(150) NOT NULL ,"+
-                "Moved BOOLEAN  ,"+
-                "health INT NOT NULL ,"+
-                "attackPower INT NOT NULL )";
+         String SQLUnit ="CREATE TABLE IF NOT  EXISTS Unit (" +
+                 "ID INT NOT NULL ,"+
+                 "Name VARCHAR(85) NOT NULL ,"+
+                 "Rank INT NOT NULL ,"+
+                 "movementRange INT NOT NULL ,"+
+                 "CostGold INT NOT NULL ,"+
+                 "CostFood INT NOT NULL ,"+
+                 "UsedUnitSpace INT NOT NULL ," +
+                 "MaxUnitSpace INT NOT NULL ," +
+         "Image VARCHAR(150) NOT NULL ,"+
+                 "Moved BOOLEAN  ,"+
+                 "health INT NOT NULL ,"+
+                 "attackPower INT NOT NULL )";
 
-        String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(" +
-                "NoBat INT NOT NULL, "+
-                "TimeGame INT NOT NULL) ";
-
-
-
-        try{
-            Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
-            Statement Stmt=conn.createStatement();
-            Stmt.execute(SQLBlock);
-            Stmt.execute(SQLPlayer);
-            Stmt.execute(SQLStructures);
-            Stmt.execute(SQLUnit);
-            Stmt.execute(SQLGameController);
-            hudPanel.addLog("..CREATE save TABLE..");
-            try{
-                BufferedWriter riter= new BufferedWriter(new FileWriter(file,true));
-                riter.write("..CREATE save TABLE..");
-                riter.newLine();
-                riter.close();
-                hudPanel.addLog("..CREATE save TABLE to File..");
-            }catch (IOException e){
-                hudPanel.addLog("ERROR CREATE FILE:"+ e.getMessage());
-            }
-        }catch (SQLException e){
-            hudPanel.addLog("ERROR CREATE Save:" + e.getMessage());
-        }
-    }
+         String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(" +
+                 "NoBat INT NOT NULL, "+
+                 "TimeGame INT NOT NULL) ";
 
 
-    public Image StringtoImage(String s){
+
+         try{
+             Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+             Statement Stmt=conn.createStatement();
+             Stmt.execute(SQLBlock);
+             Stmt.execute(SQLPlayer);
+             Stmt.execute(SQLStructures);
+             Stmt.execute(SQLUnit);
+             Stmt.execute(SQLGameController);
+             hudPanel.addLog("..CREATE save TABLE..");
+             try{
+                 BufferedWriter riter= new BufferedWriter(new FileWriter(file,true));
+                 riter.write("..CREATE save TABLE..");
+                 riter.newLine();
+                 riter.close();
+                 hudPanel.addLog("..CREATE save TABLE to File..");
+             }catch (IOException e){
+                 hudPanel.addLog("ERROR CREATE FILE:"+ e.getMessage());
+             }
+         }catch (SQLException e){
+             hudPanel.addLog("ERROR CREATE Save:" + e.getMessage());
+         }
+     }
+
+
+     public Image StringtoImage(String s){
         switch (s){
             case "Farm": return Farm.loadImage() ;
             case "Barrack": return Barrack.loadImage();
@@ -142,10 +143,9 @@ import java.util.Map;
         }
     }
 
-
     public void SaveGame(Block[][] b, int SIZE,int NoBat,int timeGame){
         String SQLBlack="INSERT INTO Block(X,Y,Name,Color) VALUES (?,?,?,?) RETURNING ID";
-        String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UnitSpace,Color) VALUES (?,?,?,?,?,?) ";
+        String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UsedUnitSpace,MaxUnitSpace,Color) VALUES (?,?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
         String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
@@ -189,8 +189,9 @@ import java.util.Map;
                         PstmtP.setString(2, block.getOwner().getName());
                         PstmtP.setInt(3, block.getOwner().getGold());
                         PstmtP.setInt(4, block.getOwner().getFood());
-                        PstmtP.setInt(5, block.getOwner().getUnitSpace());
-                        PstmtP.setInt(6, (block.getOwner().getColor()).getRGB());
+                        PstmtP.setInt(5, block.getOwner().getUsedUnitSpace());
+                        PstmtP.setInt(6, block.getOwner().getMaxUnitSpace());
+                        PstmtP.setInt(7, block.getOwner().getColor().getRGB());
                         PstmtP.executeUpdate();
                     }
 
@@ -267,7 +268,8 @@ import java.util.Map;
                         new Color(rsP.getInt("Color"), true),
                         rsP.getInt("Gold"),
                         rsP.getInt("Food"),
-                        rsP.getInt("UnitSpace")
+                        rsP.getInt("UnitSpace"),
+                        rsP.getInt("MaxUnitSpace")
                 );
                 playerMap.put(id, player);
             }

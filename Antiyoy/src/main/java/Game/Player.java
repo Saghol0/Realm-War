@@ -1,5 +1,4 @@
 package Game;
-import Units.Unit;
 
 import java.awt.*;
 
@@ -7,38 +6,41 @@ public class Player {
     private String name;
     private int gold;
     private int food;
-    private int unitSpace;
+    private int usedUnitSpace;
+    private int maxUnitSpace;
     private Color color;
-    //    private List <Unit> units;
+
     public Player(String name, Color color) {
         this.name = name;
         this.color = color;
         this.gold = 50;
         this.food = 25;
-        this.unitSpace = 0;
+        this.usedUnitSpace = 0;
+        this.maxUnitSpace = 0;
     }
 
-    public Player(String name,Color Color,int Gold,int Food,int UnitSpace){
-        this.name=name;
-        this.color = Color;
-        this.gold=Gold;
-        this.food=Food;
-        this.unitSpace=UnitSpace;
+    public Player(String name, Color color, int gold, int food, int usedUnitSpace, int maxUnitSpace) {
+        this.name = name;
+        this.color = color;
+        this.gold = gold;
+        this.food = food;
+        this.usedUnitSpace = usedUnitSpace;
+        this.maxUnitSpace = maxUnitSpace;
     }
 
     // --- Getters ---
     public String getName() { return name; }
     public int getGold() { return gold; }
     public int getFood() { return food; }
-    public int getUnitSpace() { return unitSpace; }
+    public int getUsedUnitSpace() { return usedUnitSpace; }
+    public int getMaxUnitSpace() { return maxUnitSpace; }
     public Color getColor() { return color; }
 
-    // --- Add resources ---
+    // --- Resource Modification ---
     public void addGold(int amount) { gold += amount; }
     public void addFood(int amount) { food += amount; }
-    public void addUnitSpace(int amount) { unitSpace += amount; }
+    public void addMaxUnitSpace(int amount) { maxUnitSpace += amount; }
 
-    // --- Spend / Consume resources ---
     public boolean spendGold(int amount) {
         if (gold >= amount) {
             gold -= amount;
@@ -56,40 +58,36 @@ public class Player {
     }
 
     public boolean useUnitSpace(int amount) {
-        if (unitSpace >= amount) {
-            unitSpace -= amount;
+        if (usedUnitSpace + amount <= maxUnitSpace) {
+            usedUnitSpace += amount;
             return true;
         }
         return false;
     }
 
-    // --- Reset (for restarting game) ---
+    public void releaseUnitSpace(int amount) {
+        usedUnitSpace = Math.max(0, usedUnitSpace - amount);
+    }
+
+    // --- Reset ---
     public void reset() {
-        this.gold = 10;
-        this.food = 10;
-        this.unitSpace = 0;
+        this.gold = 50;
+        this.food = 25;
+        this.usedUnitSpace = 0;
+        this.maxUnitSpace = 0;
     }
 
-    // --- Utility method for debugging or HUD display ---
+    // --- Debug / HUD String ---
     public String getStatus() {
-        return String.format("%s | Gold: %d | Food: %d | Unit Space: %d", name, gold, food, unitSpace);
-
+        return String.format("%s | Gold: %d | Food: %d | Unit Space: %d/%d",
+                name, gold, food, usedUnitSpace, maxUnitSpace);
     }
 
-    public void setGold(int g){
-        this.gold=g;
-    }
-    public void setFood(int f){
-        this.food=f;
-    }
-    public void setUnitSpace(int u){
-        this.unitSpace=u;
-    }
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    public void setName(String name){
-        this.name=name;
-    }
-
+    // --- Setters ---
+    public void setGold(int g) { this.gold = g; }
+    public void setFood(int f) { this.food = f; }
+    public void setUsedUnitSpace(int u) { this.usedUnitSpace = u; }
+    public void setMaxUnitSpace(int m) { this.maxUnitSpace = m; }
+    public void setColor(Color color) { this.color = color; }
+    public void setName(String name) { this.name = name; }
 }

@@ -7,6 +7,7 @@ public class HUDPanel extends JPanel {
     private final JLabel playerLabel;
     private final JLabel goldLabel;
     private final JLabel foodLabel;
+    private final JLabel unitSpaceLabel;
     private final JLabel TimerTurnEnd;
     private final JLabel TimerForget;
     private final JTextArea logArea;
@@ -28,13 +29,14 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(16, 1));  // افزایش تعداد ردیف‌ها
+        JPanel infoPanel = new JPanel(new GridLayout(17, 1));  // افزایش تعداد ردیف‌ها
 
         TimerTurnEnd = new JLabel("Your Turn : 30");
         TimerForget = new JLabel("Getting resources up : 15");
         playerLabel = new JLabel("Player:");
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
+        unitSpaceLabel = new JLabel("Unit Space:");
 
         TimerTurnEnd.setFont(new Font("Arial", Font.PLAIN, 24));
 
@@ -43,6 +45,7 @@ public class HUDPanel extends JPanel {
         infoPanel.add(playerLabel);
         infoPanel.add(goldLabel);
         infoPanel.add(foodLabel);
+        infoPanel.add(unitSpaceLabel);
 
         unitSelector = new JComboBox<>(new String[]{
                 "None",
@@ -99,10 +102,12 @@ public class HUDPanel extends JPanel {
         add(endTurnButton, BorderLayout.SOUTH);
     }
 
-    public void updatePlayerInfo(String playerName, int gold, int food) {
+    public void updatePlayerInfo(String playerName, int gold, int food, int usedUnitSpace, int maxUnitSpace) {
         playerLabel.setText("Player: " + playerName);
         goldLabel.setText("Gold: " + gold);
         foodLabel.setText("Food: " + food);
+        unitSpaceLabel.setText("Unit Space: " + usedUnitSpace + " / " + maxUnitSpace);
+
     }
 
     public void disableInteractionAfterGameEnd() {

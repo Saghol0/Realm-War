@@ -119,6 +119,7 @@ public class GameController {
 
     private boolean canBuildUnit(Player player, Unit unit) {
         if (unit == null || selectedBlock == null) return false;
+
         if (selectedBlock.getStructure() != null || selectedBlock.getUnit() != null) {
             hudPanel.addLog("❌ The selected block is already occupied.");
             return false;
@@ -143,13 +144,13 @@ public class GameController {
                     break;
                 }
             }
+            if (hasBarrack) break;
         }
 
         if (!hasBarrack) {
             hudPanel.addLog("❌ You must have at least one Barrack to build units.");
             return false;
         }
-
         if (player.getGold() < unit.costGold) {
             hudPanel.addLog("❌ Not enough gold to build this unit.");
             return false;
@@ -158,8 +159,8 @@ public class GameController {
             hudPanel.addLog("❌ Not enough food to build this unit.");
             return false;
         }
-        if (player.getUnitSpace() + unit.unitSpace > MAX_UNIT_SPACE) {
-            hudPanel.addLog("❌ Not enough unit space available. Maximum allowed: " + MAX_UNIT_SPACE);
+        if (player.getUsedUnitSpace() + unit.unitSpace > player.getMaxUnitSpace()) {
+            hudPanel.addLog("❌ Not enough unit space available.");
             return false;
         }
 
@@ -167,15 +168,27 @@ public class GameController {
     }
 
     private void payForStructure(Player player, Structures structure) {
-        player.addGold(-structure.getBuildCost());
-        updateHUD();
+        if (player.spendGold(structure.getBuildCost())) {
+            updateHUD();
+        } else {
+            hudPanel.addLog("❌ Not enough gold to build this structure.");
+        }
     }
 
     private void payForUnit(Player player, Unit unit) {
-        player.addGold(-unit.costGold);
-        player.addFood(-unit.costFood);
-        player.addUnitSpace(unit.unitSpace);
-        updateHUD();
+        boolean goldSpent = player.spendGold(unit.costGold);
+        boolean foodConsumed = player.consumeFood(unit.costFood);
+        boolean spaceUsed = player.useUnitSpace(unit.unitSpace);
+
+        if (goldSpent && foodConsumed && spaceUsed) {
+            updateHUD();
+        } else {
+            if (goldSpent) player.addGold(unit.costGold);
+            if (foodConsumed) player.addFood(unit.costFood);
+            if (spaceUsed) player.releaseUnitSpace(unit.unitSpace);
+
+            hudPanel.addLog("❌ Payment failed due to insufficient resources.");
+        }
     }
 
     private void collectResources() {
@@ -253,12 +266,11 @@ public class GameController {
 
         player.addGold(recoveredGold);
         player.addFood(recoveredFood);
-        player.addUnitSpace(-recoveredUnitSpace);
+        player.releaseUnitSpace(recoveredUnitSpace);
 
         hudPanel.addLog("❌ Resources went negative! All units were removed and their resources were refunded.");
         updateHUD();
     }
-
 
     public void endTurn() {
         payUnitMaintenanceCost(getCurrentPlayer());
@@ -278,7 +290,7 @@ public class GameController {
 
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
-        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood());
+        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood(), currentPlayer.getUsedUnitSpace(), currentPlayer.getMaxUnitSpace());
     }
 
     public Player getCurrentPlayer() {
@@ -496,37 +508,6 @@ public class GameController {
 
     }
 
-    public boolean checkIfGameEnded() {
-        Player currentPlayer = getCurrentPlayer();
-        Player opponentPlayer = getOpponentPlayer();
-
-        for (int i = 0; i < gamePanel.SIZE; i++) {
-            for (int j = 0; j < gamePanel.SIZE; j++) {
-                Block block = gamePanel.getBlock(i, j);
-                Structures structure = block.getStructure();
-                if (structure != null && structure.getName().equals("Town Hall")) {
-                    if (block.getOwner() != opponentPlayer) {
-                        timer.stop();
-                        if(players.length==4) {
-                            gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName(), players[currentPlayerIndex].getName(), TimeEndGame);
-                        }else if(players.length==3){
-                            gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), "null", players[currentPlayerIndex].getName(), TimeEndGame);
-                        }else gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
-                        hudPanel.addLog("🎉 " + currentPlayer.getName() + " won the game! Enemy Town Hall has been captured.");
-                        JOptionPane.showMessageDialog(null, currentPlayer.getName() + " won the game!");
-                        gameSandL.EndGame();
-                        gameEnded = true;
-                        hudPanel.disableInteractionAfterGameEnd();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-
-    }
-
-
     public boolean EndGmae() {
         end = 0;
         if(gamePanel.getBlock(0,0).getStructure()!=null) {
@@ -650,6 +631,11 @@ public class GameController {
                     selectedBlock.setStructure(selectedStructures);
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
+                    }
+                    if (selectedStructures instanceof Barrack) {
+                        Barrack barrack = (Barrack) selectedStructures;
+                        getCurrentPlayer().addMaxUnitSpace(barrack.getUnitSpace());
+                        updateHUD();
                     }
                     hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
                 } else {
@@ -780,7 +766,7 @@ public class GameController {
             }
 
             structure.levelUp();
-            hudPanel.updatePlayerInfo(getCurrentPlayer().getName(), getCurrentPlayer().getGold(), getCurrentPlayer().getFood());
+            hudPanel.updatePlayerInfo(getCurrentPlayer().getName(), getCurrentPlayer().getGold(), getCurrentPlayer().getFood(), getCurrentPlayer().getUsedUnitSpace(), getCurrentPlayer().getMaxUnitSpace());
             hudPanel.addLog("🔺 Structure " + structure.getName() + " upgraded to level " + structure.getLevel() + ".");
         });
     }
