@@ -290,7 +290,7 @@ public class GameController {
 
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
-        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood(), currentPlayer.getUsedUnitSpace(), currentPlayer.getMaxUnitSpace());
+        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood(), currentPlayer.getUsedUnitSpace(), currentPlayer.getMaxUnitSpace(),getColorName(currentPlayer.getColor()));
     }
 
     public Player getCurrentPlayer() {
@@ -774,7 +774,8 @@ public class GameController {
                     getCurrentPlayer().getGold(),
                     getCurrentPlayer().getFood(),
                     getCurrentPlayer().getUsedUnitSpace(),
-                    getCurrentPlayer().getMaxUnitSpace()
+                    getCurrentPlayer().getMaxUnitSpace(),
+                    getColorName(getCurrentPlayer().getColor())
             );
             hudPanel.addLog("🔺 Structure " + structure.getName() + " upgraded to level " + structure.getLevel() + ".");
             updateHUD();
@@ -826,14 +827,11 @@ public class GameController {
                             moveFromBlock = null;
                             selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
                             selectedBlock = null;
-                        } else if (block.getOwner() == getOpponentPlayer()) {
+                        } else {
                             moveUnit(moveFromBlock, block, unit);
                             moveFromBlock = null;
                             selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
                             selectedBlock = null;
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Error");
-                            // moveFromBlock = null; // اختیاریه
                         }
                     }
 
@@ -847,5 +845,12 @@ public class GameController {
                 moveFromBlock = null;
             }
         }
+    }
+    private static String getColorName(Color color) {
+        if(color.equals(Color.RED)) {return "RED"; }
+        else if (color.equals(Color.BLUE)) {return "BLUE";}
+        else if ( color.equals(Color.CYAN)) {return "CYAN";}
+        else if (color.equals(Color.PINK)) {return "PINK";}
+        else {return "Unknown";}
     }
 }

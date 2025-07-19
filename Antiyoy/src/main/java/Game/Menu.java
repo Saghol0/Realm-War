@@ -130,55 +130,6 @@ public class Menu extends JFrame {
 
         return panel;
     }
-
-//    public JPanel createGame(int numberPlayer) {
-//        JPanel gamePanel = new JPanel();
-//        gamePanel.setOpaque(false);
-//        gamePanel.setLayout(new BorderLayout());
-//
-//        JLabel titleLabel = new JLabel("Please choose your name:");
-//        titleLabel.setFont(new Font("Georgia", Font.BOLD, 24));
-//        titleLabel.setForeground(Color.WHITE);
-//        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//        gamePanel.add(titleLabel, BorderLayout.NORTH);
-//
-//        JPanel playerPanel = new JPanel(new GridLayout(numberPlayer, 2));
-//        playerPanel.setOpaque(false);
-//        JTextField[] fields = new JTextField[numberPlayer];
-//
-//        for (int i = 0; i < numberPlayer; i++) {
-//            JLabel l = new JLabel("Player " + (i + 1) + ": ");
-//            l.setFont(new Font("Georgia", Font.PLAIN, 18));
-//            l.setForeground(Color.WHITE);
-//            JTextField f = new JTextField();
-//            playerPanel.add(l);
-//            playerPanel.add(f);
-//            fields[i] = f;
-//        }
-//
-//        gamePanel.add(playerPanel, BorderLayout.CENTER);
-//
-//        JButton startBtn = createFancyButton("Start Game");
-//        startBtn.addActionListener(e -> {
-//            for (JTextField f : fields) {
-//                if (f.getText().isEmpty()) {
-//                    JOptionPane.showMessageDialog(null, "Please fill in all fields.");
-//                    return;
-//                }
-//            }
-//            Color[] colors = {Color.RED, Color.BLUE, Color.CYAN, Color.PINK};
-//            for (int i = 0; i < numberPlayer; i++) {
-//                new Player(fields[i].getText(), colors[i]);
-//            }
-//            gameFrame = new GameFrame();
-//            dispose();
-//        });
-//
-//        gamePanel.add(startBtn, BorderLayout.SOUTH);
-//
-//        return gamePanel;
-//    }
-
     public JPanel createGame(int numberPlayer) {
         JPanel gamePanel = new JPanel();
         gamePanel.setOpaque(false);

@@ -10,6 +10,7 @@ public class HUDPanel extends JPanel {
     private final JLabel unitSpaceLabel;
     private final JLabel TimerTurnEnd;
     private final JLabel TimerForget;
+    private final JLabel colorPlayer;
     private final JTextArea logArea;
     private final JComboBox<String> unitSelector;
     private final JComboBox<String> structureSelector;
@@ -29,7 +30,7 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(17, 1));  // افزایش تعداد ردیف‌ها
+        JPanel infoPanel = new JPanel(new GridLayout(18, 1));  // افزایش تعداد ردیف‌ها
 
         TimerTurnEnd = new JLabel("Your Turn : 30");
         TimerForget = new JLabel("Getting resources up : 15");
@@ -37,6 +38,7 @@ public class HUDPanel extends JPanel {
         goldLabel = new JLabel("Gold:");
         foodLabel = new JLabel("Food:");
         unitSpaceLabel = new JLabel("Unit Space:");
+        colorPlayer = new JLabel("Color:");
 
         TimerTurnEnd.setFont(new Font("Arial", Font.PLAIN, 24));
 
@@ -46,6 +48,7 @@ public class HUDPanel extends JPanel {
         infoPanel.add(goldLabel);
         infoPanel.add(foodLabel);
         infoPanel.add(unitSpaceLabel);
+        infoPanel.add(colorPlayer);
 
         unitSelector = new JComboBox<>(new String[]{
                 "None",
@@ -102,11 +105,13 @@ public class HUDPanel extends JPanel {
         add(endTurnButton, BorderLayout.SOUTH);
     }
 
-    public void updatePlayerInfo(String playerName, int gold, int food, int usedUnitSpace, int maxUnitSpace) {
+    public void updatePlayerInfo(String playerName, int gold, int food, int usedUnitSpace, int maxUnitSpace,String color) {
         playerLabel.setText("Player: " + playerName);
         goldLabel.setText("Gold: " + gold);
         foodLabel.setText("Food: " + food);
         unitSpaceLabel.setText("Unit Space: " + usedUnitSpace + " / " + maxUnitSpace);
+        colorPlayer.setText("Color: " + color);
+
 
     }
 

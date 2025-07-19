@@ -82,6 +82,9 @@ public class Player {
         return String.format("%s | Gold: %d | Food: %d | Unit Space: %d/%d",
                 name, gold, food, usedUnitSpace, maxUnitSpace);
     }
+    public String getColorString() {
+        return color.toString();
+    }
 
     // --- Setters ---
     public void setGold(int g) { this.gold = g; }
