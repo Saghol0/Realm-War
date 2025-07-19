@@ -8,7 +8,7 @@ public class BackgroundPanel extends JPanel {
 private final Image backgroundImage;
 public BackgroundPanel() {
 
-    URL imageUrl = getClass().getClassLoader().getResource("Image/background.jpg");//backgeround  badan malom mishe
+    URL imageUrl = getClass().getClassLoader().getResource("Image/background.jpg");
     System.out.println("Image path: " + imageUrl);
     if(imageUrl == null)
     {

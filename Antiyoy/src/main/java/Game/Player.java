@@ -28,7 +28,6 @@ public class Player {
         this.maxUnitSpace = maxUnitSpace;
     }
 
-    // --- Getters ---
     public String getName() { return name; }
     public int getGold() { return gold; }
     public int getFood() { return food; }
@@ -36,7 +35,6 @@ public class Player {
     public int getMaxUnitSpace() { return maxUnitSpace; }
     public Color getColor() { return color; }
 
-    // --- Resource Modification ---
     public void addGold(int amount) { gold += amount; }
     public void addFood(int amount) { food += amount; }
     public void addMaxUnitSpace(int amount) { maxUnitSpace += amount; }
@@ -69,7 +67,6 @@ public class Player {
         usedUnitSpace = Math.max(0, usedUnitSpace - amount);
     }
 
-    // --- Reset ---
     public void reset() {
         this.gold = 50;
         this.food = 25;
@@ -77,7 +74,6 @@ public class Player {
         this.maxUnitSpace = 0;
     }
 
-    // --- Debug / HUD String ---
     public String getStatus() {
         return String.format("%s | Gold: %d | Food: %d | Unit Space: %d/%d",
                 name, gold, food, usedUnitSpace, maxUnitSpace);
@@ -86,7 +82,6 @@ public class Player {
         return color.toString();
     }
 
-    // --- Setters ---
     public void setGold(int g) { this.gold = g; }
     public void setFood(int f) { this.food = f; }
     public void setUsedUnitSpace(int u) { this.usedUnitSpace = u; }

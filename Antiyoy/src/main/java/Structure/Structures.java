@@ -33,7 +33,6 @@ public class Structures {
         }
     }
 
-    // Getters
     public String getName() {
         return name;
     }
@@ -84,7 +83,7 @@ public class Structures {
 
     public int getBuildCost() {
         return buildCost;
-    } // پیش‌فرض برای ساخت
+    }
 
     public void setBuildCost(int buildCost) {
         this.buildCost = buildCost;

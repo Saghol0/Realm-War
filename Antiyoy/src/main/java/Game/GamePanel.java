@@ -155,41 +155,36 @@ public class GamePanel extends JPanel {
     public void initGrid4Player() {
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
-        block = new Block[SIZE][SIZE]; // فرض می‌کنم block هم متغیر گلوبال هست
+        block = new Block[SIZE][SIZE];
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 Block b;
 
-                // Player 1: Top-left corner
                 if (i == 0 && j == 0) {
                     b = new EmptyBlock(i, j, players[0], new TownHall(), null);
                 } else if (i <= 1 && j <= 1) {
                     b = new EmptyBlock(i, j, players[0], null, null);
                 }
 
-                // Player 2: Bottom-right corner
                 else if (i == SIZE - 1 && j == SIZE - 1) {
                     b = new EmptyBlock(i, j, players[1], new TownHall(), null);
                 } else if (i >= SIZE - 2 && j >= SIZE - 2) {
                     b = new EmptyBlock(i, j, players[1], null, null);
                 }
 
-                // Player 3: Top-right corner
                 else if (i == 0 && j == SIZE - 1) {
                     b = new EmptyBlock(i, j, players[2], new TownHall(), null);
                 } else if (i <= 1 && j >= SIZE - 2) {
                     b = new EmptyBlock(i, j, players[2], null, null);
                 }
 
-                // Player 4: Bottom-left corner
                 else if (i == SIZE - 1 && j == 0) {
                     b = new EmptyBlock(i, j, players[3], new TownHall(), null);
                 } else if (i >= SIZE - 2 && j <= 1) {
                     b = new EmptyBlock(i, j, players[3], null, null);
                 }
 
-                // Random block
                 else {
                     if (Math.random() < 0.4) {
                         b = new ForestBlock(i, j, null, null, null);

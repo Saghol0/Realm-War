@@ -65,7 +65,7 @@ public class Menu extends JFrame {
 
     public JPanel menuPanel() {
         JPanel menuPanel = new JPanel();
-        menuPanel.setOpaque(false); // حذف کادر خاکستری
+        menuPanel.setOpaque(false);
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBorder(BorderFactory.createEmptyBorder(150, 0, 150, 0));
 
@@ -133,7 +133,7 @@ public class Menu extends JFrame {
     public JPanel createGame(int numberPlayer) {
         JPanel gamePanel = new JPanel();
         gamePanel.setOpaque(false);
-        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS)); // حالت عمودی
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Please choose your name:");
         titleLabel.setFont(new Font("Georgia", Font.BOLD, 24));
@@ -142,7 +142,6 @@ public class Menu extends JFrame {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(30, 0, 30, 0)); // فاصله بالا پایین
         gamePanel.add(titleLabel);
 
-        // ایجاد پنل برای فیلد بازیکنان
         JPanel playerPanel = new JPanel();
         playerPanel.setOpaque(false);
         playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.Y_AXIS));
@@ -172,7 +171,7 @@ public class Menu extends JFrame {
             rowPanel.add(Box.createHorizontalStrut(10));
 
             playerPanel.add(rowPanel);
-            playerPanel.add(Box.createVerticalStrut(15)); // فاصله بین فیلدها
+            playerPanel.add(Box.createVerticalStrut(15));
 
             fields[i] = f;
         }
@@ -208,9 +207,9 @@ public class Menu extends JFrame {
 
 
 
-        gamePanel.add(Box.createVerticalStrut(20)); // فاصله قبل از دکمه
+        gamePanel.add(Box.createVerticalStrut(20));
         gamePanel.add(startBtn);
-        gamePanel.add(Box.createVerticalStrut(30)); // فاصله پایین
+        gamePanel.add(Box.createVerticalStrut(30));
         gamePanel.add(backBtn);
         gamePanel.add(Box.createVerticalStrut(30));
 

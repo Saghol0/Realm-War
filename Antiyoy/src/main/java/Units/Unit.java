@@ -9,7 +9,7 @@ public abstract class Unit extends Component {
     private HUDPanel hudPanel;
     protected String name;
     public int rank;
-    protected int movementRange = 3;  // محدوده حرکت به صورت پیش‌فرض ۳
+    protected int movementRange = 3;
     public int costGold;
     public int costFood;
     public int unitSpace;
@@ -28,7 +28,6 @@ public abstract class Unit extends Component {
         this.attackPower=attackPower;
     }
 
-    // --- قابلیت حرکت ---
     public boolean canMove(int fromX, int fromY, int toX, int toY) {
         if (moved) {
             if (hudPanel != null) {
@@ -40,10 +39,9 @@ public abstract class Unit extends Component {
         }
         int dx = Math.abs(toX - fromX);
         int dy = Math.abs(toY - fromY);
-        return dx + dy <= movementRange; // Manhattan distance
+        return dx + dy <= movementRange;
     }
 
-    // --- Getters ---
     public String getName() {
         return name;
     }

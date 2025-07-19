@@ -16,7 +16,7 @@ public class GameFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         // ایجاد GamePanel و HUDPanel
         gamePanel = new GamePanel(players);
-        HUDPanel hudPanel = gamePanel.getHudPanel();// فرض بر این است HUDPanel در GamePanel هست
+        HUDPanel hudPanel = gamePanel.getHudPanel();
         hudPanel.getExitButton().addActionListener(e -> {
             int confirm= JOptionPane.showConfirmDialog(null , "Do you want to exit the game?","Exit Game",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
             if(confirm==JOptionPane.YES_OPTION){
@@ -28,9 +28,8 @@ public class GameFrame extends JFrame {
         add(gamePanel, BorderLayout.CENTER);
         add(hudPanel, BorderLayout.EAST);
 
-        // ایجاد و اتصال GameController
         GameController controller = new GameController(gamePanel, hudPanel, players);
-        gamePanel.setController(controller); // اضافه کردن کنترلر به پنل بازی برای مدیریت کلیک‌ها
+        gamePanel.setController(controller);
 
         setVisible(true);
     }

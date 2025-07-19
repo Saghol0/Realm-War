@@ -30,7 +30,7 @@ public class HUDPanel extends JPanel {
         setPreferredSize(new Dimension(280, 640));
         setBackground(new Color(220, 220, 220));
 
-        JPanel infoPanel = new JPanel(new GridLayout(18, 1));  // افزایش تعداد ردیف‌ها
+        JPanel infoPanel = new JPanel(new GridLayout(18, 1));
 
         TimerTurnEnd = new JLabel("Your Turn : 30");
         TimerForget = new JLabel("Getting resources up : 15");

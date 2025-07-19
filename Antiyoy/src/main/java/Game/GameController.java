@@ -727,7 +727,6 @@ public class GameController {
         });
         timer.start();
 
-        // دکمه Level Up برای ارتقاء سازه
         hudPanel.getLevelUpButton().addActionListener(e -> {
             if (selectedBlock == null) {
                 hudPanel.addLog("⚠️ Please select a block first.");
@@ -808,7 +807,6 @@ public class GameController {
                             } else {
                                 hudPanel.addLog("❌ You can't place different units on the same block.");
                                 SwingUtilities.invokeLater(() -> handleBlockClick(moveFromBlock));
-                                // moveFromBlock = null; // اختیاریه: بسته به UX
                             }
                         } else if (block.getUnit() == null) {
                             moveUnit(moveFromBlock, block, unit);
