@@ -16,6 +16,7 @@ public class GamePanel extends JPanel {
     private Player[] players;
     private HUDPanel hudPanel;
     private GameController controller;
+    private JPanel gridPanel ;
 
     public GamePanel(Player[] players) {
         block = new Block[SIZE][SIZE];
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel {
         this.players = playerList.toArray(new Player[0]);
         removeAll();
 
-        JPanel gridPanel = new JPanel();
+        gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
 
         for (int i = 0; i < SIZE; i++) {
@@ -122,8 +123,41 @@ public class GamePanel extends JPanel {
         this.controller = controller;
     }
 
+    public void setPlayers(Player[] p){
+        this.players=p;
+    }
+
+    public void DeletePlayer(Color color){
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                Block current = block[i][j];
+
+                if (current.getOwner() != null && current.getOwner().getColor().equals(color)) {
+
+                    Block b;
+                    if (Math.random() < 0.4) {
+                        b = new ForestBlock(i, j, null, null, null);
+                    } else {
+                        b = new EmptyBlock(i, j, null, null, null);
+                    }
+
+                    int fx = i, fy = j;
+                    b.addActionListener(e -> handleClick(fx, fy));
+
+                    block[i][j] = b;
+
+                    gridPanel.remove(i * SIZE + j);
+                    gridPanel.add(b, i * SIZE + j);
+                }
+            }
+        }
+        gridPanel.revalidate();
+        gridPanel.repaint();
+    }
+
+
     public void initGrid2Player() {
-        JPanel gridPanel = new JPanel();
+        gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
 
         for (int i = 0; i < SIZE; i++) {
@@ -163,7 +197,7 @@ public class GamePanel extends JPanel {
     }
 
     public void initGrid4Player() {
-        JPanel gridPanel = new JPanel();
+        gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
         block = new Block[SIZE][SIZE];
 

@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameController {
@@ -33,7 +34,7 @@ public class GameController {
     private GameSandL gameSandL;
     private GameData gameData;
     private int end;
-
+    private List<Player> PlayerDelete;
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
         this.gamePanel = gamePanel;
@@ -41,6 +42,7 @@ public class GameController {
         this.players = players;
         this.gameSandL=new GameSandL(hudPanel);
         this.gameData=new GameData(hudPanel);
+        PlayerDelete=new ArrayList<>();
         setupListeners();
         updateHUD();
     }
@@ -476,6 +478,8 @@ public class GameController {
                 toBlock.setUnit(fromBlock.getUnit());
                 fromBlock.setUnit(null);
 
+                DeletePlayer();
+
                 if(EndGmae()){
                     timer.stop();
                     if(players.length==4) {
@@ -526,6 +530,38 @@ public class GameController {
         System.out.println(end);
         return end==1;
     }
+
+        public void DeletePlayer(){
+            List<Player> remainingPlayers = new ArrayList<>(Arrays.asList(players));
+
+            if (gamePanel.getBlock(0, 0).getStructure() == null) {
+                remainingPlayers.removeIf(player -> player.getColor().equals(Color.RED));
+                gamePanel.DeletePlayer(Color.RED);
+
+            }
+
+            if (gamePanel.getBlock(9, 9).getStructure() == null) {
+                remainingPlayers.removeIf(player -> player.getColor().equals(Color.BLUE));
+                gamePanel.DeletePlayer(Color.BLUE);
+            }
+
+            if (gamePanel.getBlock(0, 9).getStructure() == null) {
+                remainingPlayers.removeIf(player -> player.getColor().equals(Color.CYAN));
+                gamePanel.DeletePlayer(Color.CYAN);
+            }
+
+            if (gamePanel.getBlock(9, 0).getStructure() == null) {
+                remainingPlayers.removeIf(player -> player.getColor().equals(Color.PINK));
+                gamePanel.DeletePlayer(Color.PINK);
+            }
+
+            players = remainingPlayers.toArray(new Player[0]);
+            gamePanel.setPlayers(players);
+            if (players.length<currentPlayerIndex){
+                currentPlayerIndex--;
+            }
+        }
+
 
 
 
