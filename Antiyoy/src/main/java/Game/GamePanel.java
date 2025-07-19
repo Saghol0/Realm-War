@@ -80,15 +80,25 @@ public class GamePanel extends JPanel {
             for (int j = 0; j < SIZE; j++) {
                 Block b = block[i][j];
                 if (b.getOwner() != null) {
-                    if (b.getOwner().getName().equals(blocks[0][0].getOwner().getName())) {
-                        b.setOwner(blocks[0][0].getOwner());
-                    }else
-                    if (b.getOwner().getName().equals(blocks[9][9].getOwner().getName())) {
-                        b.setOwner(blocks[9][9].getOwner());
-                    }else if (b.getOwner().getName().equals(blocks[0][9].getOwner().getName())) {
-                        b.setOwner(blocks[0][9].getOwner());
-                    }else if (b.getOwner().getName().equals(blocks[9][0].getOwner().getName())) {
-                        b.setOwner(blocks[9][0].getOwner());
+                    if(blocks[0][0].getStructure()!=null && blocks[0][0].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[0][0].getOwner().getName())) {
+                            b.setOwner(blocks[0][0].getOwner());
+                        }
+                    }
+                    if(blocks[9][9].getStructure()!=null && blocks[9][9].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[9][9].getOwner().getName())) {
+                            b.setOwner(blocks[9][9].getOwner());
+                        }
+                    }
+                    if(blocks[0][9].getStructure()!=null && blocks[0][9].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[0][9].getOwner().getName())) {
+                            b.setOwner(blocks[0][9].getOwner());
+                        }
+                    }
+                    if(blocks[9][0].getStructure()!=null && blocks[9][0].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[9][0].getOwner().getName())) {
+                            b.setOwner(blocks[9][0].getOwner());
+                        }
                     }
                 }
 

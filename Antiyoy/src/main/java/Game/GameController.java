@@ -701,6 +701,12 @@ public class GameController {
 
             this.refreshBlockListeners();
             currentPlayerIndex = gameSandL.getNoBat();
+            if(gameSandL.getNoBat()==3 && playerList.size()==3){
+                currentPlayerIndex=2;
+            }
+            if (gameSandL.getNoBat()==2 && playerList.size()==2){
+                currentPlayerIndex=1;
+            }
             TimeEndGame=gameSandL.TimeGame();
             TimeForGetGoldAndFoolPlayer = 10;
             TimeForTurn = 30;
