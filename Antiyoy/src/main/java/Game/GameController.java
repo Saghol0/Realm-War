@@ -1,10 +1,10 @@
 package Game;
 
 import Blocks.Block;
+import Blocks.EmptyBlock;
 import Blocks.ForestBlock;
 import Structure.*;
 import Units.*;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -88,7 +88,6 @@ public class GameController {
                 if (dx == 0 && dy == 0) continue;
                 int nx = x + dx;
                 int ny = y + dy;
-
                 if (nx >= 0 && nx < gamePanel.SIZE && ny >= 0 && ny < gamePanel.SIZE) {
                     Block neighbor = gamePanel.getBlock(nx, ny);
                     if (neighbor.getOwner() == player) {
@@ -106,17 +105,14 @@ public class GameController {
             hudPanel.addLog("❌ The selected block is already occupied.");
             return false;
         }
-
         if (!isAdjacentToOwnedBlock(player, selectedBlock)) {
             hudPanel.addLog("❌ You can only build structures adjacent to your owned blocks.");
             return false;
         }
-
         if (isNearEnemyTower(selectedBlock, player)) {
             hudPanel.addLog("❌ Cannot build structures adjacent to enemy Tower.");
             return false;
         }
-
         return player.getGold() >= structure.getBuildCost();
     }
 
@@ -127,17 +123,14 @@ public class GameController {
             hudPanel.addLog("❌ The selected block is already occupied.");
             return false;
         }
-
         if (!isAdjacentToOwnedBlock(player, selectedBlock)) {
             hudPanel.addLog("❌ You can only build units adjacent to your owned blocks.");
             return false;
         }
-
         if (isNearEnemyTower(selectedBlock, player)) {
             hudPanel.addLog("❌ Cannot build units adjacent to enemy Tower.");
             return false;
         }
-
         boolean hasBarrack = false;
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
@@ -149,7 +142,6 @@ public class GameController {
             }
             if (hasBarrack) break;
         }
-
         if (!hasBarrack) {
             hudPanel.addLog("❌ You must have at least one Barrack to build units.");
             return false;
@@ -202,6 +194,9 @@ public class GameController {
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
                 Block block = gamePanel.getBlock(i, j);
+                if((block instanceof ForestBlock || block instanceof EmptyBlock) && block.getOwner() == currentPlayer) {
+                    goldGain += 1;
+                }
                 if (block.getOwner() == currentPlayer && block.getStructure() != null) {
                     Structures s = block.getStructure();
                     if (s instanceof Structure.Farm) {
@@ -209,7 +204,7 @@ public class GameController {
                     } else if (s instanceof Structure.Market) {
                         goldGain += ((Structure.Market) s).getGoldProduction();
                     } else if (s instanceof Structure.TownHall) {
-                        goldGain += ((Structure.TownHall) s).getGoldProduction();
+                        goldGain += ((Structure.TownHall) s).getGoldProduction() - 1;
                         foodGain += ((Structure.TownHall) s).getFoodProduction();
                     }
                 }
@@ -238,7 +233,6 @@ public class GameController {
 
         player.addGold(-totalGoldCost);
         player.addFood(-totalFoodCost);
-
         hudPanel.addLog(player.getName() + " paid " + totalGoldCost + " gold and " + totalFoodCost + " food for unit maintenance.");
     }
 
@@ -246,11 +240,9 @@ public class GameController {
         if (player.getGold() >= 0 && player.getFood() >= 0) {
             return;
         }
-
         int recoveredGold = 0;
         int recoveredFood = 0;
         int recoveredUnitSpace = 0;
-
         Image treeIcon = ForestBlock.loadImage();
 
         for (int i = 0; i < gamePanel.SIZE; i++) {
@@ -269,7 +261,6 @@ public class GameController {
                 }
             }
         }
-
         player.addGold(recoveredGold);
         player.addFood(recoveredFood);
         player.releaseUnitSpace(recoveredUnitSpace);
@@ -288,7 +279,6 @@ public class GameController {
             selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
             selectedBlock = null;
         }
-
         currentPlayerIndex=(currentPlayerIndex+1)%players.length;
         hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
         updateHUD();
@@ -355,16 +345,13 @@ public class GameController {
             hudPanel.addLog("❌ Units with rank less than 3 cannot move adjacent to enemy Towers.");
             return;
         }
-
         Player previousOwner = toBlock.getOwner();
-
         toBlock.setUnit(unit);
         fromBlock.setUnit(null);
 
         if (toBlock.getOwner() != getCurrentPlayer()) {
             toBlock.setOwner(getCurrentPlayer());
         }
-
         if (!hasOwnedNeighborBlock(toBlock, getCurrentPlayer())) {
             fromBlock.setUnit(unit);
             toBlock.setUnit(null);
@@ -375,7 +362,6 @@ public class GameController {
         if (toBlock instanceof ForestBlock) {
             ((ForestBlock) toBlock).removeTree();
         }
-
         hudPanel.addLog("✅ Unit moved successfully.");
         unit.setMoved(true);
     }
@@ -383,7 +369,6 @@ public class GameController {
     private boolean hasOwnedNeighborBlock(Block block, Player player) {
         int x = block.getGridX();
         int y = block.getGridY();
-
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 if (dx == 0 && dy == 0) continue;
@@ -478,13 +463,13 @@ public class GameController {
             Structures structure = toBlock.getStructure();
             structure.setDurability(structure.getDurability() - attacker.getAttackPower());
             attacker.setMoved(true);
+
             if (structure.getDurability() <= 0) {
                 hudPanel.addLog(structure.getName() + " " + toBlock.getOwner().getName() + " destroyed.");
                 toBlock.setStructure(null);
                 toBlock.setOwner(getCurrentPlayer());
                 toBlock.setUnit(fromBlock.getUnit());
                 fromBlock.setUnit(null);
-
                 DeletePlayer();
 
                 if(EndGmae()){
@@ -504,12 +489,10 @@ public class GameController {
                 }
             } else {
                 hudPanel.addLog("Structure" + toBlock.getOwner().getName() + " was attacked. \n" + "Durability:" + structure.getDurability());
-
             }
         } else {
             hudPanel.addLog("⚠️ Your unit has already made its move.");
         }
-
     }
 
     public boolean EndGmae() {
@@ -546,22 +529,18 @@ public class GameController {
                 gamePanel.DeletePlayer(Color.RED);
 
             }
-
             if (gamePanel.getBlock(9, 9).getStructure() == null) {
                 remainingPlayers.removeIf(player -> player.getColor().equals(Color.BLUE));
                 gamePanel.DeletePlayer(Color.BLUE);
             }
-
             if (gamePanel.getBlock(0, 9).getStructure() == null) {
                 remainingPlayers.removeIf(player -> player.getColor().equals(Color.CYAN));
                 gamePanel.DeletePlayer(Color.CYAN);
             }
-
             if (gamePanel.getBlock(9, 0).getStructure() == null) {
                 remainingPlayers.removeIf(player -> player.getColor().equals(Color.PINK));
                 gamePanel.DeletePlayer(Color.PINK);
             }
-
             players = remainingPlayers.toArray(new Player[0]);
             gamePanel.setPlayers(players);
             if (players.length<currentPlayerIndex){
@@ -645,7 +624,6 @@ public class GameController {
                 if (canBuildUnit(getCurrentPlayer(), selectedUnit)) {
                     payForUnit(getCurrentPlayer(), selectedUnit);
                     selectedBlock.setUnit(selectedUnit);
-
                     if (selectedBlock instanceof ForestBlock)
                         ((ForestBlock) selectedBlock).removeTree();
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
@@ -758,7 +736,6 @@ public class GameController {
             updateHUD();
         });
 
-
         // تایمر نوبت و منابع
         timer = new javax.swing.Timer(1000, _ -> {
             TimeEndGame++;
@@ -773,7 +750,6 @@ public class GameController {
                 updateHUD();
                 TimeForGetGoldAndFoolPlayer = 10;
             }
-
             if (TimeForTurn < 0) {
                 TimeForGetGoldAndFoolPlayer = 10;
                 endTurn();
@@ -796,17 +772,14 @@ public class GameController {
                 hudPanel.addLog("❌ No structure on selected block to level up.");
                 return;
             }
-
             if (!selectedBlock.getOwner().equals(getCurrentPlayer())) {
                 hudPanel.addLog("❌ You can only level up structures you own.");
                 return;
             }
-
             if (structure.getLevel() >= structure.getMaxLevel()) {
                 hudPanel.addLog("❌ " + structure.getName() + " is already at max level.");
                 return;
             }
-
             int upgradeCost = 10 + structure.getLevel() * 5;
 
             if (!getCurrentPlayer().spendGold(upgradeCost)) {
