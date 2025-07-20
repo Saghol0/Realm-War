@@ -11,14 +11,15 @@ import java.awt.*;
 import java.util.List;
 
 public class GamePanel extends JPanel {
-    public final int SIZE = 10;
+    public final int SIZE ;
     private Block[][] block;
     private Player[] players;
     private HUDPanel hudPanel;
     private GameController controller;
     private JPanel gridPanel ;
 
-    public GamePanel(Player[] players) {
+    public GamePanel(Player[] players,int SIZE){
+        this.SIZE = SIZE;
         block = new Block[SIZE][SIZE];
         this.players = players;
         setPreferredSize(new Dimension(900, 850));

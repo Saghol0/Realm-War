@@ -16,12 +16,13 @@ public class Block extends JButton {
     protected Player owner;
     protected Structures structure;
     protected Unit unit;
+    protected Image icon;
 
-    public Block(int x, int y, String name, Color color) {
-        this(x, y, name, color, null, null,null);
-    }
+//    public Block(int x, int y, String name, Color color) {
+//        this(x, y, name, color, null, null,null);
+//    }
 
-    public Block(int x, int y, String name, Color color, Player owner, Structures structure,Unit unit) {
+    public Block(int x, int y, String name, Color color, Player owner, Structures structure,Unit unit,Image icon) {
         this.x = x;
         this.y = y;
         this.name = name;
@@ -29,6 +30,7 @@ public class Block extends JButton {
         this.owner = owner;
         this.structure = structure;
         this.unit = unit;
+        this.icon = icon;
 
         setBackGroundColor();
         setOpaque(true);
@@ -50,7 +52,10 @@ public class Block extends JButton {
             setIcon(new ImageIcon(structure.getIcon()));
         } else if (unit != null && unit.getIcon() != null) {
             setIcon(new ImageIcon(unit.getIcon()));
-        } else {
+        } else if (icon != null) {
+            setIcon(new ImageIcon(icon));
+        }
+        else {
             setIcon(null);
         }
     }

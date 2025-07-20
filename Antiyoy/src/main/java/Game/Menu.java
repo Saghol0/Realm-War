@@ -83,9 +83,9 @@ public class Menu extends JFrame {
 
         newGameBtn.addActionListener(e -> cardLayout.show(mainPanel, "gameSelectorPanel"));
         loadGameBtn.addActionListener(e -> {
-        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)});
-            gameFrame.getGamePanel().getController().loadGameForMenu();
-            dispose();
+//        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)});
+//            gameFrame.getGamePanel().getController().loadGameForMenu();
+//            dispose();
         });
         matchHistory.addActionListener(e -> new GameData(new HUDPanel()).SELECTable());
         exitBtn.addActionListener(e -> System.exit(0));
@@ -175,9 +175,20 @@ public class Menu extends JFrame {
 
             fields[i] = f;
         }
+        JPanel sizesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        sizesPanel.setOpaque(false);
 
+        JLabel sizesLabel = new JLabel("Sizes:");
+        sizesLabel.setFont(new Font("Georgia", Font.PLAIN, 18));
+        sizesLabel.setForeground(Color.WHITE);
+
+        JComboBox<Integer> unitSelector = new JComboBox<>(new Integer[]{10,20});
+        unitSelector.setSelectedIndex(0);
+
+        sizesPanel.add(sizesLabel);
+        sizesPanel.add(unitSelector);
+        playerPanel.add(sizesPanel);
         gamePanel.add(playerPanel);
-
 
         JButton startBtn = createFancyButton("Start Game");
 
@@ -193,7 +204,8 @@ public class Menu extends JFrame {
             for (int i = 0; i < numberPlayer; i++) {
                 players[i]=new Player(fields[i].getText(), colors[i]);
             }
-            gameFrame = new GameFrame(players);
+            int SIZE = (int) unitSelector.getSelectedItem();
+            gameFrame = new GameFrame(players,SIZE);
             dispose();
         });
 

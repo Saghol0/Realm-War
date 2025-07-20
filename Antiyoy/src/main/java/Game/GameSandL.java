@@ -351,7 +351,7 @@ import java.util.Map;
                 Structures structure = structureMap.get(id);
                 Unit unit = unitMap.get(id);
 
-                blocks[x][y] = new Block(x, y, name, new Color(colorInt, true), player, structure, unit);
+//                blocks[x][y] = new Block(x, y, name, new Color(colorInt, true), player, structure, unit);
             }
 
             hudPanel.addLog("..Load Game verified..");

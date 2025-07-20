@@ -6,7 +6,7 @@ public class GameFrame extends JFrame {
     Image iconFrame = new ImageIcon(getClass().getResource("/Image/Icon.jpg")).getImage();
     GamePanel gamePanel;
 
-    public GameFrame(Player[] players) {
+    public GameFrame(Player[] players, int SIZE) {
         setTitle("Antiyoy War");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1400, 830);
@@ -15,7 +15,7 @@ public class GameFrame extends JFrame {
         setLayout(new BorderLayout());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         // ایجاد GamePanel و HUDPanel
-        gamePanel = new GamePanel(players);
+        gamePanel = new GamePanel(players,SIZE);
         HUDPanel hudPanel = gamePanel.getHudPanel();
         hudPanel.getExitButton().addActionListener(e -> {
             int confirm= JOptionPane.showConfirmDialog(null , "Do you want to exit the game?","Exit Game",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
