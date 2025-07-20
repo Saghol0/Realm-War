@@ -1,6 +1,7 @@
 package Game;
 
 import Blocks.Block;
+import Blocks.ForestBlock;
 import Structure.*;
 import Units.*;
 
@@ -367,6 +368,9 @@ public class GameController {
             toBlock.setOwner(previousOwner);  // Restore previous owner if move invalid
             hudPanel.addLog("❌ Invalid move: After moving, none of the adjacent blocks belong to you.");
             return;
+        }
+        if (toBlock instanceof ForestBlock) {
+            ((ForestBlock) toBlock).removeTree();
         }
 
         hudPanel.addLog("✅ Unit moved successfully.");

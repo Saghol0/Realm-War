@@ -27,4 +27,7 @@ public class ForestBlock extends Block {
         }
         return new ImageIcon(url).getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
     }
+    public void removeTree() {
+        this.setImage(null); // حذف تصویر درخت
+    }
 }

@@ -25,7 +25,7 @@ public class Structures {
     public void levelUp() {
         if (level < maxLevel) {
             level++;
-            durability += 10;
+            durability += 50;
             maintenanceCost += 5;
             System.out.println(name + " has been upgraded to level " + level);
         } else {

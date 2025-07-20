@@ -117,4 +117,10 @@ public class Block extends JButton {
         return name;
     }
 
+    public void setImage(Image image) {
+        this.icon = image;
+        updateIcon();
+    }
+
+
 }
