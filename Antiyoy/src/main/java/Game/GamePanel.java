@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.List;
 
 public class GamePanel extends JPanel {
-    public final int SIZE ;
+    public  int SIZE ;
     private Block[][] block;
     private Player[] players;
     private HUDPanel hudPanel;
@@ -70,6 +70,10 @@ public class GamePanel extends JPanel {
         return SIZE;
     }
 
+    public void setSIZE(int size){
+        this.SIZE=size;
+    }
+
     public void loadGame(Block[][] blocks, List<Player> playerList) {
         this.block = blocks;
         this.players = playerList.toArray(new Player[0]);
@@ -87,19 +91,19 @@ public class GamePanel extends JPanel {
                             b.setOwner(blocks[0][0].getOwner());
                         }
                     }
-                    if(blocks[9][9].getStructure()!=null && blocks[9][9].getStructure().getName().equals("Town Hall")) {
-                        if (b.getOwner().getName().equals(blocks[9][9].getOwner().getName())) {
-                            b.setOwner(blocks[9][9].getOwner());
+                    if(blocks[SIZE-1][SIZE-1].getStructure()!=null && blocks[SIZE-1][SIZE-1].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[SIZE-1][SIZE-1].getOwner().getName())) {
+                            b.setOwner(blocks[SIZE-1][SIZE-1].getOwner());
                         }
                     }
-                    if(blocks[0][9].getStructure()!=null && blocks[0][9].getStructure().getName().equals("Town Hall")) {
-                        if (b.getOwner().getName().equals(blocks[0][9].getOwner().getName())) {
-                            b.setOwner(blocks[0][9].getOwner());
+                    if(blocks[0][SIZE-1].getStructure()!=null && blocks[0][SIZE-1].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[0][SIZE-1].getOwner().getName())) {
+                            b.setOwner(blocks[0][SIZE-1].getOwner());
                         }
                     }
-                    if(blocks[9][0].getStructure()!=null && blocks[9][0].getStructure().getName().equals("Town Hall")) {
-                        if (b.getOwner().getName().equals(blocks[9][0].getOwner().getName())) {
-                            b.setOwner(blocks[9][0].getOwner());
+                    if(blocks[SIZE-1][0].getStructure()!=null && blocks[SIZE-1][0].getStructure().getName().equals("Town Hall")) {
+                        if (b.getOwner().getName().equals(blocks[SIZE-1][0].getOwner().getName())) {
+                            b.setOwner(blocks[SIZE-1][0].getOwner());
                         }
                     }
                 }

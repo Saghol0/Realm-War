@@ -1,6 +1,7 @@
 package Game;
 
 import Blocks.Block;
+import Blocks.ForestBlock;
 import Structure.*;
 import Units.*;
 
@@ -63,7 +64,8 @@ import java.util.Map;
                  "X INT NOT NULL ,"+
                  "Y INT NOT NULL ,"+
                  "Name VARCHAR(85) NOT NULL,"+
-                 "Color INT NOT NULL )";
+                 "Color INT NOT NULL ,"+
+                 "Image BOOLEAN )";
 
          String SQLPlayer=  "CREATE TABLE IF NOT EXISTS Player ("+
                  "ID INT NOT NULL ,"+
@@ -100,7 +102,8 @@ import java.util.Map;
 
          String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(" +
                  "NoBat INT NOT NULL, "+
-                 "TimeGame INT NOT NULL) ";
+                 "TimeGame INT NOT NULL, "+
+                 "SIZE  INT NOT NULL )";
 
 
 
@@ -144,13 +147,13 @@ import java.util.Map;
     }
 
     public void SaveGame(Block[][] b, int SIZE,int NoBat,int timeGame){
-        String SQLBlack="INSERT INTO Block(X,Y,Name,Color) VALUES (?,?,?,?) RETURNING ID";
+        String SQLBlack="INSERT INTO Block(X,Y,Name,Color,Image) VALUES (?,?,?,?,?) RETURNING ID";
         String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UsedUnitSpace,MaxUnitSpace,Color) VALUES (?,?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
         String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
-        String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame) VALUES (?,?)";
+        String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame,SIZE) VALUES (?,?,?)";
         int ID;
 
         try (
@@ -164,6 +167,7 @@ import java.util.Map;
 
             PstmtC.setInt(1,NoBat);
             PstmtC.setInt(2,timeGame);
+            PstmtC.setInt(3,SIZE);
             PstmtC.executeUpdate();
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
@@ -174,6 +178,7 @@ import java.util.Map;
                     PstmtB.setInt(2, block.getGridY());
                     PstmtB.setString(3, block.getNAME());
                     PstmtB.setInt(4, block.getColor());
+                    PstmtB.setBoolean(5,block.getImage()!=null);
 
 
                     try (ResultSet ru = PstmtB.executeQuery()) {
@@ -346,12 +351,17 @@ import java.util.Map;
                 String name = rsB.getString("Name");
                 int colorInt = rsB.getInt("Color");
                 int id = rsB.getInt("ID");
-
+                Image image;
+                if (rsB.getBoolean("Image")){
+                    image= ForestBlock.loadImage();
+                }else{
+                    image = null;
+                }
                 Player player = playerMap.get(id);
                 Structures structure = structureMap.get(id);
                 Unit unit = unitMap.get(id);
 
-//                blocks[x][y] = new Block(x, y, name, new Color(colorInt, true), player, structure, unit);
+                blocks[x][y] = new Block(x, y, name, new Color(colorInt, true), player, structure, unit,image);
             }
 
             hudPanel.addLog("..Load Game verified..");
@@ -412,7 +422,26 @@ import java.util.Map;
          return 0;
      }
 
+     public int getSIZE(){
+         String SQL = "SELECT * FROM Controller";
 
+         try {
+             Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+             PreparedStatement Pstmt = conn.prepareStatement(SQL);
+
+             ResultSet ru = Pstmt.executeQuery();
+             if(ru.next()){
+                 return ru.getInt("SIZE");
+             }
+
+
+         }catch (SQLException e){
+             hudPanel.addLog("ERROR GET SIZE :" + e.getMessage());
+             return 0;
+         }
+
+         return 0;
+     }
 
     public void DropTable(){
         String SQL="DROP TABLE block,player,unit,structures,Controller;";

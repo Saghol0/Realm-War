@@ -83,9 +83,9 @@ public class Menu extends JFrame {
 
         newGameBtn.addActionListener(e -> cardLayout.show(mainPanel, "gameSelectorPanel"));
         loadGameBtn.addActionListener(e -> {
-//        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)});
-//            gameFrame.getGamePanel().getController().loadGameForMenu();
-//            dispose();
+        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)},10);
+        gameFrame.getGamePanel().getController().loadGameForMenu();
+        dispose();
         });
         matchHistory.addActionListener(e -> new GameData(new HUDPanel()).SELECTable());
         exitBtn.addActionListener(e -> System.exit(0));
