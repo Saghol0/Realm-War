@@ -122,5 +122,9 @@ public class Block extends JButton {
         updateIcon();
     }
 
+    public Image getImage(){
+        return icon;
+    }
+
 
 }
