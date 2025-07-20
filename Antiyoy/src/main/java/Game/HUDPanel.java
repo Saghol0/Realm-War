@@ -20,7 +20,7 @@ public class HUDPanel extends JPanel {
     private final JButton buttonSELECTDataLest;
     private final JButton buttonSaveGame;
     private final JButton buttonLoadGame;
-    private final JButton levelUpButton;  // دکمه جدید لول آپ
+    private final JButton levelUpButton;
     private final JButton exitButton;
 
 

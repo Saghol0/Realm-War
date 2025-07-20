@@ -251,6 +251,8 @@ public class GameController {
         int recoveredFood = 0;
         int recoveredUnitSpace = 0;
 
+        Image treeIcon = ForestBlock.loadImage();
+
         for (int i = 0; i < gamePanel.SIZE; i++) {
             for (int j = 0; j < gamePanel.SIZE; j++) {
                 Block block = gamePanel.getBlock(i, j);
@@ -262,6 +264,7 @@ public class GameController {
                         recoveredUnitSpace += unit.unitSpace;
 
                         block.setUnit(null);
+                        block.setImage(treeIcon);
                     }
                 }
             }
@@ -566,9 +569,6 @@ public class GameController {
             }
         }
 
-
-
-
     public void refreshBlockListeners() {
         for (int i = 0; i < gamePanel.getSIZE(); i++) {
             for (int j = 0; j < gamePanel.getSIZE(); j++) {
@@ -645,6 +645,9 @@ public class GameController {
                 if (canBuildUnit(getCurrentPlayer(), selectedUnit)) {
                     payForUnit(getCurrentPlayer(), selectedUnit);
                     selectedBlock.setUnit(selectedUnit);
+
+                    if (selectedBlock instanceof ForestBlock)
+                        ((ForestBlock) selectedBlock).removeTree();
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
                     }
@@ -668,6 +671,8 @@ public class GameController {
                 if (canBuildStructure(getCurrentPlayer(), selectedStructures)) {
                     payForStructure(getCurrentPlayer(), selectedStructures);
                     selectedBlock.setStructure(selectedStructures);
+                    if (selectedBlock instanceof ForestBlock)
+                        ((ForestBlock) selectedBlock).removeTree();
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
                     }
