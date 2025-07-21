@@ -356,6 +356,11 @@ public class GameController {
             return;
         }
 
+        if (toBlock.getOwner() == getCurrentPlayer() && toBlock.getStructure() != null) {
+            hudPanel.addLog("❌ You cannot move to your own block if it has a structure.");
+            return;
+        }
+
         if (unit.rank < 3 && isNearEnemyTower(toBlock, getCurrentPlayer())) {
             hudPanel.addLog("❌ Units with rank less than 3 cannot move adjacent to enemy Towers.");
             return;
