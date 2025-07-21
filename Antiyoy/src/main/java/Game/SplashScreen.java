@@ -24,7 +24,7 @@ public class SplashScreen extends JWindow {
         setContentPane(bgPanel);
 
 
-        setSize(800, 600);
+        setSize(600, 400);
         setLocationRelativeTo(null);
     }
     public void showSplash(int duration) {
