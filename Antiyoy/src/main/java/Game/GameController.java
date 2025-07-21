@@ -856,7 +856,7 @@ public class GameController {
             selectedBlock.setBorder(new LineBorder(Color.BLACK, 1));
         }
         selectedBlock = block;
-        block.setBorder(new LineBorder(Color.BLACK, 5));
+        block.setBorder(new LineBorder(getCurrentPlayer().getColor(), 5));
 
         if (moveFromBlock == null) {
             if (block.getUnit() != null && block.getOwner() == getCurrentPlayer()) {
