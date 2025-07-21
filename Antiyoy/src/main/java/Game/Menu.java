@@ -27,7 +27,7 @@ public class Menu extends JFrame {
         mainPanel.add(createGame(2), "2player");
         mainPanel.add(createGame(4), "4player");
 
-        BackgroundPanel bgPanel = new BackgroundPanel();
+        BackgroundPanel bgPanel = new BackgroundPanel("Image/background.jpg");
         bgPanel.setLayout(new BorderLayout());
         bgPanel.add(mainPanel, BorderLayout.CENTER);
 

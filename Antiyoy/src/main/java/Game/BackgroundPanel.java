@@ -6,9 +6,9 @@ import java.net.URL;
 
 public class BackgroundPanel extends JPanel {
 private final Image backgroundImage;
-public BackgroundPanel() {
+public BackgroundPanel(String imageName) {
 
-    URL imageUrl = getClass().getClassLoader().getResource("Image/background.jpg");
+    URL imageUrl = getClass().getClassLoader().getResource(imageName);
     System.out.println("Image path: " + imageUrl);
     if(imageUrl == null)
     {
