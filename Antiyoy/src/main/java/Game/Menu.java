@@ -9,12 +9,14 @@ public class Menu extends JFrame {
     private GameFrame gameFrame;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+    Image iconFrame = new ImageIcon(getClass().getResource("/Image/Icon.jpg")).getImage();
 
     public Menu() {
         setTitle("Realm War");
         setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(iconFrame);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
