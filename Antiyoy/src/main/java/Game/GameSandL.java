@@ -1,6 +1,7 @@
 package Game;
 
 import Blocks.Block;
+import Blocks.EmptyBlock;
 import Blocks.ForestBlock;
 import Structure.*;
 import Units.*;
@@ -360,8 +361,9 @@ import java.util.Map;
                 Player player = playerMap.get(id);
                 Structures structure = structureMap.get(id);
                 Unit unit = unitMap.get(id);
-
-                blocks[x][y] = new Block(x, y, name, new Color(colorInt, true), player, structure, unit,image);
+                if (name.equals("Forest Block")){
+                    blocks[x][y] = new ForestBlock(x,y,player,structure,unit,image);
+                }else blocks[x][y] = new EmptyBlock(x, y, player, structure, unit);
             }
 
             hudPanel.addLog("..Load Game verified..");

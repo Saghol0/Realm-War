@@ -571,7 +571,7 @@ public class GameController {
 
             players = remainingPlayers.toArray(new Player[0]);
             gamePanel.setPlayers(players);
-            if (players.length<currentPlayerIndex){
+            if (players.length<=currentPlayerIndex){
                 currentPlayerIndex--;
             }
         }
