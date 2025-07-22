@@ -9,10 +9,6 @@ import Units.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +28,7 @@ public class GameController {
     private javax.swing.Timer timer;
     private int TimeForTurn = 30;
     private int TimeForGetGoldAndFoolPlayer = 10;
-    private int TimeEndGame=0;
+    private int TimeEndGame = 0;
     private GameSandL gameSandL;
     private GameData gameData;
     private int end;
@@ -42,11 +38,41 @@ public class GameController {
         this.gamePanel = gamePanel;
         this.hudPanel = hudPanel;
         this.players = players;
-        this.gameSandL=new GameSandL(hudPanel);
-        this.gameData=new GameData(hudPanel);
-        PlayerDelete=new ArrayList<>();
+        this.gameSandL = new GameSandL(hudPanel);
+        this.gameData = new GameData(hudPanel);
+        PlayerDelete = new ArrayList<>();
         setupListeners();
         updateHUD();
+    }
+
+    private String getUnitName(String unitName) {
+        switch (unitName) {
+            case "Peasant          (Gold:10 + Food:5 + Space:1)":
+                return "Peasant";
+            case "Knight            (Gold:40 + Food:20 + Space:4)":
+                return "Knight";
+            case "SpearMan      (Gold:20 + Food:10 + Space:2)":
+                return "SpearMan";
+            case "SwordMan     (Gold:30 + Food:15 + Space:3)":
+                return "SwordMan";
+            default:
+                return null;
+        }
+    }
+
+    private String getStructureName(String structureName) {
+        switch (structureName) {
+            case "Farm     (Gold:15 + LUP1:15 + LUP2:20)":
+                return "Farm";
+            case "Market    (Gold:15 + LUP1:15 + LUP2:20)":
+                return "Market";
+            case "Tower      (Gold:25 + LUP1:15 + LUP2:20)":
+                return "Tower";
+            case "Barrack    (Gold:15 + LUP1:15 + LUP2:20)":
+                return "Barrack";
+            default:
+                return null;
+        }
     }
 
     private Unit createUnitByName(String unitName) {
@@ -293,14 +319,14 @@ public class GameController {
             selectedBlock = null;
         }
 
-        currentPlayerIndex=(currentPlayerIndex+1)%players.length;
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         hudPanel.addLog("Turn ended. It's now " + players[currentPlayerIndex].getName() + "'s turn.");
         updateHUD();
     }
 
     private void updateHUD() {
         Player currentPlayer = players[currentPlayerIndex];
-        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood(), currentPlayer.getUsedUnitSpace(), currentPlayer.getMaxUnitSpace(),getColorName(currentPlayer.getColor()));
+        hudPanel.updatePlayerInfo(currentPlayer.getName(), currentPlayer.getGold(), currentPlayer.getFood(), currentPlayer.getUsedUnitSpace(), currentPlayer.getMaxUnitSpace(), getColorName(currentPlayer.getColor()));
     }
 
     public Player getCurrentPlayer() {
@@ -466,7 +492,7 @@ public class GameController {
             Unit defender = toBlock.getUnit();
             defender.setHealth(defender.getHealth() - attacker.getAttackPower());
             attacker.setMoved(true);
-            if (defender.getHealth() <= 0 ) {
+            if (defender.getHealth() <= 0) {
                 Player defenderOwner = toBlock.getOwner();
                 defenderOwner.releaseUnitSpace(defender.getUnitSpace());
                 hudPanel.addLog("Unit " + toBlock.getOwner().getName() + " was killed.");
@@ -498,13 +524,14 @@ public class GameController {
 
                 DeletePlayer();
 
-                if(EndGmae()){
+                if (EndGmae()) {
                     timer.stop();
-                    if(players.length==4) {
+                    if (players.length == 4) {
                         gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName(), players[currentPlayerIndex].getName(), TimeEndGame);
-                    }else if(players.length==3){
+                    } else if (players.length == 3) {
                         gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), "null", players[currentPlayerIndex].getName(), TimeEndGame);
-                    }else gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
+                    } else
+                        gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
                     hudPanel.addLog("🎉 " + players[currentPlayerIndex].getName() + " won the game! Enemy Town Hall has been captured.");
                     JOptionPane.showMessageDialog(null, players[currentPlayerIndex].getName() + " won the game!");
                     gameSandL.EndGame();
@@ -525,60 +552,60 @@ public class GameController {
 
     public boolean EndGmae() {
         end = 0;
-        if(gamePanel.getBlock(0,0).getStructure()!=null) {
+        if (gamePanel.getBlock(0, 0).getStructure() != null) {
             if (gamePanel.getBlock(0, 0).getStructure().getName().equals("Town Hall")) {
                 end++;
             }
         }
-        if(gamePanel.getBlock(gamePanel.getSIZE()-1,gamePanel.getSIZE()-1).getStructure()!=null) {
-            if (gamePanel.getBlock(gamePanel.getSIZE()-1, gamePanel.getSIZE()-1).getStructure().getName().equals("Town Hall")) {
+        if (gamePanel.getBlock(gamePanel.getSIZE() - 1, gamePanel.getSIZE() - 1).getStructure() != null) {
+            if (gamePanel.getBlock(gamePanel.getSIZE() - 1, gamePanel.getSIZE() - 1).getStructure().getName().equals("Town Hall")) {
                 end++;
             }
         }
-        if(gamePanel.getBlock(gamePanel.getSIZE()-1,0).getStructure()!=null) {
-            if (gamePanel.getBlock(gamePanel.getSIZE()-1, 0).getStructure().getName().equals("Town Hall")) {
+        if (gamePanel.getBlock(gamePanel.getSIZE() - 1, 0).getStructure() != null) {
+            if (gamePanel.getBlock(gamePanel.getSIZE() - 1, 0).getStructure().getName().equals("Town Hall")) {
                 end++;
             }
         }
-        if(gamePanel.getBlock(0,gamePanel.getSIZE()-1).getStructure()!=null) {
-            if (gamePanel.getBlock(0, gamePanel.getSIZE()-1).getStructure().getName().equals("Town Hall")) {
+        if (gamePanel.getBlock(0, gamePanel.getSIZE() - 1).getStructure() != null) {
+            if (gamePanel.getBlock(0, gamePanel.getSIZE() - 1).getStructure().getName().equals("Town Hall")) {
                 end++;
             }
         }
         System.out.println(end);
-        return end==1;
+        return end == 1;
     }
 
-        public void DeletePlayer(){
-            List<Player> remainingPlayers = new ArrayList<>(Arrays.asList(players));
+    public void DeletePlayer() {
+        List<Player> remainingPlayers = new ArrayList<>(Arrays.asList(players));
 
-            if (gamePanel.getBlock(0, 0).getStructure() == null) {
-                remainingPlayers.removeIf(player -> player.getColor().equals(Color.RED));
-                gamePanel.DeletePlayer(Color.RED);
+        if (gamePanel.getBlock(0, 0).getStructure() == null) {
+            remainingPlayers.removeIf(player -> player.getColor().equals(Color.RED));
+            gamePanel.DeletePlayer(Color.RED);
 
-            }
-
-            if (gamePanel.getBlock(gamePanel.getSIZE()-1, gamePanel.getSIZE()-1).getStructure() == null) {
-                remainingPlayers.removeIf(player -> player.getColor().equals(Color.BLUE));
-                gamePanel.DeletePlayer(Color.BLUE);
-            }
-
-            if (gamePanel.getBlock(0, gamePanel.getSIZE()-1).getStructure() == null) {
-                remainingPlayers.removeIf(player -> player.getColor().equals(Color.CYAN));
-                gamePanel.DeletePlayer(Color.CYAN);
-            }
-
-            if (gamePanel.getBlock(gamePanel.getSIZE()-1, 0).getStructure() == null) {
-                remainingPlayers.removeIf(player -> player.getColor().equals(Color.PINK));
-                gamePanel.DeletePlayer(Color.PINK);
-            }
-
-            players = remainingPlayers.toArray(new Player[0]);
-            gamePanel.setPlayers(players);
-            if (players.length<=currentPlayerIndex){
-                currentPlayerIndex--;
-            }
         }
+
+        if (gamePanel.getBlock(gamePanel.getSIZE() - 1, gamePanel.getSIZE() - 1).getStructure() == null) {
+            remainingPlayers.removeIf(player -> player.getColor().equals(Color.BLUE));
+            gamePanel.DeletePlayer(Color.BLUE);
+        }
+
+        if (gamePanel.getBlock(0, gamePanel.getSIZE() - 1).getStructure() == null) {
+            remainingPlayers.removeIf(player -> player.getColor().equals(Color.CYAN));
+            gamePanel.DeletePlayer(Color.CYAN);
+        }
+
+        if (gamePanel.getBlock(gamePanel.getSIZE() - 1, 0).getStructure() == null) {
+            remainingPlayers.removeIf(player -> player.getColor().equals(Color.PINK));
+            gamePanel.DeletePlayer(Color.PINK);
+        }
+
+        players = remainingPlayers.toArray(new Player[0]);
+        gamePanel.setPlayers(players);
+        if (players.length <= currentPlayerIndex) {
+            currentPlayerIndex--;
+        }
+    }
 
     public void refreshBlockListeners() {
         for (int i = 0; i < gamePanel.getSIZE(); i++) {
@@ -591,48 +618,48 @@ public class GameController {
         }
     }
 
-    public void loadGameForMenu(){
-        int getSIZE=gameSandL.getSIZE();
+    public void loadGameForMenu() {
+        int getSIZE = gameSandL.getSIZE();
 
         Block[][] blocks = gameSandL.LoadGame(new Block[getSIZE][getSIZE]);
 
-        List<Player> playerList=new ArrayList<>();
-        if (blocks[0][0].getStructure()!=null) {
+        List<Player> playerList = new ArrayList<>();
+        if (blocks[0][0].getStructure() != null) {
             if (blocks[0][0].getStructure().getName().equals("Town Hall")) {
                 playerList.add(blocks[0][0].getOwner());
             }
         }
-        if (blocks[getSIZE-1][getSIZE-1].getStructure()!=null) {
-            if (blocks[getSIZE-1][getSIZE-1].getStructure().getName().equals("Town Hall")) {
-                playerList.add(blocks[getSIZE-1][getSIZE-1].getOwner());
+        if (blocks[getSIZE - 1][getSIZE - 1].getStructure() != null) {
+            if (blocks[getSIZE - 1][getSIZE - 1].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[getSIZE - 1][getSIZE - 1].getOwner());
             }
         }
-        if (blocks[0][getSIZE-1].getStructure()!=null) {
-            if (blocks[0][getSIZE-1].getStructure().getName().equals("Town Hall")) {
-                playerList.add(blocks[0][getSIZE-1].getOwner());
+        if (blocks[0][getSIZE - 1].getStructure() != null) {
+            if (blocks[0][getSIZE - 1].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[0][getSIZE - 1].getOwner());
             }
         }
-        if (blocks[getSIZE-1][0].getStructure()!=null) {
-            if (blocks[getSIZE-1][0].getStructure().getName().equals("Town Hall")) {
-                playerList.add(blocks[getSIZE-1][0].getOwner());
+        if (blocks[getSIZE - 1][0].getStructure() != null) {
+            if (blocks[getSIZE - 1][0].getStructure().getName().equals("Town Hall")) {
+                playerList.add(blocks[getSIZE - 1][0].getOwner());
             }
         }
         this.players = playerList.toArray(new Player[0]);
 
         gamePanel.setSIZE(getSIZE);
-        gamePanel.loadGame(blocks,playerList);
+        gamePanel.loadGame(blocks, playerList);
         gamePanel.setHudPanel(hudPanel);
         gamePanel.setController(this);
 
         this.refreshBlockListeners();
         currentPlayerIndex = gameSandL.getNoBat();
-        if(gameSandL.getNoBat()==3 && playerList.size()==3){
-            currentPlayerIndex=2;
+        if (gameSandL.getNoBat() == 3 && playerList.size() == 3) {
+            currentPlayerIndex = 2;
         }
-        if (gameSandL.getNoBat()==2 && playerList.size()==2){
-            currentPlayerIndex=1;
+        if (gameSandL.getNoBat() == 2 && playerList.size() == 2) {
+            currentPlayerIndex = 1;
         }
-        TimeEndGame=gameSandL.TimeGame();
+        TimeEndGame = gameSandL.TimeGame();
         TimeForGetGoldAndFoolPlayer = 10;
         TimeForTurn = 30;
         updateHUD();
@@ -665,7 +692,8 @@ public class GameController {
                     if (selectedBlock.getOwner() != getCurrentPlayer()) {
                         selectedBlock.setOwner(getCurrentPlayer());
                     }
-                    hudPanel.addLog("✅ Unit " + unitName + " has been successfully built.");
+
+                    hudPanel.addLog("✅ Unit " + getUnitName(unitName) + " has been successfully built.");
                 } else {
                     hudPanel.addLog("❌ Not enough resources or requirements not met to build this unit.");
                 }
@@ -695,7 +723,7 @@ public class GameController {
                         getCurrentPlayer().addMaxUnitSpace(barrack.getUnitSpace());
                         updateHUD();
                     }
-                    hudPanel.addLog("✅ Structure " + structureName + " has been successfully built.");
+                    hudPanel.addLog("✅ Structure " + getStructureName(structureName)+ " has been successfully built.");
                 } else {
                     hudPanel.addLog("❌ Not enough resources or the selected block is already occupied.");
                 }
@@ -725,51 +753,51 @@ public class GameController {
 
         hudPanel.getButtonSaveGame().addActionListener(e -> {
             gameSandL.DropTable();
-            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex,TimeEndGame);
+            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex, TimeEndGame);
         });
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
-            int getSIZE=gameSandL.getSIZE();
+            int getSIZE = gameSandL.getSIZE();
 
             Block[][] blocks = gameSandL.LoadGame(new Block[getSIZE][getSIZE]);
 
-            List<Player> playerList=new ArrayList<>();
-            if (blocks[0][0].getStructure()!=null) {
+            List<Player> playerList = new ArrayList<>();
+            if (blocks[0][0].getStructure() != null) {
                 if (blocks[0][0].getStructure().getName().equals("Town Hall")) {
                     playerList.add(blocks[0][0].getOwner());
                 }
             }
-            if (blocks[getSIZE-1][getSIZE-1].getStructure()!=null) {
-                if (blocks[getSIZE-1][getSIZE-1].getStructure().getName().equals("Town Hall")) {
-                    playerList.add(blocks[getSIZE-1][getSIZE-1].getOwner());
+            if (blocks[getSIZE - 1][getSIZE - 1].getStructure() != null) {
+                if (blocks[getSIZE - 1][getSIZE - 1].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[getSIZE - 1][getSIZE - 1].getOwner());
                 }
             }
-            if (blocks[0][getSIZE-1].getStructure()!=null) {
-                if (blocks[0][getSIZE-1].getStructure().getName().equals("Town Hall")) {
-                    playerList.add(blocks[0][getSIZE-1].getOwner());
+            if (blocks[0][getSIZE - 1].getStructure() != null) {
+                if (blocks[0][getSIZE - 1].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[0][getSIZE - 1].getOwner());
                 }
             }
-            if (blocks[getSIZE-1][0].getStructure()!=null) {
-                if (blocks[getSIZE-1][0].getStructure().getName().equals("Town Hall")) {
-                    playerList.add(blocks[getSIZE-1][0].getOwner());
+            if (blocks[getSIZE - 1][0].getStructure() != null) {
+                if (blocks[getSIZE - 1][0].getStructure().getName().equals("Town Hall")) {
+                    playerList.add(blocks[getSIZE - 1][0].getOwner());
                 }
             }
             this.players = playerList.toArray(new Player[0]);
 
             gamePanel.setSIZE(getSIZE);
-            gamePanel.loadGame(blocks,playerList);
+            gamePanel.loadGame(blocks, playerList);
             gamePanel.setHudPanel(hudPanel);
             gamePanel.setController(this);
 
             this.refreshBlockListeners();
             currentPlayerIndex = gameSandL.getNoBat();
-            if(gameSandL.getNoBat()==3 && playerList.size()==3){
-                currentPlayerIndex=2;
+            if (gameSandL.getNoBat() == 3 && playerList.size() == 3) {
+                currentPlayerIndex = 2;
             }
-            if (gameSandL.getNoBat()==2 && playerList.size()==2){
-                currentPlayerIndex=1;
+            if (gameSandL.getNoBat() == 2 && playerList.size() == 2) {
+                currentPlayerIndex = 1;
             }
-            TimeEndGame=gameSandL.TimeGame();
+            TimeEndGame = gameSandL.TimeGame();
             TimeForGetGoldAndFoolPlayer = 10;
             TimeForTurn = 30;
             updateHUD();
@@ -921,11 +949,18 @@ public class GameController {
             }
         }
     }
+
     private static String getColorName(Color color) {
-        if(color.equals(Color.RED)) {return "RED"; }
-        else if (color.equals(Color.BLUE)) {return "BLUE";}
-        else if ( color.equals(Color.CYAN)) {return "CYAN";}
-        else if (color.equals(Color.PINK)) {return "PINK";}
-        else {return "Unknown";}
+        if (color.equals(Color.RED)) {
+            return "RED";
+        } else if (color.equals(Color.BLUE)) {
+            return "BLUE";
+        } else if (color.equals(Color.CYAN)) {
+            return "CYAN";
+        } else if (color.equals(Color.PINK)) {
+            return "PINK";
+        } else {
+            return "Unknown";
+        }
     }
 }
