@@ -10,21 +10,21 @@ public class SplashScreen extends JWindow {
         content.setBackground(Color.WHITE);
         content.setLayout(new BorderLayout());
 
-        BackgroundPanel bgPanel = new BackgroundPanel("Image/kasra.jpg");
+        BackgroundPanel bgPanel = new BackgroundPanel("Image/loading.png");
         bgPanel.setLayout(new BorderLayout());
 
-        JLabel title = new JLabel("Loading Game...", SwingConstants.CENTER);
-        title.setFont(new Font("Georgia", Font.BOLD, 22));
-        title.setForeground(Color.WHITE);
-        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        bgPanel.add(title, BorderLayout.SOUTH);
+//        JLabel title = new JLabel("Loading Game...", SwingConstants.CENTER);
+//        title.setFont(new Font("Georgia", Font.BOLD, 22));
+//        title.setForeground(Color.WHITE);
+//        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+//        bgPanel.add(title, BorderLayout.SOUTH);
 
 
 
         setContentPane(bgPanel);
 
 
-        setSize(600, 400);
+        setSize(500, 500);
         setLocationRelativeTo(null);
     }
     public void showSplash(int duration) {
