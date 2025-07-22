@@ -67,13 +67,13 @@ public class GameController {
 
     private Structures createStructureByName(String structureName) {
         switch (structureName) {
-            case "Farm":
+            case "Farm     (Gold:15 + LUP1:15 + LUP2:20)":
                 return new Farm();
-            case "Market":
+            case "Market    (Gold:15 + LUP1:15 + LUP2:20)":
                 return new Market();
-            case "Tower":
+            case "Tower      (Gold:25 + LUP1:15 + LUP2:20)":
                 return new Tower();
-            case "Barrack":
+            case "Barrack    (Gold:15 + LUP1:15 + LUP2:20)":
                 return new Barrack();
             default:
                 return null;
@@ -117,7 +117,6 @@ public class GameController {
             hudPanel.addLog("❌ Cannot build structures adjacent to enemy Tower.");
             return false;
         }
-
         return player.getGold() >= structure.getBuildCost();
     }
 

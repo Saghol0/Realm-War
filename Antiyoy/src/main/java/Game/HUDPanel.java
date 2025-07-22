@@ -59,7 +59,11 @@ public class HUDPanel extends JPanel {
         });
 
         structureSelector = new JComboBox<>(new String[]{
-                "None", "Farm", "Market", "Barrack", "Tower"
+                "None"
+                , "Farm     (Gold:15 + LUP1:15 + LUP2:20)"
+                , "Market    (Gold:15 + LUP1:15 + LUP2:20)"
+                , "Barrack    (Gold:15 + LUP1:15 + LUP2:20)"
+                , "Tower      (Gold:25 + LUP1:15 + LUP2:20)"
         });
 
         endTurnButton = new JButton("End Turn");
