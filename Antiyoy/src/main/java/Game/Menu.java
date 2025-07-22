@@ -97,9 +97,23 @@ public class Menu extends JFrame {
 
         newGameBtn.addActionListener(e -> cardLayout.show(mainPanel, "gameSelectorPanel"));
         loadGameBtn.addActionListener(e -> {
+            new Thread(() -> {
+                dispose();
+                SplashScreen splash = new SplashScreen("Image/loading.png");
+                splash.setVisible(true);
+
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+
+                splash.setVisible(false);
+                splash.dispose();
             GameFrame gameFrame = new GameFrame(new Player[]{new Player("null", Color.BLACK)}, 10);
             gameFrame.getGamePanel().getController().loadGameForMenu();
-            dispose();
+            }).start();
+
         });
         matchHistory.addActionListener(e -> new GameData(new HUDPanel()).SELECTable());
         exitBtn.addActionListener(e -> System.exit(0));
