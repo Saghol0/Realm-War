@@ -66,17 +66,29 @@ public class Menu extends JFrame {
     }
 
     public JPanel menuPanel() {
-        JPanel menuPanel = new JPanel();
+        JPanel menuPanel = new JPanel(new BorderLayout());
+        JPanel btnPanel = new JPanel();
         menuPanel.setOpaque(false);
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBorder(BorderFactory.createEmptyBorder(150, 0, 150, 0));
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
+        menuPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 150, 0));
 
-        JLabel titleLabel = new JLabel("Welcome to Realm War");
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setFont(new Font("Georgia", Font.BOLD, 50));
-        titleLabel.setForeground(Color.white);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 80, 0));
-        menuPanel.add(titleLabel);
+        try {
+            ImageIcon logo = new ImageIcon(getClass().getResource("/Image/menuTitle.png"));
+            Image scaledImage = logo.getImage().getScaledInstance(400, -1, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            JLabel logoLabel = new JLabel(scaledIcon);
+            logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            JPanel northPanel = new JPanel();
+            northPanel.setOpaque(false);
+            northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
+            northPanel.add(logoLabel);
+            northPanel.add(Box.createRigidArea(new Dimension(0, 40)));
+
+            menuPanel.add(northPanel, BorderLayout.NORTH);
+        } catch (Exception e) {
+            System.err.println("Error loading logo: " + e.getMessage());
+        }
 
         JButton newGameBtn = createFancyButton("New Game");
         JButton loadGameBtn = createFancyButton("Load Game");
@@ -85,23 +97,27 @@ public class Menu extends JFrame {
 
         newGameBtn.addActionListener(e -> cardLayout.show(mainPanel, "gameSelectorPanel"));
         loadGameBtn.addActionListener(e -> {
-        GameFrame gameFrame = new GameFrame(new Player[]{new Player("null",Color.BLACK)},10);
-        gameFrame.getGamePanel().getController().loadGameForMenu();
-        dispose();
+            GameFrame gameFrame = new GameFrame(new Player[]{new Player("null", Color.BLACK)}, 10);
+            gameFrame.getGamePanel().getController().loadGameForMenu();
+            dispose();
         });
         matchHistory.addActionListener(e -> new GameData(new HUDPanel()).SELECTable());
         exitBtn.addActionListener(e -> System.exit(0));
 
-        menuPanel.add(newGameBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        menuPanel.add(loadGameBtn);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        menuPanel.add(matchHistory);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        menuPanel.add(exitBtn);
+        btnPanel.add(newGameBtn);
+        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        btnPanel.add(loadGameBtn);
+        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        btnPanel.add(matchHistory);
+        btnPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        btnPanel.add(exitBtn);
+
+        btnPanel.setOpaque(false);
+        menuPanel.add(btnPanel, BorderLayout.CENTER);
 
         return menuPanel;
     }
+
 
     public JPanel gameSelectorPanel() {
         JPanel panel = new JPanel();
@@ -204,11 +220,26 @@ public class Menu extends JFrame {
             Player[] players = new Player[numberPlayer];
             Color[] colors = {Color.RED, Color.BLUE, Color.CYAN, Color.PINK};
             for (int i = 0; i < numberPlayer; i++) {
-                players[i]=new Player(fields[i].getText(), colors[i]);
+                players[i] = new Player(fields[i].getText(), colors[i]);
             }
             int SIZE = (int) unitSelector.getSelectedItem();
-            gameFrame = new GameFrame(players,SIZE);
-            dispose();
+
+            new Thread(() -> {
+                dispose();
+                SplashScreen splash = new SplashScreen("Image/loading.png");
+                splash.setVisible(true);
+
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+
+                splash.setVisible(false);
+                splash.dispose();
+
+                SwingUtilities.invokeLater(() -> new GameFrame(players, SIZE));
+            }).start();
         });
 
         JButton backBtn = createFancyButton("Back");

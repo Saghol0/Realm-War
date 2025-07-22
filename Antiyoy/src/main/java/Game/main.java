@@ -13,7 +13,7 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 public class main {
     public static void main(String[] args) {
-        SplashScreen splash = new SplashScreen();
+        SplashScreen splash = new SplashScreen("Image/loadiing.png");
         splash.showSplash(2500);
         try {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
