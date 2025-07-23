@@ -32,7 +32,7 @@ public class GameController {
     private GameSandL gameSandL;
     private GameData gameData;
     private int end;
-    private List<Player> PlayerDelete;
+    private int IDGame;
 
     public GameController(GamePanel gamePanel, HUDPanel hudPanel, Player[] players) {
         this.gamePanel = gamePanel;
@@ -40,9 +40,13 @@ public class GameController {
         this.players = players;
         this.gameSandL = new GameSandL(hudPanel);
         this.gameData = new GameData(hudPanel);
-        PlayerDelete = new ArrayList<>();
+
         setupListeners();
-        updateHUD();
+        if (players.length == 4) {
+            IDGame=gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName());
+        } else { IDGame=gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null"); }
+            updateHUD();
+
     }
 
     private String getUnitName(String unitName) {
@@ -526,12 +530,7 @@ public class GameController {
 
                 if (EndGmae()) {
                     timer.stop();
-                    if (players.length == 4) {
-                        gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), players[3].getName(), players[currentPlayerIndex].getName(), TimeEndGame);
-                    } else if (players.length == 3) {
-                        gameData.INSERTable(players[0].getName(), players[1].getName(), players[2].getName(), "null", players[currentPlayerIndex].getName(), TimeEndGame);
-                    } else
-                        gameData.INSERTable(players[0].getName(), players[1].getName(), "null", "null", players[currentPlayerIndex].getName(), TimeEndGame);
+                    gameData.UpdateTimeAndWinner(IDGame,TimeEndGame,players[currentPlayerIndex].getName());
                     hudPanel.addLog("🎉 " + players[currentPlayerIndex].getName() + " won the game! Enemy Town Hall has been captured.");
                     JOptionPane.showMessageDialog(null, players[currentPlayerIndex].getName() + " won the game!");
                     gameSandL.EndGame();
@@ -619,7 +618,11 @@ public class GameController {
     }
 
     public void loadGameForMenu() {
+         gameData.DeleteNull(IDGame);
+
         int getSIZE = gameSandL.getSIZE();
+
+        IDGame=gameSandL.getIdGame();
 
         Block[][] blocks = gameSandL.LoadGame(new Block[getSIZE][getSIZE]);
 
@@ -753,11 +756,17 @@ public class GameController {
 
         hudPanel.getButtonSaveGame().addActionListener(e -> {
             gameSandL.DropTable();
-            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex, TimeEndGame);
+            gameSandL.SaveGame(gamePanel.getBlocks(), gamePanel.getSIZE(), currentPlayerIndex, TimeEndGame,IDGame);
         });
 
         hudPanel.getButtonLoadGame().addActionListener(e -> {
+            if (IDGame!= gameSandL.getIdGame()){
+                gameData.DeleteNull(IDGame);
+            }
+
             int getSIZE = gameSandL.getSIZE();
+
+            IDGame=gameSandL.getIdGame();
 
             Block[][] blocks = gameSandL.LoadGame(new Block[getSIZE][getSIZE]);
 

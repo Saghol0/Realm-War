@@ -110,7 +110,7 @@ public class Menu extends JFrame {
 
                 splash.setVisible(false);
                 splash.dispose();
-            GameFrame gameFrame = new GameFrame(new Player[]{new Player("null", Color.BLACK)}, 10);
+            GameFrame gameFrame = new GameFrame(new Player[]{new Player("null", Color.BLACK),new Player("null", Color.BLACK)}, 10);
             gameFrame.getGamePanel().getController().loadGameForMenu();
             }).start();
 

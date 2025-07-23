@@ -104,7 +104,8 @@ import java.util.Map;
          String SQLGameController = "CREATE TABLE IF NOT  EXISTS Controller(" +
                  "NoBat INT NOT NULL, "+
                  "TimeGame INT NOT NULL, "+
-                 "SIZE  INT NOT NULL )";
+                 "SIZE  INT NOT NULL ,"+
+                 "IDGame INT NOT NULL )";
 
 
 
@@ -147,14 +148,14 @@ import java.util.Map;
         }
     }
 
-    public void SaveGame(Block[][] b, int SIZE,int NoBat,int timeGame){
+    public void SaveGame(Block[][] b, int SIZE,int NoBat,int timeGame,int IDGame){
         String SQLBlack="INSERT INTO Block(X,Y,Name,Color,Image) VALUES (?,?,?,?,?) RETURNING ID";
         String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UsedUnitSpace,MaxUnitSpace,Color) VALUES (?,?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
         String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
-        String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame,SIZE) VALUES (?,?,?)";
+        String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame,SIZE,IDGame) VALUES (?,?,?,?)";
         int ID;
 
         try (
@@ -169,6 +170,7 @@ import java.util.Map;
             PstmtC.setInt(1,NoBat);
             PstmtC.setInt(2,timeGame);
             PstmtC.setInt(3,SIZE);
+            PstmtC.setInt(4,IDGame);
             PstmtC.executeUpdate();
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
@@ -444,6 +446,26 @@ import java.util.Map;
 
          return 0;
      }
+
+     public int getIdGame(){
+        String SQL = "SELECT * FROM Controller ";
+        try{
+        Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+        PreparedStatement Pstmt = conn.prepareStatement(SQL);
+
+        ResultSet ru = Pstmt.executeQuery();
+        if(ru.next()){
+            return ru.getInt("IDGame");
+        }
+
+
+        }catch (SQLException e){
+            hudPanel.addLog("ERROR GET SIZE :" + e.getMessage());
+            return -1;
+        }
+        return -1;
+     }
+
 
     public void DropTable(){
         String SQL="DROP TABLE block,player,unit,structures,Controller;";

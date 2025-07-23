@@ -40,8 +40,8 @@ public class GameData {
 
     }
 
-    public boolean INSERTable(String Player1,String Player2,String Player3,String Player4,String Winner,int Playtime){
-        String SQL="INSERT INTO ListData (Player1,Player2,Player3,Player4,Winner,Playtime) VALUES (?,?,?,?,?,?)";
+    public int INSERTable(String Player1,String Player2,String Player3,String Player4){
+        String SQL="INSERT INTO ListData (Player1,Player2,Player3,Player4) VALUES (?,?,?,?) RETURNING IDGame";
         try{
             Connection connection=DriverManager.getConnection(URL,USER,PASSWORD);
             PreparedStatement Pstmt=connection.prepareStatement(SQL);
@@ -49,24 +49,59 @@ public class GameData {
             Pstmt.setString(2,Player2);
             Pstmt.setString(3,Player3);
             Pstmt.setString(4,Player4);
-            Pstmt.setString(5,Winner);
-            Pstmt.setInt(6,Playtime);
-            if(0<Pstmt.executeUpdate()){
+
+            ResultSet ru =Pstmt.executeQuery();
+
+            if(ru.next()){
                 hudPanel.addLog("..INSERT verified..");
-                return true;
+                return ru.getInt(1);
             } else {
                 hudPanel.addLog("..ERROR INSERT..");
-                return false;
+                return -1;
             }
         }catch (SQLException e){
             hudPanel.addLog("ERROR INSERT"+ e.getMessage());
-            return false;
+            return -1;
+        }
+    }
+
+    public void UpdateTimeAndWinner(int ID,int Playtime,String Winner){
+    String SQL = "UPDATE ListData set Winner = ?,Playtime = ? where IDGame = ? ";
+
+    try {
+        Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+        PreparedStatement Stmt= conn.prepareStatement(SQL);
+        Stmt.setString(1,Winner);
+        Stmt.setInt(2,Playtime);
+        Stmt.setInt(3,ID);
+        Stmt.executeUpdate();
+        hudPanel.addLog("..Update verified..");
+    }catch (SQLException e){
+        hudPanel.addLog("ERROR INSERT Time and Winner :"+ e.getMessage());
+    }
+
+    }
+
+    public void DeleteNull(int ID){
+        String SQL = "DELETE FROM ListData where IDGame = ?";
+
+        try {
+            Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+            PreparedStatement Pstmt = conn.prepareStatement(SQL);
+            Pstmt.setInt(1,ID);
+            Pstmt.executeUpdate();
+            hudPanel.addLog("..DELETE verified..");
+
+        }catch (SQLException e){
+            hudPanel.addLog("ERROR ListData delete"+ e.getMessage());
         }
     }
 
 
+
+
     public void SELECTable(){
-        String SQL="SELECT * From ListData";
+        String SQL="SELECT * From ListData ListData";
 
         try{
             Connection connection=DriverManager.getConnection(URL,USER,PASSWORD);
