@@ -101,7 +101,7 @@ public class GameData {
 
 
     public void SELECTable(){
-        String SQL="SELECT * From ListData ListData";
+        String SQL="SELECT * From ListData ";
 
         try{
             Connection connection=DriverManager.getConnection(URL,USER,PASSWORD);
