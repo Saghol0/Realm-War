@@ -9,7 +9,7 @@ public abstract class Unit extends Component {
     private HUDPanel hudPanel;
     protected String name;
     public int rank;
-    protected int movementRange = 3;
+    protected int movementRange ;
     public int costGold;
     public int costFood;
     public int unitSpace;
