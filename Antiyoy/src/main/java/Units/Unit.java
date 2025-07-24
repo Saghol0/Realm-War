@@ -17,7 +17,7 @@ public abstract class Unit extends Component {
     protected Boolean moved   = false;
     protected int health;
     protected int attackPower;
-    public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon,int attackPower,int health) {
+    public Unit(String name, int rank, int costGold, int costFood, int unitSpace, Image icon,int attackPower,int health,int movementRange ) {
         this.name = name;
         this.rank = rank;
         this.costGold = costGold;
@@ -26,6 +26,7 @@ public abstract class Unit extends Component {
         this.icon = icon;
         this.health = health;
         this.attackPower=attackPower;
+        this.movementRange=movementRange;
     }
 
     public boolean canMove(int fromX, int fromY, int toX, int toY) {

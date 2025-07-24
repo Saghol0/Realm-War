@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Peasant extends Unit {
     public Peasant(JLabel uLabel) {
-        super("Peasant", 1, 10, 5, 1, loadImage(), 50, 100);
+        super("Peasant", 1, 10, 5, 1, loadImage(), 50, 100,3);
     }
     public static Image loadImage() {
         URL url = Peasant.class.getResource("/Image/peasant.png");

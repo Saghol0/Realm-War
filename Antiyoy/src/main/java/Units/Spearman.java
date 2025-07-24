@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Spearman extends Unit {
     public Spearman(JLabel uLabel) {
-        super("Spearman", 2, 2 * 10, 5 * 2, 2, loadImage(),100,200);
+        super("Spearman", 2, 2 * 10, 5 * 2, 2, loadImage(),100,200,4);
     }
 
     public static Image loadImage() {

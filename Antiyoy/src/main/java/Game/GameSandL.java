@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
  public class GameSandL {
-    private final String URL="jdbc:postgresql://localhost:5432/realm war";
+    private final String URL="jdbc:postgresql://localhost:5432/Pain";
     private final String USER="postgres";
-    private final String PASSWORD="1383";
+    private final String PASSWORD="73752";
 
     private final String FolderAddress="FolderSandL";
     private final String FileAddress=FolderAddress+"/SaveLoad";

@@ -6,9 +6,9 @@ import java.awt.*;
 import java.sql.*;
 
 public class GameData {
-    private final String URL="jdbc:postgresql://localhost:5432/realm war";
+    private final String URL="jdbc:postgresql://localhost:5432/Pain";
     private final String USER="postgres";
-    private final String PASSWORD="1383";
+    private final String PASSWORD="73752";
     private HUDPanel hudPanel;
 
 
