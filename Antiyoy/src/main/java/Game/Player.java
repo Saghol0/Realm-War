@@ -64,7 +64,7 @@ public class Player {
     }
 
     public void releaseUnitSpace(int amount) {
-        usedUnitSpace = Math.max(0, usedUnitSpace - amount);
+        usedUnitSpace -= amount;
     }
 
     public void reset() {
