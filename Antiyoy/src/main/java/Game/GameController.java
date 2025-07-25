@@ -404,7 +404,7 @@ public class GameController {
             toBlock.setOwner(getCurrentPlayer());
         }
 
-        if (!hasOwnedNeighborBlock(toBlock, getCurrentPlayer())) {
+        if (!isAdjacentToOwnedBlock( getCurrentPlayer(),toBlock)) {
             fromBlock.setUnit(unit);
             toBlock.setUnit(null);
             toBlock.setOwner(previousOwner);  // Restore previous owner if move invalid
@@ -417,27 +417,6 @@ public class GameController {
 
         hudPanel.addLog("✅ Unit moved successfully.");
         unit.setMoved(true);
-    }
-
-    private boolean hasOwnedNeighborBlock(Block block, Player player) {
-        int x = block.getGridX();
-        int y = block.getGridY();
-
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (dx == 0 && dy == 0) continue;
-                int nx = x + dx;
-                int ny = y + dy;
-
-                if (nx >= 0 && nx < gamePanel.SIZE && ny >= 0 && ny < gamePanel.SIZE) {
-                    Block neighbor = gamePanel.getBlock(nx, ny);
-                    if (neighbor.getOwner() == player) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     public void unitMerge(Block fromBlock, Block toBlock) {
