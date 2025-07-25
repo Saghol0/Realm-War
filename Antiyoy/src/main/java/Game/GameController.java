@@ -110,7 +110,7 @@ public class GameController {
         }
     }
 
-    private boolean isAdjacentToOwnedBlock(Player player, Block block) {
+    private boolean hasOwnedNeighborBlock(Player player, Block block) {
         int x = block.getGridX();
         int y = block.getGridY();
 
@@ -138,7 +138,7 @@ public class GameController {
             return false;
         }
 
-        if (!isAdjacentToOwnedBlock(player, selectedBlock)) {
+        if (!hasOwnedNeighborBlock(player, selectedBlock)) {
             hudPanel.addLog("❌ You can only build structures adjacent to your owned blocks.");
             return false;
         }
@@ -158,7 +158,7 @@ public class GameController {
             return false;
         }
 
-        if (!isAdjacentToOwnedBlock(player, selectedBlock)) {
+        if (!hasOwnedNeighborBlock(player, selectedBlock)) {
             hudPanel.addLog("❌ You can only build units adjacent to your owned blocks.");
             return false;
         }
@@ -404,7 +404,7 @@ public class GameController {
             toBlock.setOwner(getCurrentPlayer());
         }
 
-        if (!isAdjacentToOwnedBlock( getCurrentPlayer(),toBlock)) {
+        if (!hasOwnedNeighborBlock( getCurrentPlayer(),toBlock)) {
             fromBlock.setUnit(unit);
             toBlock.setUnit(null);
             toBlock.setOwner(previousOwner);  // Restore previous owner if move invalid
