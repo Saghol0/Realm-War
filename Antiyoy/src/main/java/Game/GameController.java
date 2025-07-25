@@ -809,6 +809,7 @@ public class GameController {
             TimeEndGame = gameSandL.TimeGame();
             TimeForGetGoldAndFoolPlayer = 10;
             TimeForTurn = 30;
+            hudPanel.getTimerTurnEnd().setForeground(new Color(190, 190, 190));
             updateHUD();
         });
 

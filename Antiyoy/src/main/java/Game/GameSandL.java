@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
  public class GameSandL {
-    private final String URL="jdbc:postgresql://localhost:5432/Pain";
+    private final String URL="jdbc:postgresql://localhost:5432/realm war";
     private final String USER="postgres";
-    private final String PASSWORD="73752";
+    private final String PASSWORD="1383";
 
     private final String FolderAddress="FolderSandL";
     private final String FileAddress=FolderAddress+"/SaveLoad";
@@ -30,6 +30,8 @@ import java.util.Map;
     private File file;
 
     public GameSandL (HUDPanel h){
+        this.hudPanel=h;
+
         try {
 
 
@@ -54,7 +56,7 @@ import java.util.Map;
         } catch (IOException e){
             hudPanel.addLog("Error file:"+ e.getMessage());
         }
-        this.hudPanel=h;
+
         CreateTableSaveGame();
 
     }
@@ -153,8 +155,8 @@ import java.util.Map;
         String SQLPlayer="INSERT INTO Player(ID,Name,Gold,Food,UsedUnitSpace,MaxUnitSpace,Color) VALUES (?,?,?,?,?,?,?) ";
         String SQLStructures="INSERT INTO Structures(ID,Name,durability,maintenanceCost,level,MaxLevel,Image,buildCost)"+
                 "VALUES (?,?,?,?,?,?,?,?)";
-        String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,health,attackPower)"+
-                "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String SQLUnit="INSERT INTO Unit(ID,Name,Rank,movementRange,CostGold,CostFood,UnitSpace,Image,Moved,health,attackPower)"+
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         String SQLGameController= "INSERT INTO Controller(NoBat,TimeGame,SIZE,IDGame) VALUES (?,?,?,?)";
         int ID;
 
@@ -224,8 +226,9 @@ import java.util.Map;
                         PstmtU.setInt(6, block.getUnit().getCostFood());
                         PstmtU.setInt(7, block.getUnit().getUnitSpace());
                         PstmtU.setString(8, block.getUnit().getName());
-                        PstmtU.setInt(9, block.getUnit().getHealth());
-                        PstmtU.setInt(10, block.getUnit().getAttackPower());
+                        PstmtU.setBoolean(9,block.getUnit().getMoved());
+                        PstmtU.setInt(10, block.getUnit().getHealth());
+                        PstmtU.setInt(11, block.getUnit().getAttackPower());
                         PstmtU.executeUpdate();
                     }
 
@@ -318,6 +321,7 @@ import java.util.Map;
                 int costGold = rsU.getInt("CostGold");
                 int costFood = rsU.getInt("CostFood");
                 int unitSpace = rsU.getInt("UnitSpace");
+                boolean moved = rsU.getBoolean("Moved");
                 int health = rsU.getInt("health");
                 int attackPower = rsU.getInt("attackPower");
 
@@ -343,7 +347,7 @@ import java.util.Map;
                     unit.unitSpace = unitSpace;
                     unit.setHealth(health);
                     unit.setAttackPower(attackPower);
-                    unit.setMoved(false);
+                    unit.setMoved(moved);
                     unitMap.put(id, unit);
                 }
             }
@@ -495,6 +499,7 @@ import java.util.Map;
       try (BufferedWriter riter = new BufferedWriter(new FileWriter(file, true))) {
           riter.write("..End Game verified..");
           riter.newLine();
+          riter.close();
           hudPanel.addLog("..End Game verified to File..");
       } catch (IOException e) {
           hudPanel.addLog("ERROR End Game FILE:" + e.getMessage());
